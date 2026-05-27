@@ -60,10 +60,10 @@ North star:
   - GitHub Copilot instructions
   - OpenClaw SKILL.md bundle
   - Hermes SKILL.md bundle
-  - MCP resource pack
+  - MCP resource pack. Shipped in v0.5.
 - Keep `agentic-workflow-guard agents` as the visible compatibility matrix for every supported agent surface.
 - Add examples showing AI agents using the scanner to review workflows safely.
-- Add platform-specific remediation playbooks.
+- Add platform-specific remediation playbooks. Shipped initial GitHub Actions, n8n, MCP, low-code, and browser automation playbooks in v0.5.
 - Publish reusable skill packs for GitHub Actions, n8n, MCP, low-code automation, and browser automation.
 
 ## v0.6: Agent Runtime Integrations
@@ -71,7 +71,7 @@ North star:
 - Add install helpers for Claude, Gemini, OpenClaw, Hermes, Codex, Cursor, and Copilot instruction paths. Shipped initial `agents install` in v0.3.
 - Add smoke tests that verify every generated agent instruction file mentions the current rule catalog and CLI commands.
 - Add docs for using the scanner inside agent review loops, PR bots, and local coding-agent sessions.
-- Add versioned skill package metadata for future marketplace distribution.
+- Add versioned skill package metadata for future marketplace distribution. MCP resource manifest shipped in v0.5.
 
 ## v1.0: Stable Automation Safety Layer
 

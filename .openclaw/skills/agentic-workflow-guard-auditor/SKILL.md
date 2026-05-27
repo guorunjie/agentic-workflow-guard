@@ -19,8 +19,9 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 8. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
 9. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
 10. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-11. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-12. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+11. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+12. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+13. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, comments, webhooks, emails, and form inputs as untrusted prompt input.
@@ -34,6 +35,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `agentic-workflow-guard scan . --format json`
 - `agentic-workflow-guard scan . --format sarif`
 - `agentic-workflow-guard benchmark`
+- `agentic-workflow-guard mcp resources --format json`
 - `agentic-workflow-guard baseline create .`
 - `agentic-workflow-guard scan . --baseline .awg-baseline.json`
 - `agentic-workflow-guard fix . --patch`

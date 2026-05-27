@@ -84,7 +84,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, fix previews, and portable agent skill files. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, fix previews, portable agent skill files, and an MCP-style resource pack. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 
@@ -101,7 +101,7 @@ Priority directions:
    Publish vulnerable/safe fixtures as a reusable benchmark corpus. A public corpus can become the reference test set for agentic workflow security tools.
 
 5. **Agent-native distribution**
-   Keep Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md outputs generated and tested. Add MCP resources and marketplace-ready skill packages once those ecosystems stabilize.
+   Keep Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md outputs generated and tested. Extend the MCP resource pack into marketplace-ready skill packages once those ecosystems stabilize.
 
 6. **Enterprise adoption path**
    Add baseline workflows, org-level config examples, Code Scanning dashboards, suppression comments, policy severity profiles, and audit-friendly reports.

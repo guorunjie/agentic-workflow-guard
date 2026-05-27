@@ -12,9 +12,14 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/vulnerable-activepieces` | Activepieces-style JSON | `AWI009` |
 | `examples/safe-activepieces` | Activepieces-style JSON | none |
 | `examples/vulnerable-node-red` | Node-RED | `AWI009` |
+| `examples/safe-node-red` | Node-RED | none |
 | `examples/vulnerable-make` | Make | `AWI009` |
+| `examples/safe-make` | Make | none |
 | `examples/vulnerable-pipedream` | Pipedream | `AWI009` |
+| `examples/safe-pipedream` | Pipedream | none |
 | `examples/vulnerable-airflow` | Airflow | `AWI009` |
+| `examples/safe-airflow` | Airflow | none |
 | `examples/vulnerable-browser-trace` | browser-use / browser traces | `AWI010` |
+| `examples/safe-browser-trace` | browser-use / browser traces | none |
 
 Run `agentic-workflow-guard benchmark` to compare every fixture against `benchmarks/fixtures.json`. The next benchmark step is publishing these fixtures as a standalone reference corpus for agentic workflow security scanning.

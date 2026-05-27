@@ -1,0 +1,129 @@
+{
+  "name": "agentic-workflow-guard-mcp-resources",
+  "version": "0.5.0",
+  "protocolRevision": "2025-06-18",
+  "description": "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
+  "capabilities": {
+    "resources": {}
+  },
+  "resources": [
+    {
+      "uri": "awg://rules/core",
+      "name": "core-rules",
+      "title": "Agentic Workflow Guard Core Rules",
+      "description": "Rule marketplace metadata for AWI001-AWI010.",
+      "mimeType": "application/json",
+      "path": "rules/marketplace.json",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 1
+      }
+    },
+    {
+      "uri": "awg://benchmarks/fixtures",
+      "name": "benchmark-fixtures",
+      "title": "Agentic Workflow Guard Benchmark Fixtures",
+      "description": "Expected findings for vulnerable and safe workflow fixtures.",
+      "mimeType": "application/json",
+      "path": "benchmarks/fixtures.json",
+      "annotations": {
+        "audience": [
+          "assistant"
+        ],
+        "priority": 0.9
+      }
+    },
+    {
+      "uri": "awg://skill/auditor",
+      "name": "auditor-skill",
+      "title": "Agentic Workflow Guard Auditor Skill",
+      "description": "Portable SKILL.md workflow for auditing AI automation risks.",
+      "mimeType": "text/markdown",
+      "path": "skills/agentic-workflow-guard-auditor/SKILL.md",
+      "annotations": {
+        "audience": [
+          "assistant"
+        ],
+        "priority": 1
+      }
+    },
+    {
+      "uri": "awg://playbooks/github-actions",
+      "name": "github-actions-playbook",
+      "title": "GitHub Actions Remediation Playbook",
+      "description": "How to reduce agent prompt injection and write-permission risks in GitHub Actions.",
+      "mimeType": "text/markdown",
+      "path": "docs/playbooks/github-actions.md",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.8
+      }
+    },
+    {
+      "uri": "awg://playbooks/n8n",
+      "name": "n8n-playbook",
+      "title": "n8n Remediation Playbook",
+      "description": "How to guard n8n external trigger -> AI node -> side-effect paths.",
+      "mimeType": "text/markdown",
+      "path": "docs/playbooks/n8n.md",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.8
+      }
+    },
+    {
+      "uri": "awg://playbooks/mcp",
+      "name": "mcp-playbook",
+      "title": "MCP Tool Governance Playbook",
+      "description": "How to scope MCP filesystem, shell, browser, GitHub, and infrastructure tools.",
+      "mimeType": "text/markdown",
+      "path": "docs/playbooks/mcp.md",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.85
+      }
+    },
+    {
+      "uri": "awg://playbooks/low-code",
+      "name": "low-code-playbook",
+      "title": "Low-Code AI Workflow Remediation Playbook",
+      "description": "How to guard Activepieces, Zapier, Make, Pipedream, Node-RED, and Airflow AI workflows.",
+      "mimeType": "text/markdown",
+      "path": "docs/playbooks/low-code.md",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.75
+      }
+    },
+    {
+      "uri": "awg://playbooks/browser-automation",
+      "name": "browser-automation-playbook",
+      "title": "Browser Automation Remediation Playbook",
+      "description": "How to guard browser-use, Skyvern, Playwright, and Puppeteer AI browser side effects.",
+      "mimeType": "text/markdown",
+      "path": "docs/playbooks/browser-automation.md",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.75
+      }
+    }
+  ]
+}

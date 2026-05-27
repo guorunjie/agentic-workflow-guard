@@ -64,6 +64,14 @@ export const supportedAgents = [
     integration: "SKILL.md bundle",
     outputs: [`skills/${skillName}/SKILL.md`, `.hermes/skills/${skillName}/SKILL.md`],
     loading: "Uses the portable SKILL.md format; copy to the Hermes skills directory or include via external skill dirs."
+  },
+  {
+    id: "mcp-resources",
+    name: "MCP resource pack",
+    status: "supported",
+    integration: "Resource manifest",
+    outputs: ["mcp/resources/agentic-workflow-guard.resources.json", "docs/playbooks/*.md"],
+    loading: "Expose the manifest resources through an MCP server or copy the playbooks into an agent context bundle."
   }
 ];
 

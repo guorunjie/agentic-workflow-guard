@@ -56,4 +56,5 @@ test("CLI agents emits mainstream compatibility matrix", async () => {
   assert.match(stdout, /OpenClaw/);
   assert.match(stdout, /Hermes/);
   assert.match(stdout, /Gemini CLI/);
+  assert.match(stdout, /MCP resource pack/);
 });

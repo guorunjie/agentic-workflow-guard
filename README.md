@@ -13,7 +13,7 @@ npx agentic-workflow-guard fix examples/unsafe-ai-pr-bot --patch
 npx agentic-workflow-guard skillpack > skillpack.yaml
 ```
 
-The exported `skillpack.yaml` can be compiled by [Skillpack Forge](https://github.com/guorunjie/skillpack-forge) into `AGENTS.md`, Claude Skills, Codex Skills, Cursor rules, and Copilot instructions.
+The exported `skillpack.yaml` can be compiled by [Skillpack Forge](https://github.com/guorunjie/skillpack-forge) into `AGENTS.md`, Claude Skills, Codex Skills, Cursor rules, Copilot instructions, and portable skill bundles for Gemini, OpenClaw, and Hermes.
 
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
@@ -109,6 +109,12 @@ Verify the bundled benchmark fixtures:
 node ./bin/agentic-workflow-guard.js benchmark
 ```
 
+Export the MCP resource pack:
+
+```bash
+node ./bin/agentic-workflow-guard.js mcp resources --format json
+```
+
 Start from the sample config:
 
 ```bash
@@ -131,6 +137,7 @@ Confirm mainstream agent support:
 node ./bin/agentic-workflow-guard.js agents
 node ./bin/agentic-workflow-guard.js agents install claude .
 node ./bin/agentic-workflow-guard.js agents install gemini .
+node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 ```
 
 ## Commands
@@ -152,8 +159,9 @@ node ./bin/agentic-workflow-guard.js agents install gemini .
 | `rules install core [path]` | Installs core rule pack metadata into `.awg/rules/`. |
 | `rules verify <file>` | Verifies a rule pack checksum before use. |
 | `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
+| `mcp resources --format markdown|json` | Prints MCP-style resource descriptors for rules, benchmarks, skills, and remediation playbooks. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
-| `agents install <target> [path]` | Installs Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, or AGENTS.md files into a project. |
+| `agents install <target> [path]` | Installs Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, AGENTS.md, or MCP resource files into a project. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
 
 ## Agent Compatibility
@@ -170,8 +178,9 @@ Agentic Workflow Guard now covers the mainstream agent context surfaces used by 
 | Gemini CLI | Supported | `GEMINI.md`, `.gemini/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | OpenClaw | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.openclaw/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | Hermes | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.hermes/skills/agentic-workflow-guard-auditor/SKILL.md` |
+| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `docs/playbooks/*.md` |
 
-Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory.
+Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory. The MCP resource pack uses stable `awg://` URIs so an MCP server or agent runtime can expose the core rules, benchmark fixtures, auditor skill, and remediation playbooks as contextual resources.
 
 ## Rule Catalog
 
@@ -220,7 +229,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.4.0
+      - uses: guorunjie/agentic-workflow-guard@v0.5.0
         with:
           path: .
           format: sarif
@@ -230,7 +239,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.4.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.5.0`.
 
 ## Examples
 
@@ -247,6 +256,7 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-airflow --format m
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/safe-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js benchmark
+node ./bin/agentic-workflow-guard.js mcp resources
 ```
 
 ## Evolution Roadmap
@@ -259,7 +269,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.2 | Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow | Platform examples and native risk evidence |
 | v0.3 | Baseline mode, browser traces, agent install helpers, patch output | `baseline create`, `fix --patch`, `agents install`, AWI010 |
 | v0.4 | Rule marketplace and benchmark snapshots | `rules list/search/install/verify`, checksums, `benchmark` |
-| v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested |
+| v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested, MCP resources, remediation playbooks |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
@@ -269,6 +279,7 @@ See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage a
 ```bash
 npm test
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --format json
+node ./bin/agentic-workflow-guard.js mcp resources --format json
 npm pack --dry-run
 ```
 

@@ -7,6 +7,7 @@ import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
 import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
 import { agentInstallTargets, installAgent } from "./agentsInstall.js";
+import { renderMcpResources } from "./mcpResources.js";
 import { renderJson } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
@@ -33,6 +34,7 @@ Usage:
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|search <query>|install core [path]|verify <file>] [--format markdown|json]
+  agentic-workflow-guard mcp resources [--format markdown|json]
   agentic-workflow-guard benchmark [path]
   agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard agents install <target|all> [path]
@@ -122,6 +124,17 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
     const results = await runBenchmark(root);
     output.write(renderBenchmark(results));
     return results.some((result) => !result.passed) ? 1 : 0;
+  }
+
+  if (command === "mcp") {
+    const subcommand = args[0] ?? "resources";
+    const format = argValue(args, "--format", "markdown");
+    if (subcommand !== "resources") {
+      error.write(`Unknown mcp command: ${subcommand}\n`);
+      return 1;
+    }
+    output.write(renderMcpResources(format));
+    return 0;
   }
 
   if (command === "agents") {

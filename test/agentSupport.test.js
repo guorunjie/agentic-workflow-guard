@@ -11,6 +11,7 @@ test("supportedAgents covers Claude, OpenClaw, Hermes, and Gemini", () => {
   assert.ok(ids.includes("openclaw"));
   assert.ok(ids.includes("hermes"));
   assert.ok(ids.includes("gemini"));
+  assert.ok(ids.includes("mcp-resources"));
 });
 
 test("agent support markdown describes output files", () => {
@@ -20,6 +21,7 @@ test("agent support markdown describes output files", () => {
   assert.match(markdown, /\.gemini\/skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /\.openclaw\/skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /\.hermes\/skills\/agentic-workflow-guard-auditor\/SKILL.md/);
+  assert.match(markdown, /mcp\/resources\/agentic-workflow-guard\.resources\.json/);
   assert.match(markdown, /skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /GEMINI.md/);
 });
@@ -31,6 +33,7 @@ test("repository includes generated support files for mainstream agents", async 
     ".openclaw/skills/agentic-workflow-guard-auditor/SKILL.md",
     ".hermes/skills/agentic-workflow-guard-auditor/SKILL.md",
     "skills/agentic-workflow-guard-auditor/SKILL.md",
+    "mcp/resources/agentic-workflow-guard.resources.json",
     "GEMINI.md"
   ];
 

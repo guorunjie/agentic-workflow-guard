@@ -29,3 +29,15 @@ test("agents install claude writes Claude skill bundle", async () => {
 
   assert.match(skill, /agentic-workflow-guard-auditor/);
 });
+
+test("agents install mcp-resources writes the MCP resource manifest and playbooks", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-agent-install-"));
+
+  const { stdout } = await execFileAsync("node", [bin, "agents", "install", "mcp-resources", root]);
+  const manifest = await readFile(path.join(root, "mcp", "resources", "agentic-workflow-guard.resources.json"), "utf8");
+  const playbook = await readFile(path.join(root, "docs", "playbooks", "github-actions.md"), "utf8");
+
+  assert.match(stdout, /Installed mcp-resources/);
+  assert.match(manifest, /awg:\/\/rules\/core/);
+  assert.match(playbook, /GitHub Actions/);
+});

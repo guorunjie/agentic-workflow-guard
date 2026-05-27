@@ -12,7 +12,15 @@ const installTargets = {
   copilot: [".github/copilot-instructions.md"],
   gemini: ["GEMINI.md", ".gemini/skills/agentic-workflow-guard-auditor/SKILL.md"],
   openclaw: ["skills/agentic-workflow-guard-auditor/SKILL.md", ".openclaw/skills/agentic-workflow-guard-auditor/SKILL.md"],
-  hermes: ["skills/agentic-workflow-guard-auditor/SKILL.md", ".hermes/skills/agentic-workflow-guard-auditor/SKILL.md"]
+  hermes: ["skills/agentic-workflow-guard-auditor/SKILL.md", ".hermes/skills/agentic-workflow-guard-auditor/SKILL.md"],
+  "mcp-resources": [
+    "mcp/resources/agentic-workflow-guard.resources.json",
+    "docs/playbooks/github-actions.md",
+    "docs/playbooks/n8n.md",
+    "docs/playbooks/mcp.md",
+    "docs/playbooks/low-code.md",
+    "docs/playbooks/browser-automation.md"
+  ]
 };
 
 export function agentInstallTargets() {

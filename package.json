@@ -1,6 +1,6 @@
 {
   "name": "agentic-workflow-guard",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Find dangerous AI automation workflows before agents get write access; ships a portable skill pack for GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.",
   "type": "module",
   "bin": {
@@ -10,6 +10,7 @@
     "test": "node --test",
     "scan": "node ./bin/agentic-workflow-guard.js scan .",
     "benchmark": "node ./bin/agentic-workflow-guard.js benchmark",
+    "mcp:resources": "node ./bin/agentic-workflow-guard.js mcp resources --format json",
     "agents": "node ./bin/agentic-workflow-guard.js agents",
     "marketplace": "node ./bin/agentic-workflow-guard.js rules --format markdown"
   },
@@ -41,6 +42,7 @@
     "bin",
     "src",
     "rules",
+    "mcp",
     "examples",
     "benchmarks",
     "docs",
