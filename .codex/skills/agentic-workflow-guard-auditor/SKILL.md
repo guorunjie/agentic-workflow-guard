@@ -16,6 +16,8 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - Use agentic-workflow-guard fix . --patch for a reviewable permission diff
 - Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades
 - Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules
+- Use agentic-workflow-guard rules verify <file> before trusting external rule packs
+- Use agentic-workflow-guard benchmark to verify fixture snapshots
 - Use agentic-workflow-guard agents install <target> to install agent context files into another project
 - Use agentic-workflow-guard agents to confirm Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md support files
 - Prefer dry-run and approval gates before write-capable automation
@@ -24,6 +26,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - install: `npm install`
 - test: `npm test`
 - scan: `npm run scan`
+- benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`

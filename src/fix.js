@@ -21,14 +21,48 @@ function applyPermissionFix(text) {
   return { text: updated, changed };
 }
 
+function applyDryRunGuard(text) {
+  if (/AGENTIC_WORKFLOW_GUARD_DRY_RUN/.test(text)) return { text, changed: false };
+  let changed = false;
+  const updated = text.replace(/^(\s*)steps:\s*$/m, (line, indent) => {
+    changed = true;
+    return `${indent}env:\n${indent}  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n${line}`;
+  });
+  return { text: updated, changed };
+}
+
+function fixableFiles(findings) {
+  return [...new Set(findings.filter((finding) => ["AWI003", "AWI008"].includes(finding.ruleId)).map((finding) => stripLineSuffix(finding.file)))];
+}
+
+function applyRecipes(original, file, findings) {
+  const fileFindings = findings.filter((finding) => stripLineSuffix(finding.file) === file);
+  let text = original;
+  let changed = false;
+
+  if (fileFindings.some((finding) => finding.ruleId === "AWI003")) {
+    const result = applyPermissionFix(text);
+    text = result.text;
+    changed ||= result.changed;
+  }
+
+  if (fileFindings.some((finding) => finding.ruleId === "AWI008")) {
+    const result = applyDryRunGuard(text);
+    text = result.text;
+    changed ||= result.changed;
+  }
+
+  return { text, changed };
+}
+
 async function applyFixes(root, findings) {
-  const files = [...new Set(findings.filter((finding) => finding.ruleId === "AWI003").map((finding) => stripLineSuffix(finding.file)))];
+  const files = fixableFiles(findings);
   const changedFiles = [];
 
   for (const file of files) {
     const absolute = path.join(root, file);
     const original = await readFile(absolute, "utf8");
-    const result = applyPermissionFix(original);
+    const result = applyRecipes(original, file, findings);
     if (!result.changed) continue;
     await writeFile(absolute, result.text);
     changedFiles.push(file);
@@ -38,13 +72,13 @@ async function applyFixes(root, findings) {
 }
 
 async function buildFixChanges(root, findings) {
-  const files = [...new Set(findings.filter((finding) => finding.ruleId === "AWI003").map((finding) => stripLineSuffix(finding.file)))];
+  const files = fixableFiles(findings);
   const changes = [];
 
   for (const file of files) {
     const absolute = path.join(root, file);
     const original = await readFile(absolute, "utf8");
-    const result = applyPermissionFix(original);
+    const result = applyRecipes(original, file, findings);
     if (result.changed) {
       changes.push({ file, original, updated: result.text });
     }
@@ -61,22 +95,34 @@ function renderPatch(changes) {
     lines.push(`--- a/${change.file}`);
     lines.push(`+++ b/${change.file}`);
     lines.push("@@");
-    const originalLines = change.original.split(/\r?\n/);
-    const updatedLines = change.updated.split(/\r?\n/);
-    const max = Math.max(originalLines.length, updatedLines.length);
-    for (let index = 0; index < max; index += 1) {
-      const before = originalLines[index];
-      const after = updatedLines[index];
-      if (before === after) {
-        if (before !== undefined) lines.push(` ${before}`);
-      } else {
-        if (before !== undefined) lines.push(`-${before}`);
-        if (after !== undefined) lines.push(`+${after}`);
-      }
-    }
+    lines.push(...diffLines(change.original, change.updated));
     lines.push("");
   }
   return `${lines.join("\n")}\n`;
+}
+
+function diffLines(original, updated) {
+  const before = original.split(/\r?\n/);
+  const after = updated.split(/\r?\n/);
+  let prefix = 0;
+
+  while (prefix < before.length && prefix < after.length && before[prefix] === after[prefix]) {
+    prefix += 1;
+  }
+
+  let beforeSuffix = before.length - 1;
+  let afterSuffix = after.length - 1;
+  while (beforeSuffix >= prefix && afterSuffix >= prefix && before[beforeSuffix] === after[afterSuffix]) {
+    beforeSuffix -= 1;
+    afterSuffix -= 1;
+  }
+
+  const lines = [];
+  for (let index = 0; index < prefix; index += 1) lines.push(` ${before[index]}`);
+  for (let index = prefix; index <= beforeSuffix; index += 1) lines.push(`-${before[index]}`);
+  for (let index = prefix; index <= afterSuffix; index += 1) lines.push(`+${after[index]}`);
+  for (let index = beforeSuffix + 1; index < before.length; index += 1) lines.push(` ${before[index]}`);
+  return lines;
 }
 
 export async function renderFixPlan(root, options = {}) {

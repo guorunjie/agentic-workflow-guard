@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "docs-context": {
+      "command": "node",
+      "args": ["servers/docs-context.js", "--readonly"]
+    }
+  }
+}

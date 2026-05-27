@@ -2,17 +2,18 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.3 production release", async () => {
+test("package metadata reflects the expanded v0.4 marketplace release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.3.0");
+  assert.equal(pkg.version, "0.4.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
   assert.ok(pkg.keywords.includes("browser-use"));
+  assert.equal(pkg.scripts.benchmark, "node ./bin/agentic-workflow-guard.js benchmark");
 });
 
-test("README documents marketplace SARIF upload, config, baseline, patch, and install helpers", async () => {
+test("README documents marketplace SARIF upload, config, baseline, patch, rule verification, benchmark, and install helpers", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
@@ -20,6 +21,8 @@ test("README documents marketplace SARIF upload, config, baseline, patch, and in
   assert.match(readme, /fix \. --patch/);
   assert.match(readme, /baseline create/);
   assert.match(readme, /agents install/);
+  assert.match(readme, /rules verify/);
+  assert.match(readme, /benchmark/);
   assert.match(readme, /\.awg\.yml/);
 });
 
@@ -45,6 +48,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-pipedream/workflow.json",
     "examples/vulnerable-airflow/agent_dag.py",
     "examples/vulnerable-browser-trace/browser-trace.json",
+    "benchmarks/fixtures.json",
     "examples/safe-node-red/flows.json",
     "examples/safe-make/scenario.blueprint.json",
     "examples/safe-pipedream/workflow.json",

@@ -1,15 +1,32 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { rules } from "./rules/index.js";
 
 export const coreRulePack = {
   name: "agentic-workflow-guard-core-rules",
-  version: "0.3.0",
+  version: "0.4.0",
   description: "Core static-analysis rules for AI automation workflow security.",
   platforms: ["github-actions", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"],
   rules: Object.keys(rules)
 };
+
+function canonicalJson(value) {
+  return JSON.stringify(value, Object.keys(value).sort());
+}
+
+function checksumFor(pack) {
+  const withoutChecksum = { ...pack };
+  delete withoutChecksum.checksum;
+  return `sha256:${createHash("sha256").update(canonicalJson(withoutChecksum)).digest("hex")}`;
+}
+
+export function withChecksum(pack) {
+  const payload = { ...pack };
+  payload.checksum = checksumFor(payload);
+  return payload;
+}
 
 function entriesFor(query) {
   if (!query) return Object.entries(rules);
@@ -34,7 +51,7 @@ function renderRuleEntries(entries, title) {
 }
 
 export function renderRules(format = "markdown") {
-  if (format === "json") return `${JSON.stringify({ rules, packs: [coreRulePack] }, null, 2)}\n`;
+  if (format === "json") return `${JSON.stringify({ rules, packs: [withChecksum(coreRulePack)] }, null, 2)}\n`;
   return renderRuleEntries(Object.entries(rules));
 }
 
@@ -45,14 +62,16 @@ export function renderRuleSearch(query, format = "markdown") {
 }
 
 export function renderRulePacks(format = "markdown") {
-  if (format === "json") return `${JSON.stringify({ packs: [coreRulePack] }, null, 2)}\n`;
+  const pack = withChecksum(coreRulePack);
+  if (format === "json") return `${JSON.stringify({ packs: [pack] }, null, 2)}\n`;
   return `# Agentic Workflow Guard Rule Packs
 
 ## core
-- Name: ${coreRulePack.name}
-- Version: ${coreRulePack.version}
-- Platforms: ${coreRulePack.platforms.join(", ")}
-- Rules: ${coreRulePack.rules.join(", ")}
+- Name: ${pack.name}
+- Version: ${pack.version}
+- Checksum: ${pack.checksum}
+- Platforms: ${pack.platforms.join(", ")}
+- Rules: ${pack.rules.join(", ")}
 `;
 }
 
@@ -61,8 +80,18 @@ export async function installRulePack(root, name = "core") {
     throw new Error(`Unknown rule pack: ${name}`);
   }
   const outputDir = path.join(root, ".awg", "rules");
-  const outputPath = path.join(outputDir, `${coreRulePack.name}.json`);
+  const pack = withChecksum(coreRulePack);
+  const outputPath = path.join(outputDir, `${pack.name}.json`);
   await mkdir(outputDir, { recursive: true });
-  await writeFile(outputPath, `${JSON.stringify(coreRulePack, null, 2)}\n`);
+  await writeFile(outputPath, `${JSON.stringify(pack, null, 2)}\n`);
   return outputPath;
+}
+
+export async function verifyRulePack(file) {
+  const pack = JSON.parse(await readFile(file, "utf8"));
+  const expected = checksumFor(pack);
+  if (pack.checksum !== expected) {
+    throw new Error(`Rule pack checksum mismatch: expected ${expected}, got ${pack.checksum ?? "missing"}`);
+  }
+  return { name: pack.name, checksum: expected };
 }

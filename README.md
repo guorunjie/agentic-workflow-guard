@@ -1,6 +1,6 @@
 # Agentic Workflow Guard
 
-Security scanner and portable skill pack for AI automation workflows.
+Find dangerous AI automation workflows before agents get write access.
 
 Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, risky n8n flows, low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
@@ -103,6 +103,12 @@ node ./bin/agentic-workflow-guard.js baseline create .
 node ./bin/agentic-workflow-guard.js scan . --baseline .awg-baseline.json
 ```
 
+Verify the bundled benchmark fixtures:
+
+```bash
+node ./bin/agentic-workflow-guard.js benchmark
+```
+
 Start from the sample config:
 
 ```bash
@@ -144,6 +150,8 @@ node ./bin/agentic-workflow-guard.js agents install gemini .
 | `rules list` | Lists installable rule packs. |
 | `rules search <query>` | Searches rules by platform, risk, or remediation text. |
 | `rules install core [path]` | Installs core rule pack metadata into `.awg/rules/`. |
+| `rules verify <file>` | Verifies a rule pack checksum before use. |
+| `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
 | `agents install <target> [path]` | Installs Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, or AGENTS.md files into a project. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
@@ -212,7 +220,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.3.0
+      - uses: guorunjie/agentic-workflow-guard@v0.4.0
         with:
           path: .
           format: sarif
@@ -222,7 +230,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.3.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.4.0`.
 
 ## Examples
 
@@ -238,6 +246,7 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-pipedream --format
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-airflow --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/safe-browser-trace --format markdown
+node ./bin/agentic-workflow-guard.js benchmark
 ```
 
 ## Evolution Roadmap
@@ -249,7 +258,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.1 | GitHub Actions, n8n, MCP config, low-code JSON heuristics | CLI, SARIF, GitHub Action, rule catalog, Skillpack Forge export |
 | v0.2 | Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow | Platform examples and native risk evidence |
 | v0.3 | Baseline mode, browser traces, agent install helpers, patch output | `baseline create`, `fix --patch`, `agents install`, AWI010 |
-| v0.4 | Rule marketplace and community rule packs | `rules list/search/install`, external rule metadata |
+| v0.4 | Rule marketplace and benchmark snapshots | `rules list/search/install/verify`, checksums, `benchmark` |
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 

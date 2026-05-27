@@ -1,6 +1,7 @@
 import path from "node:path";
 
 import { suppressBaseline, writeBaseline } from "./baseline.js";
+import { renderBenchmark, runBenchmark } from "./benchmark.js";
 import { loadConfig } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
@@ -9,7 +10,7 @@ import { agentInstallTargets, installAgent } from "./agentsInstall.js";
 import { renderJson } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
-import { installRulePack, renderRulePacks, renderRuleSearch, renderRules } from "./rulesCatalog.js";
+import { installRulePack, renderRulePacks, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
 
@@ -31,7 +32,8 @@ Usage:
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch]
   agentic-workflow-guard explain <rule-id>
-  agentic-workflow-guard rules [list|search <query>|install core [path]] [--format markdown|json]
+  agentic-workflow-guard rules [list|search <query>|install core [path]|verify <file>] [--format markdown|json]
+  agentic-workflow-guard benchmark [path]
   agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard agents install <target|all> [path]
   agentic-workflow-guard skillpack
@@ -101,8 +103,25 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       output.write(`Installed ${pack} rule pack to ${outputPath}\n`);
       return 0;
     }
+    if (subcommand === "verify") {
+      const file = args[1];
+      if (!file) {
+        error.write("Missing rule pack file.\n");
+        return 1;
+      }
+      const result = await verifyRulePack(path.resolve(file));
+      output.write(`Rule pack verified: ${result.name} ${result.checksum}\n`);
+      return 0;
+    }
     output.write(renderRules(format));
     return 0;
+  }
+
+  if (command === "benchmark") {
+    const root = path.resolve(firstPositional(args));
+    const results = await runBenchmark(root);
+    output.write(renderBenchmark(results));
+    return results.some((result) => !result.passed) ? 1 : 0;
   }
 
   if (command === "agents") {

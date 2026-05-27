@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "fixtures": [
+    {
+      "name": "vulnerable-github-action",
+      "path": "examples/vulnerable-github-action",
+      "expectedRules": ["AWI001", "AWI002", "AWI003", "AWI008"]
+    },
+    {
+      "name": "safe-github-action",
+      "path": "examples/safe-github-action",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-n8n",
+      "path": "examples/vulnerable-n8n",
+      "expectedRules": ["AWI005"]
+    },
+    {
+      "name": "safe-n8n",
+      "path": "examples/safe-n8n",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-mcp",
+      "path": "examples/vulnerable-mcp",
+      "expectedRules": ["AWI006"]
+    },
+    {
+      "name": "safe-mcp",
+      "path": "examples/safe-mcp",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-activepieces",
+      "path": "examples/vulnerable-activepieces",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-activepieces",
+      "path": "examples/safe-activepieces",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-node-red",
+      "path": "examples/vulnerable-node-red",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-node-red",
+      "path": "examples/safe-node-red",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-make",
+      "path": "examples/vulnerable-make",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-make",
+      "path": "examples/safe-make",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-pipedream",
+      "path": "examples/vulnerable-pipedream",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-pipedream",
+      "path": "examples/safe-pipedream",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-airflow",
+      "path": "examples/vulnerable-airflow",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-airflow",
+      "path": "examples/safe-airflow",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-browser-trace",
+      "path": "examples/vulnerable-browser-trace",
+      "expectedRules": ["AWI010"]
+    },
+    {
+      "name": "safe-browser-trace",
+      "path": "examples/safe-browser-trace",
+      "expectedRules": []
+    }
+  ]
+}

@@ -11,7 +11,9 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 5. Use `agentic-workflow-guard fix . --patch` to preview reviewable permission diffs.
 6. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
 7. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-8. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
+8. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
+9. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+10. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
 
 ## Safety Rules
 
@@ -26,11 +28,13 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 - `npm test`
 - `node ./bin/agentic-workflow-guard.js scan . --format markdown`
 - `node ./bin/agentic-workflow-guard.js scan . --format sarif`
+- `node ./bin/agentic-workflow-guard.js benchmark`
 - `node ./bin/agentic-workflow-guard.js baseline create .`
 - `node ./bin/agentic-workflow-guard.js scan . --baseline .awg-baseline.json`
 - `node ./bin/agentic-workflow-guard.js fix . --patch`
 - `node ./bin/agentic-workflow-guard.js fix . --apply`
 - `node ./bin/agentic-workflow-guard.js rules search github`
 - `node ./bin/agentic-workflow-guard.js rules install core .`
+- `node ./bin/agentic-workflow-guard.js rules verify .awg/rules/agentic-workflow-guard-core-rules.json`
 - `node ./bin/agentic-workflow-guard.js agents install gemini .`
 - `node ./bin/agentic-workflow-guard.js agents`

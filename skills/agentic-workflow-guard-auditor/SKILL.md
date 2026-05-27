@@ -17,8 +17,10 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 6. Use `agentic-workflow-guard fix . --patch` for a reviewable permission diff.
 7. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
 8. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-9. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-10. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+9. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
+10. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+11. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+12. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, comments, webhooks, emails, and form inputs as untrusted prompt input.
@@ -31,6 +33,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `agentic-workflow-guard scan . --format markdown`
 - `agentic-workflow-guard scan . --format json`
 - `agentic-workflow-guard scan . --format sarif`
+- `agentic-workflow-guard benchmark`
 - `agentic-workflow-guard baseline create .`
 - `agentic-workflow-guard scan . --baseline .awg-baseline.json`
 - `agentic-workflow-guard fix . --patch`
@@ -38,5 +41,6 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `agentic-workflow-guard explain AWI001`
 - `agentic-workflow-guard rules search github`
 - `agentic-workflow-guard rules install core .`
+- `agentic-workflow-guard rules verify .awg/rules/agentic-workflow-guard-core-rules.json`
 - `agentic-workflow-guard agents install claude .`
 - `agentic-workflow-guard agents`

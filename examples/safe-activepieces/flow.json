@@ -1,0 +1,15 @@
+{
+  "trigger": {
+    "type": "manual"
+  },
+  "steps": [
+    {
+      "name": "OpenAI",
+      "type": "openai.chat"
+    },
+    {
+      "name": "Preview",
+      "type": "text.compose"
+    }
+  ]
+}

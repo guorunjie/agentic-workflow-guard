@@ -44,8 +44,10 @@ North star:
 
 - External rule pack format.
 - `rules list`, `rules search`, `rules install`. Shipped core rule-pack metadata install in v0.2.
+- `rules verify` checksum validation. Shipped in v0.4.
+- Fixture benchmark snapshots via `benchmark`. Shipped in v0.4.
 - Community rule packs for GitHub Actions, n8n, MCP, browser automation, and data workflows.
-- Signed rule metadata and checksums.
+- Signed rule metadata. Checksum metadata shipped in v0.4.
 
 ## v0.5: Complete Agent Skill
 

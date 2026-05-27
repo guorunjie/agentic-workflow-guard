@@ -82,6 +82,32 @@ Highest-impact improvements:
 8. **Create a benchmark dataset**
    A public `agentic-workflow-vuln-fixtures` collection can become the reference dataset for this risk category.
 
+## Growth Space Assessment
+
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, fix previews, and portable agent skill files. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+
+Priority directions:
+
+1. **Deeper native parsers**
+   Replace broad heuristics with native understanding of GitHub Actions, n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
+
+2. **Policy and fix engine**
+   Expand `fix --patch` into policy-aware remediation: approval gates, dry-run defaults, allowlists, split read/write jobs, permission minimization, and PR-ready patches with confidence levels.
+
+3. **Trusted rule marketplace**
+   Evolve the local rule catalog into signed community rule packs with checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
+
+4. **Benchmark as moat**
+   Publish vulnerable/safe fixtures as a reusable benchmark corpus. A public corpus can become the reference test set for agentic workflow security tools.
+
+5. **Agent-native distribution**
+   Keep Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md outputs generated and tested. Add MCP resources and marketplace-ready skill packages once those ecosystems stabilize.
+
+6. **Enterprise adoption path**
+   Add baseline workflows, org-level config examples, Code Scanning dashboards, suppression comments, policy severity profiles, and audit-friendly reports.
+
+The strongest star-growth path is to show one scary, easy-to-understand demo per platform: untrusted input -> AI decision -> write-capable action, then show how the scanner catches it before it runs.
+
 ## Star Growth Playbook
 
 - README headline: "Semgrep-style scanner for AI automation workflows."
@@ -98,5 +124,5 @@ Highest-impact improvements:
 Use this GitHub description:
 
 ```text
-Security scanner and portable skill pack for AI automation workflows across GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.
+Find dangerous AI automation workflows before agents get write access; ships a portable skill pack for GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.
 ```
