@@ -45,5 +45,6 @@ node ./bin/agentic-workflow-guard.js schema benchmark-report
 node ./bin/agentic-workflow-guard.js release check --target 1.0.0
 npm run docs:build
 npm run smoke:package
+npm run release:sync:check
 npm pack --dry-run
 ```

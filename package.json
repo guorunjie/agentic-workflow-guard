@@ -22,6 +22,8 @@
     "docs:build": "node ./scripts/build-pages.js",
     "smoke:package": "node ./scripts/smoke-package.js",
     "release:check": "node ./bin/agentic-workflow-guard.js release check",
+    "release:sync": "node ./scripts/sync-static.js",
+    "release:sync:check": "node ./scripts/sync-static.js --check",
     "agents": "node ./bin/agentic-workflow-guard.js agents",
     "marketplace": "node ./bin/agentic-workflow-guard.js rules --format markdown"
   },

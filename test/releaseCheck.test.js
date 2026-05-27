@@ -17,6 +17,7 @@ test("release check reports v1 release gates with no hard failures", async () =>
   assert.equal(report.name, "agentic-workflow-guard-release-readiness");
   assert.equal(report.summary.fail, 0);
   assert.equal(gates["stable-schemas"].status, "pass");
+  assert.equal(gates["static-metadata"].status, "pass");
   assert.equal(gates["rule-stability"].status, "pass");
   assert.equal(gates["platform-matrix"].status, "pass");
   assert.equal(gates["agent-matrix"].status, "pass");

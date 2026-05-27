@@ -5,6 +5,7 @@ import { promisify } from "node:util";
 import { supportedAgents } from "./agentSupport.js";
 import { policyProfiles } from "./config.js";
 import { rules } from "./rules/index.js";
+import { serializeStaticMetadata, staticMetadataTargets } from "./staticMetadata.js";
 import { readJson, readText, exists } from "./utils/files.js";
 
 const execFileAsync = promisify(execFile);
@@ -79,7 +80,7 @@ async function fileGate(root, file) {
 
 async function packageGate(root) {
   const pkg = await readJson(root, "package.json");
-  const requiredScripts = ["test", "docs:build", "smoke:package", "release:check", "benchmark:report", "benchmark:corpus", "mcp:resources"];
+  const requiredScripts = ["test", "docs:build", "smoke:package", "release:check", "release:sync", "release:sync:check", "benchmark:report", "benchmark:corpus", "mcp:resources"];
   const missingScripts = requiredScripts.filter((script) => !pkg.scripts?.[script]);
   const requiredFiles = ["bin", "src", "rules", "schemas", "mcp", "examples", "benchmarks", "docs", "docs-site", "scripts", "action.yml", ".github/copilot-instructions.md"];
   const missingFiles = requiredFiles.filter((file) => !pkg.files?.includes(file));
@@ -124,6 +125,26 @@ async function versionSyncGate(root) {
     return fail("version-sync", "Distributed metadata versions", mismatches, "Regenerate bundled rule, benchmark, and MCP metadata after bumping the package version.");
   }
   return pass("version-sync", "Distributed metadata versions", [`All checked metadata files use ${pkg.version}.`]);
+}
+
+async function staticMetadataGate(root) {
+  const drift = [];
+  const targets = await staticMetadataTargets(root);
+  for (const target of targets) {
+    const expected = serializeStaticMetadata(target.value);
+    let current = "";
+    try {
+      current = await readText(root, target.path);
+    } catch {
+      drift.push(`${target.path}: missing`);
+      continue;
+    }
+    if (current !== expected) drift.push(`${target.path}: out of sync`);
+  }
+  if (drift.length) {
+    return fail("static-metadata", "Generated static metadata", drift, "Run `npm run release:sync` and commit the regenerated rule, benchmark, and MCP metadata.");
+  }
+  return pass("static-metadata", "Generated static metadata", targets.map((target) => target.path));
 }
 
 async function schemaGate(root) {
@@ -240,6 +261,7 @@ export async function buildReleaseCheck(root = ".", options = {}) {
     await packageGate(root),
     await targetVersionGate(root, targetVersion),
     await versionSyncGate(root),
+    await staticMetadataGate(root),
     await schemaGate(root),
     ruleStabilityGate(),
     await platformMatrixGate(root),

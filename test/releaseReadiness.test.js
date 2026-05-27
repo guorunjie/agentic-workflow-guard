@@ -32,6 +32,8 @@ test("package metadata reflects the v0.20 marketplace and install readiness rele
   assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
   assert.equal(pkg.scripts["smoke:package"], "node ./scripts/smoke-package.js");
   assert.equal(pkg.scripts["release:check"], "node ./bin/agentic-workflow-guard.js release check");
+  assert.equal(pkg.scripts["release:sync"], "node ./scripts/sync-static.js");
+  assert.equal(pkg.scripts["release:sync:check"], "node ./scripts/sync-static.js --check");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
   assert.ok(pkg.files.includes("schemas"));
@@ -72,6 +74,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /Demo Playbook/);
   assert.match(readme, /v1-readiness\.md/);
   assert.match(readme, /release check \[path\] --target 1\.0\.0/);
+  assert.match(readme, /npm run release:sync:check/);
   assert.match(readme, /npm run release:check/);
   assert.match(readme, /npm run smoke:package/);
   assert.match(readme, /mcp resources/);
@@ -161,6 +164,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs-site/marketplace.html",
     "scripts/build-pages.js",
     "scripts/smoke-package.js",
+    "scripts/sync-static.js",
     "docs/npm-publish.md",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",

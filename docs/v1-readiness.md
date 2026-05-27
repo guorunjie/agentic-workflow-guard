@@ -42,6 +42,7 @@ With npm access resolved, this is a 1-2 day release-candidate task and a 2-4 day
 ```bash
 npm test
 npm run smoke:package
+npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
 npm run docs:build
 node ../skillpack-forge/bin/skillpack-forge.js doctor .
