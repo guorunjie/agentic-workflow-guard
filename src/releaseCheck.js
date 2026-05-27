@@ -89,8 +89,10 @@ async function packageGate(root) {
   const missingScripts = requiredScripts.filter((script) => !pkg.scripts?.[script]);
   const requiredFiles = ["bin", "src", "rules", "schemas", "mcp", "examples", "benchmarks", "docs", "docs-site", "scripts", "action.yml", ".github/copilot-instructions.md"];
   const missingFiles = requiredFiles.filter((file) => !pkg.files?.includes(file));
+  const requiredBin = "bin/agentic-workflow-guard.js";
   const evidence = [
     `version=${pkg.version}`,
+    `bin.agentic-workflow-guard=${pkg.bin?.["agentic-workflow-guard"] ?? "missing"}`,
     `scripts=${requiredScripts.filter((script) => pkg.scripts?.[script]).join(", ")}`,
     `files=${requiredFiles.filter((file) => pkg.files?.includes(file)).join(", ")}`
   ];
@@ -99,6 +101,9 @@ async function packageGate(root) {
   }
   if (missingScripts.length || missingFiles.length) {
     return fail("package-metadata", "Package metadata", [`Missing scripts: ${missingScripts.join(", ") || "none"}`, `Missing files: ${missingFiles.join(", ") || "none"}`], "Restore package scripts and files needed for release verification.");
+  }
+  if (pkg.bin?.["agentic-workflow-guard"] !== requiredBin) {
+    return fail("package-metadata", "Package metadata", [`Invalid bin.agentic-workflow-guard: ${pkg.bin?.["agentic-workflow-guard"] ?? "missing"}`], `Set bin.agentic-workflow-guard to ${requiredBin} so npm installs the CLI without publish auto-correction.`);
   }
   return pass("package-metadata", "Package metadata", evidence);
 }
@@ -233,7 +238,7 @@ async function actionGate(root, targetVersion) {
 }
 
 async function docsGate(root) {
-  const files = ["docs/v1-readiness.md", "docs/demos.md", "docs/github-action-marketplace.md", "docs/npm-publish.md", "docs-site/index.html", "docs-site/marketplace.html"];
+  const files = ["docs/v1-readiness.md", "docs/demos.md", "docs/github-action-marketplace.md", "docs/npm-publish.md", "docs-site/index.html", "docs-site/marketplace.html", ".github/workflows/release.yml"];
   const gates = await Promise.all(files.map((file) => fileGate(root, file)));
   const failed = gates.filter((item) => item.status === "fail");
   if (failed.length) {

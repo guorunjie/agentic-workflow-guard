@@ -7,7 +7,8 @@ Use this checklist before publishing `agentic-workflow-guard` to npm.
 1. Confirm `package.json` version matches the GitHub release tag.
 2. Confirm `README.md`, `LICENSE`, `action.yml`, `rules`, `mcp`, `docs`, `examples`, `benchmarks`, and generated agent instruction files are included in `package.json#files`.
 3. Preview the version and release-tag edits with `npm run release:prepare -- --version <version> --dry-run`; use `--apply` only when cutting the release branch or tag.
-4. Run the full verification suite:
+4. Confirm `package.json#bin.agentic-workflow-guard` is `bin/agentic-workflow-guard.js` so npm keeps the CLI entrypoint during publish.
+5. Run the full verification suite:
 
 ```bash
 npm run release:prepare -- --version 1.0.0 --dry-run
@@ -28,10 +29,21 @@ npm run release:check -- --target 1.0.0 --require-npm-auth
 npm pack --dry-run
 ```
 
-## Publication
+## GitHub Release Workflow
+
+The preferred v1 path is `.github/workflows/release.yml`.
+
+1. Add an npm automation token as the repository secret `NPM_TOKEN`.
+2. Run the `release` workflow manually with `tag=v1.0.0` and `dry_run=true`.
+3. Publish the draft GitHub Release for `v1.0.0`.
+4. The `release` workflow will check out the tag, verify the package version, run tests, run release gates with npm auth, build the package, and publish with provenance.
+
+The workflow uses `npm publish --provenance --access public` for the real release and `npm publish --dry-run --provenance --access public` for manual dry runs.
+
+## Manual Publication
 
 ```bash
-npm publish --access public
+npm publish --provenance --access public
 ```
 
 After publishing, verify:
@@ -42,7 +54,7 @@ npx agentic-workflow-guard --help
 npx agentic-workflow-guard scan examples/vulnerable-github-action --format markdown
 ```
 
-If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configure an automation token before running `npm publish`.
+If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configure the `NPM_TOKEN` automation secret before running `npm publish`.
 
 ## Release Notes
 

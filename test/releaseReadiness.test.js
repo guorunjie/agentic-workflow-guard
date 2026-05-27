@@ -47,6 +47,7 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.ok(pkg.files.includes("docs-site"));
   assert.ok(pkg.files.includes("scripts"));
   assert.ok(pkg.files.includes(".github/copilot-instructions.md"));
+  assert.ok(pkg.files.includes(".github/workflows/release.yml"));
 });
 
 test("README documents marketplace SARIF upload, output files, schemas, structured fixes, rule packs, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
@@ -139,6 +140,20 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /npm pack --dry-run/);
 });
 
+test("release workflow publishes npm packages from release tags", async () => {
+  const workflow = await readFile(".github/workflows/release.yml", "utf8");
+
+  assert.match(workflow, /types:\n\s+- published/);
+  assert.match(workflow, /workflow_dispatch/);
+  assert.match(workflow, /id-token: write/);
+  assert.match(workflow, /registry-url: https:\/\/registry\.npmjs\.org/);
+  assert.match(workflow, /NODE_AUTH_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/);
+  assert.match(workflow, /npm run release:check -- --target "\$VERSION" --require-npm-auth/);
+  assert.match(workflow, /npm publish --provenance --access public/);
+  assert.match(workflow, /npm publish --dry-run --provenance --access public/);
+  assert.match(workflow, /bin\/agentic-workflow-guard\.js/);
+});
+
 test("Pages workflow publishes generated docs and stable schema URLs", async () => {
   const workflow = await readFile(".github/workflows/pages.yml", "utf8");
 
@@ -202,6 +217,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/index.md",
     "docs-site/index.html",
     "docs-site/marketplace.html",
+    ".github/workflows/release.yml",
     "scripts/build-pages.js",
     "scripts/prepare-release.js",
     "scripts/smoke-package.js",

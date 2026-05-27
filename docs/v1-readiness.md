@@ -1,11 +1,11 @@
 # v1.0 Readiness
 
-As of 2026-05-28, Agentic Workflow Guard has local 1.0.0 release metadata prepared. The scanner covers mainstream CI, low-code, MCP, browser automation, structured reports, rule packs, benchmark scoring, public docs, and portable agent skills. The remaining work is publication proof: npm authentication, the final release tag, and live registry/Marketplace verification.
+As of 2026-05-28, Agentic Workflow Guard has 1.0.0 release metadata, a `v1.0.0` tag, and a draft GitHub Release prepared. The scanner covers mainstream CI, low-code, MCP, browser automation, structured reports, rule packs, benchmark scoring, public docs, and portable agent skills. The remaining work is publication proof: npm authentication, npm registry publication, and live registry/Marketplace verification.
 
 ## Earliest Practical Timeline
 
-- v1.0.0 package metadata, static marketplace metadata, benchmark corpus metadata, and release-tagged Action examples are prepared locally.
-- v1.0.0 can be cut after npm authentication works and the release gates below are green with `--require-npm-auth`.
+- v1.0.0 package metadata, static marketplace metadata, benchmark corpus metadata, release-tagged Action examples, tag, and draft Release are prepared.
+- v1.0.0 can be published after npm authentication works and the release gates below are green with `--require-npm-auth`.
 - Patch releases should use `npm run release:prepare -- --version 1.0.1 --dry-run` before changing release-tagged docs.
 
 With npm access resolved, this is now a same-day final release task. A longer 1-2 day window is only needed if you want an extra external smoke test before publishing.
@@ -30,13 +30,13 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 
 - npm authentication is not available on this machine yet; `npm whoami` returns `ENEEDAUTH`.
 - The package has not been published to npm, so the `npx agentic-workflow-guard` public install path still needs live registry proof.
-- The `v1.0.0` GitHub tag and GitHub Release have not been created yet.
-- GitHub Marketplace still needs the release-tagged `guorunjie/agentic-workflow-guard@v1.0.0` path verified after the final tag.
+- The `v1.0.0` GitHub Release is still a draft and should be published after npm publish is ready.
+- GitHub Marketplace still needs the release-tagged `guorunjie/agentic-workflow-guard@v1.0.0` path verified after the final Release is published.
 
 ## Recommended v1.0 Cut Plan
 
 1. Confirm the repository is clean and remote `main` has green `test` and `pages` workflows.
-2. Resolve npm authentication and run `npm publish --dry-run`.
+2. Add `NPM_TOKEN` as a repository secret or resolve local npm authentication and run `npm publish --dry-run`.
 3. Run the full local gate:
 
 ```bash
@@ -53,8 +53,8 @@ git diff --check
 
 4. Push, wait for remote `test` and `pages`, and verify `action-smoke`.
 5. Verify the remote `release-gates` job is green.
-6. Create `v1.0.0`; test the release-tagged Action in a clean workflow.
-7. Publish npm.
+6. Run the `release` workflow manually with `tag=v1.0.0` and `dry_run=true`.
+7. Publish the draft `v1.0.0` GitHub Release; the release workflow publishes npm with provenance when `NPM_TOKEN` is configured.
 8. Verify GitHub Release, GitHub Marketplace, npm package page, Pages site, and install smoke.
 
 ## Post-1.0 Growth
