@@ -11,3 +11,7 @@ export async function renderReportSchema() {
 export async function renderFixReportSchema() {
   return readFile(path.join(packageRoot, "schemas", "agentic-workflow-guard-fix-report.schema.json"), "utf8");
 }
+
+export async function renderRulePackSchema() {
+  return readFile(path.join(packageRoot, "schemas", "agentic-workflow-guard-rule-pack.schema.json"), "utf8");
+}

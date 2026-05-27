@@ -78,11 +78,12 @@ Emit SARIF for GitHub Code Scanning:
 node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif
 ```
 
-Print the stable JSON report schema:
+Print stable JSON schemas:
 
 ```bash
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
+node ./bin/agentic-workflow-guard.js schema rule-pack
 ```
 
 Explain a rule:
@@ -173,10 +174,11 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
 | `rules list` | Lists installable rule packs. |
 | `rules search <query>` | Searches rules by platform, risk, or remediation text. |
-| `rules install core [path]` | Installs core rule pack metadata into `.awg/rules/`. |
-| `rules verify <file>` | Verifies a rule pack checksum before use. |
+| `rules install core [path]` | Installs v1 core rule pack metadata and a lock file into `.awg/rules/`. |
+| `rules verify <file>` | Verifies rule pack schema metadata and checksum before use. |
 | `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
 | `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
+| `schema rule-pack` | Emits the stable rule pack schema for marketplace metadata. |
 | `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
 | `mcp resources --format markdown|json` | Prints MCP-style resource descriptors for rules, benchmarks, skills, and remediation playbooks. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
@@ -260,7 +262,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.9.0
+      - uses: guorunjie/agentic-workflow-guard@v0.10.0
         with:
           path: .
           format: sarif
@@ -272,7 +274,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.9.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.10.0`.
 
 ## Examples
 
@@ -305,6 +307,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.4 | Rule marketplace and benchmark snapshots | `rules list/search/install/verify`, checksums, `benchmark` |
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested, MCP resources, remediation playbooks |
 | v0.9 | Structured remediation plans | `fix --format json`, recipe confidence, automatic/manual modes, fix report schema |
+| v0.10 | Trusted marketplace metadata | Rule pack schema, compatibility metadata, provenance, install lock file |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

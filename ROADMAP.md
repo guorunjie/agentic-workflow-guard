@@ -96,10 +96,18 @@ North star:
 - Add stable fix report schema and `schema fix` command.
 - Publish fix schema through MCP resources and package files.
 
+## v0.10: Trusted Rule Marketplace Metadata
+
+- Add stable rule pack schema and `schema rule-pack` command.
+- Add rule pack compatibility metadata, provenance, publisher, license, and release tags.
+- Add install lock files for bundled rule packs.
+- Make `rules verify` validate schema metadata before checksum trust.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
 - Stable fix recipe schema.
+- Stable rule pack schema.
 - Stable rule IDs and severity policy.
 - GitHub Marketplace release.
 - npm release.

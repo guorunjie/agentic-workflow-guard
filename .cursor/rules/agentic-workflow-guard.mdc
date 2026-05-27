@@ -24,6 +24,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
 - schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
+- schema-rule-pack: `node ./bin/agentic-workflow-guard.js schema rule-pack`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
 - fix-json: `node ./bin/agentic-workflow-guard.js fix . --format json`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`

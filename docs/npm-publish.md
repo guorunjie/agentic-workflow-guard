@@ -14,6 +14,7 @@ node ./bin/agentic-workflow-guard.js benchmark
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
+node ./bin/agentic-workflow-guard.js schema rule-pack
 npm pack --dry-run
 ```
 
@@ -33,4 +34,4 @@ npx agentic-workflow-guard scan examples/vulnerable-github-action --format markd
 
 ## Release Notes
 
-Mention scanner coverage, policy profiles, suppression audit trails, stable report and fix schemas, `scan --output`, `fix --format json`, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.
+Mention scanner coverage, policy profiles, suppression audit trails, stable report, fix, and rule pack schemas, `scan --output`, `fix --format json`, trusted rule marketplace metadata, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.

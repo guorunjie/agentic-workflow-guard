@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guorunjie.github.io/agentic-workflow-guard/schemas/rule-pack.schema.json",
+  "title": "Agentic Workflow Guard Rule Pack",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "name",
+    "version",
+    "description",
+    "publisher",
+    "license",
+    "compatibility",
+    "platforms",
+    "rules",
+    "ruleCount",
+    "provenance",
+    "checksum"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri"
+    },
+    "compatibility": {
+      "type": "object",
+      "required": ["cli", "schema", "ruleIds"],
+      "additionalProperties": false,
+      "properties": {
+        "cli": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema": {
+          "const": "agentic-workflow-guard-rule-pack@1"
+        },
+        "ruleIds": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^AWI[0-9]{3}$"
+      },
+      "uniqueItems": true
+    },
+    "ruleCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "repository", "releaseTag"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["bundled", "community", "third-party"]
+        },
+        "repository": {
+          "type": "string",
+          "format": "uri"
+        },
+        "releaseTag": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  }
+}

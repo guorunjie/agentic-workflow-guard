@@ -19,6 +19,7 @@ const installTargets = {
     "benchmarks/fixtures.json",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
+    "schemas/agentic-workflow-guard-rule-pack.schema.json",
     "skills/agentic-workflow-guard-auditor/SKILL.md",
     "docs/policy-profiles-and-suppressions.md",
     "docs/index.md",

@@ -71,7 +71,7 @@ Highest-impact improvements:
    Expand from current permission downgrades, `fix --patch`, and `fix --format json` recipes into dry-run defaults, approval gates, split write jobs, and richer PR-ready patches.
 
 5. **Build the rule marketplace**
-   Grow the current `rules list/search/install` into external rule packs, signed metadata, checksums, and community contributions.
+   Grow the current `rules list/search/install` into external rule packs with a stable schema, lock files, signed metadata, checksums, and community contributions.
 
 6. **Make adoption incremental**
    Use `baseline create` and `scan --baseline` so existing repositories can adopt the scanner without failing CI on known legacy findings.
@@ -84,7 +84,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, structured fix recipes, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 
@@ -95,7 +95,7 @@ Priority directions:
    Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval gates, dry-run defaults, allowlists, split read/write jobs, permission minimization, and PR-ready patches with confidence levels.
 
 3. **Trusted rule marketplace**
-   Evolve the local rule catalog into signed community rule packs with checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
+   Evolve the local rule catalog into signed community rule packs with schema validation, lock files, checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
 
 4. **Benchmark as moat**
    Publish vulnerable/safe fixtures as a reusable benchmark corpus. A public corpus can become the reference test set for agentic workflow security tools.

@@ -1,6 +1,6 @@
 {
   "name": "agentic-workflow-guard-mcp-resources",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "protocolRevision": "2025-06-18",
   "description": "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   "capabilities": {
@@ -58,6 +58,21 @@
       "description": "Stable JSON Schema for structured fix recipe reports.",
       "mimeType": "application/schema+json",
       "path": "schemas/agentic-workflow-guard-fix-report.schema.json",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.95
+      }
+    },
+    {
+      "uri": "awg://schemas/rule-pack",
+      "name": "rule-pack-schema",
+      "title": "Agentic Workflow Guard Rule Pack Schema",
+      "description": "Stable JSON Schema for marketplace rule pack metadata.",
+      "mimeType": "application/schema+json",
+      "path": "schemas/agentic-workflow-guard-rule-pack.schema.json",
       "annotations": {
         "audience": [
           "assistant",
