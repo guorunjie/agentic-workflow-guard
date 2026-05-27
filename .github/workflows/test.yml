@@ -48,7 +48,7 @@ jobs:
         with:
           node-version: 24
       - run: npm run release:sync:check
-      - run: npm run release:prepare -- --version 1.0.0-rc.1 --dry-run
+      - run: npm run release:prepare -- --version 1.0.1 --dry-run
       - run: npm run release:check -- --format json
       - run: npm run smoke:package
       - run: npm pack --dry-run

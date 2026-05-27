@@ -8,7 +8,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 - [Policy Profiles and Suppressions](policy-profiles-and-suppressions.md): rollout profiles, inline suppression rules, and audit expectations.
 - [Benchmark Fixtures](benchmark-fixtures.md): vulnerable and safe fixture coverage plus the public `benchmarks/corpus.json` metadata.
 - [Demo Playbook](demos.md): short, high-signal demos for GitHub Actions, n8n, MCP, browser automation, and benchmark proof.
-- [v1.0 Readiness](v1-readiness.md): release gates, blockers, and the practical path from v0.20 to v1.0.
+- [v1.0 Readiness](v1-readiness.md): release gates, blockers, and final cut steps for v1.0.
 - [GitHub Action Marketplace Guide](github-action-marketplace.md): release-tagged Action usage and Marketplace checklist.
 - [Report Schema](../schemas/agentic-workflow-guard-report.schema.json): stable JSON schema for machine-readable scan reports.
 - [Fix Report Schema](../schemas/agentic-workflow-guard-fix-report.schema.json): stable JSON schema for structured remediation recipes, approval snippets, and next steps.
@@ -43,7 +43,7 @@ node ./bin/agentic-workflow-guard.js schema rule-pack
 node ./bin/agentic-workflow-guard.js schema benchmark-corpus
 node ./bin/agentic-workflow-guard.js schema benchmark-report
 node ./bin/agentic-workflow-guard.js release check --target 1.0.0
-npm run release:prepare -- --version 1.0.0-rc.1 --dry-run
+npm run release:prepare -- --version 1.0.1 --dry-run
 npm run docs:build
 npm run smoke:package
 npm run release:sync:check

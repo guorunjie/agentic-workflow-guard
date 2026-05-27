@@ -19,7 +19,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
 - docs-build: `npm run docs:build`
 - smoke-package: `npm run smoke:package`
-- release-prepare: `npm run release:prepare -- --version 1.0.0-rc.1 --dry-run`
+- release-prepare: `npm run release:prepare -- --version 1.0.1 --dry-run`
 - release-sync-check: `npm run release:sync:check`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
 - schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
@@ -63,7 +63,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 - Use docs/demos.md when explaining the fastest GitHub Actions, n8n, MCP, browser automation, and benchmark demos
 - Use npm run docs:build to verify the GitHub Pages artifact and stable schema URL aliases
 - Use npm run smoke:package before releases to install the packed tarball and run the CLI through npx
-- Use npm run release:prepare -- --version 1.0.0-rc.1 --dry-run before releases to preview package version and release-tag changes
+- Use npm run release:prepare -- --version 1.0.1 --dry-run before releases to preview package version and release-tag changes
 - Use npm run release:sync:check before releases to verify generated rule-pack, benchmark corpus, and MCP resource JSON files
 - Use agentic-workflow-guard agents install <target> to install agent context files into another project
 - Use agentic-workflow-guard agents to confirm Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md support files

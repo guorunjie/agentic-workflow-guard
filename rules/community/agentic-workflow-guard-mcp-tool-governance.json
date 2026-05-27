@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-mcp-tool-governance",
-  "version": "0.20.0",
+  "version": "1.0.0",
   "description": "Focused MCP tool governance rule pack for broad filesystem, shell, browser, repository, container, and cloud tool exposure.",
   "publisher": "guorunjie",
   "license": "MIT",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "compatibility": {
-    "cli": ">=0.20.0 <1.0.0",
+    "cli": ">=1.0.0 <2.0.0",
     "schema": "agentic-workflow-guard-rule-pack@1",
     "ruleIds": "AWI006"
   },
@@ -21,7 +21,7 @@
   "provenance": {
     "source": "community",
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
-    "releaseTag": "v0.20.0"
+    "releaseTag": "v1.0.0"
   },
-  "checksum": "sha256:f4aa0719fe0ea56c2a93cf1d830b6574273f609704663cf92234f67f9763d84d"
+  "checksum": "sha256:5fddf037dead3e6cef351756c052c43968da90da2e08d527179990931cdef4b0"
 }

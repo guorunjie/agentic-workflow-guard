@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the v0.20 marketplace and install readiness release", async () => {
+test("package metadata reflects the v1.0 release-ready package", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.20.0");
+  assert.equal(pkg.version, "1.0.0");
   assert.match(pkg.description, /Semgrep-style scanner/i);
   assert.match(pkg.description, /marketplace action smoke tests/i);
   assert.match(pkg.description, /portable skills/i);
@@ -87,7 +87,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /Demo Playbook/);
   assert.match(readme, /v1-readiness\.md/);
   assert.match(readme, /release check \[path\] --target 1\.0\.0/);
-  assert.match(readme, /npm run release:prepare -- --version 1\.0\.0-rc\.1 --dry-run/);
+  assert.match(readme, /npm run release:prepare -- --version 1\.0\.1 --dry-run/);
   assert.match(readme, /npm run release:sync:check/);
   assert.match(readme, /npm run release:check/);
   assert.match(readme, /npm run smoke:package/);
@@ -132,7 +132,7 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /fix-output: awg-action-fix\.json/);
   assert.match(workflow, /awg-action-fix\.json/);
   assert.match(workflow, /npm run release:sync:check/);
-  assert.match(workflow, /npm run release:prepare -- --version 1\.0\.0-rc\.1 --dry-run/);
+  assert.match(workflow, /npm run release:prepare -- --version 1\.0\.1 --dry-run/);
   assert.match(workflow, /npm run release:check -- --format json/);
   assert.match(workflow, /npm run smoke:package/);
   assert.match(workflow, /npm pack --dry-run/);

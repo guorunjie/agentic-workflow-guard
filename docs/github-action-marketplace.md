@@ -20,7 +20,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.20.0
+      - uses: guorunjie/agentic-workflow-guard@v1.0.0
         with:
           path: .
           format: sarif
@@ -42,7 +42,7 @@ jobs:
 ## Marketplace Checklist
 
 - Keep `action.yml` description concrete and searchable.
-- Use a release tag such as `v0.20.0` in docs and examples.
+- Use a release tag such as `v1.0.0` in docs and examples.
 - Use `npm run release:prepare -- --version <version> --dry-run` before tagging to preview Action tag updates.
 - Keep SARIF output as the default Action output path.
 - Keep optional `fix-output` artifacts available for PR bots, review comments, and follow-up agent loops.

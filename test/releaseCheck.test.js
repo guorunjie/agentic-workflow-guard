@@ -32,8 +32,8 @@ test("CLI release check emits JSON and target-version warnings for future releas
   assert.equal(parsed.summary.fail, 0);
   assert.ok(parsed.gates.some((gate) => gate.id === "npm-publication" && gate.status === "warn"));
 
-  const target = await execFileAsync("node", [bin, "release", "check", "--target", "1.0.0"]);
-  assert.match(target.stdout, /Target version: 1\.0\.0/);
+  const target = await execFileAsync("node", [bin, "release", "check", "--target", "1.1.0"]);
+  assert.match(target.stdout, /Target version: 1\.1\.0/);
   assert.match(target.stdout, /WARN: Target release version/);
-  assert.match(target.stdout, /README target tag guorunjie\/agentic-workflow-guard@v1\.0\.0: missing/);
+  assert.match(target.stdout, /README target tag guorunjie\/agentic-workflow-guard@v1\.1\.0: missing/);
 });

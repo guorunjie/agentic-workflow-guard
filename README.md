@@ -218,7 +218,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
 | `agents install <target> [path]` | Installs Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, AGENTS.md, or MCP resource files into a project. |
 | `release check [path] --target 1.0.0` | Runs the v1 release gates for schemas, rule IDs, platform fixtures, agent files, Action metadata, docs, and npm readiness. |
-| `npm run release:prepare -- --version 1.0.0-rc.1 --dry-run` | Previews the package version bump and release-tag doc updates before a release candidate. |
+| `npm run release:prepare -- --version 1.0.1 --dry-run` | Previews the package version bump and release-tag doc updates before the next release. |
 | `npm run release:sync:check` | Verifies generated rule-pack, benchmark corpus, and MCP resource JSON files are in sync with runtime metadata. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
 
@@ -302,7 +302,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.20.0
+      - uses: guorunjie/agentic-workflow-guard@v1.0.0
         with:
           path: .
           format: sarif
@@ -321,7 +321,7 @@ jobs:
           path: awg-fix.json
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.20.0`. The optional `fix-output` input writes a structured remediation artifact for PR bots, review comments, or follow-up agent loops.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v1.0.0`. The optional `fix-output` input writes a structured remediation artifact for PR bots, review comments, or follow-up agent loops.
 
 ## Examples
 
@@ -377,8 +377,8 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
 | v0.19 | Benchmark schemas and scoring | `benchmark --format json`, pass-rate scoring, corpus/report schemas, Pages and MCP schema distribution |
 | v0.20 | Marketplace and install readiness | Action self-smoke workflow, Marketplace metadata polish, package smoke script, demo playbook |
-| v0.21 | Buildkite, Bitbucket Pipelines, and CI rule-pack expansion | Buildkite and Bitbucket scanners, dry-run fixes, safe/vulnerable fixtures, benchmark corpus, and `ci-pipeline-hardening` rule pack |
-| v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
+| v1.0 prep | Buildkite, Bitbucket Pipelines, and CI rule-pack expansion | Buildkite and Bitbucket scanners, dry-run fixes, safe/vulnerable fixtures, benchmark corpus, and `ci-pipeline-hardening` rule pack |
+| v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, release-tagged GitHub Action, npm package, and GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage, [docs/v1-readiness.md](docs/v1-readiness.md) for the remaining 1.0 release gates, and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
 
@@ -392,7 +392,7 @@ node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 npm run docs:build
 npm run smoke:package
-npm run release:prepare -- --version 1.0.0-rc.1 --dry-run
+npm run release:prepare -- --version 1.0.1 --dry-run
 npm run release:sync:check
 npm run release:check
 npm pack --dry-run

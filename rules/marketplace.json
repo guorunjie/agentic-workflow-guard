@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-core-rules",
-  "version": "0.20.0",
+  "version": "1.0.0",
   "description": "Core static-analysis rules for AI automation workflow security.",
   "publisher": "guorunjie",
   "license": "MIT",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "compatibility": {
-    "cli": ">=0.20.0 <1.0.0",
+    "cli": ">=1.0.0 <2.0.0",
     "schema": "agentic-workflow-guard-rule-pack@1",
     "ruleIds": "AWI001-AWI010"
   },
@@ -50,7 +50,7 @@
   "provenance": {
     "source": "bundled",
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
-    "releaseTag": "v0.20.0"
+    "releaseTag": "v1.0.0"
   },
-  "checksum": "sha256:0b894008263d999e6ef29280ccbc5438133d8039f0e5f45b95a121b29d4b8b54"
+  "checksum": "sha256:7597e80d75acb78e495be30e192d5bd2450a7044446c436eb9f55701cc03c13e"
 }
