@@ -4,7 +4,7 @@
   "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, marketplace action smoke tests, benchmark schemas, safe fixes, and portable skills.",
   "type": "module",
   "bin": {
-    "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"
+    "agentic-workflow-guard": "bin/agentic-workflow-guard.js"
   },
   "scripts": {
     "test": "node --test",

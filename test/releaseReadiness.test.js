@@ -9,6 +9,7 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.match(pkg.description, /Semgrep-style scanner/i);
   assert.match(pkg.description, /marketplace action smoke tests/i);
   assert.match(pkg.description, /portable skills/i);
+  assert.equal(pkg.bin?.["agentic-workflow-guard"], "bin/agentic-workflow-guard.js");
   assert.ok(pkg.keywords.includes("bitbucket-pipelines"));
   assert.ok(pkg.keywords.includes("gitlab-ci"));
   assert.ok(pkg.keywords.includes("circleci"));
