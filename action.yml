@@ -10,7 +10,7 @@ inputs:
     required: false
     default: .
   format:
-    description: Output format: markdown, json, or sarif.
+    description: "Output format: markdown, json, or sarif."
     required: false
     default: sarif
   output:
@@ -18,7 +18,7 @@ inputs:
     required: false
     default: awg.sarif
   profile:
-    description: Policy profile: advisory, balanced, or strict.
+    description: "Policy profile: advisory, balanced, or strict."
     required: false
     default: balanced
   baseline:

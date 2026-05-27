@@ -82,6 +82,8 @@ test("GitHub Action writes SARIF output files for Code Scanning upload", async (
   assert.match(action, /output:/);
   assert.match(action, /author: guorunjie/);
   assert.match(action, /color: blue/);
+  assert.match(action, /description: "Output format: markdown, json, or sarif\."/);
+  assert.match(action, /description: "Policy profile: advisory, balanced, or strict\."/);
   assert.match(action, /awg\.sarif/);
   assert.match(action, /profile:/);
   assert.match(action, /baseline:/);
