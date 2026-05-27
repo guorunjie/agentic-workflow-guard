@@ -2,7 +2,7 @@ import path from "node:path";
 
 import { suppressBaseline, writeBaseline } from "./baseline.js";
 import { renderBenchmark, runBenchmark } from "./benchmark.js";
-import { loadConfig } from "./config.js";
+import { loadConfig, withPolicyProfile } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
 import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
@@ -29,7 +29,7 @@ function help() {
   return `Agentic Workflow Guard
 
 Usage:
-  agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--baseline .awg-baseline.json]
+  agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch]
   agentic-workflow-guard explain <rule-id>
@@ -58,7 +58,13 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
   if (command === "scan") {
     const root = path.resolve(firstPositional(args));
     const format = argValue(args, "--format", "markdown");
-    const config = await loadConfig(root);
+    let config;
+    try {
+      config = withPolicyProfile(await loadConfig(root), argValue(args, "--profile"));
+    } catch (profileError) {
+      error.write(`${profileError.message}\n`);
+      return 1;
+    }
     const findings = await suppressBaseline(await scanProject(root, config), argValue(args, "--baseline"));
     output.write(renderFindings(findings, format));
     return hasHighFindings(findings, config) ? 1 : 0;

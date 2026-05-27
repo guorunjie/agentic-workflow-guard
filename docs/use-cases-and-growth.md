@@ -84,7 +84,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, fix previews, portable agent skill files, and an MCP-style resource pack. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, and audited suppression comments. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 
@@ -104,7 +104,7 @@ Priority directions:
    Keep Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md outputs generated and tested. Extend the MCP resource pack into marketplace-ready skill packages once those ecosystems stabilize.
 
 6. **Enterprise adoption path**
-   Add baseline workflows, org-level config examples, Code Scanning dashboards, suppression comments, policy severity profiles, and audit-friendly reports.
+   Add org-level config examples, Code Scanning dashboards, richer suppression reporting, and audit-friendly reports. Baselines, suppression comments, and policy severity profiles are now in place.
 
 The strongest star-growth path is to show one scary, easy-to-understand demo per platform: untrusted input -> AI decision -> write-capable action, then show how the scanner catches it before it runs.
 

@@ -2,10 +2,17 @@ import path from "node:path";
 
 import { exists, readJson, readText } from "./utils/files.js";
 
+export const policyProfiles = {
+  advisory: { severityThreshold: "critical" },
+  balanced: { severityThreshold: "high" },
+  strict: { severityThreshold: "medium" }
+};
+
 const defaultConfig = {
   ignore: [],
+  profile: "balanced",
   rules: {},
-  severityThreshold: "high"
+  severityThreshold: policyProfiles.balanced.severityThreshold
 };
 
 function parseScalar(value) {
@@ -55,10 +62,24 @@ function parseSimpleYaml(text) {
 }
 
 function normalizeConfig(config = {}) {
+  const profile = policyProfiles[config.profile] ? config.profile : defaultConfig.profile;
   return {
     ignore: Array.isArray(config.ignore) ? config.ignore : [],
+    profile,
     rules: config.rules && typeof config.rules === "object" && !Array.isArray(config.rules) ? config.rules : {},
-    severityThreshold: config.severityThreshold ?? defaultConfig.severityThreshold
+    severityThreshold: config.severityThreshold ?? policyProfiles[profile].severityThreshold
+  };
+}
+
+export function withPolicyProfile(config, profile) {
+  if (!profile) return config;
+  if (!policyProfiles[profile]) {
+    throw new Error(`Unknown policy profile: ${profile}`);
+  }
+  return {
+    ...config,
+    profile,
+    severityThreshold: policyProfiles[profile].severityThreshold
   };
 }
 

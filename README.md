@@ -66,6 +66,12 @@ Run against a repository:
 node ./bin/agentic-workflow-guard.js scan . --format markdown
 ```
 
+Fail CI on medium and high findings:
+
+```bash
+node ./bin/agentic-workflow-guard.js scan . --profile strict --format sarif > awg.sarif
+```
+
 Emit SARIF for GitHub Code Scanning:
 
 ```bash
@@ -147,6 +153,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `scan [path] --format markdown` | Human-readable report for local review, issues, and PRs. |
 | `scan [path] --format json` | Machine-readable findings. |
 | `scan [path] --format sarif` | GitHub Code Scanning compatible output. |
+| `scan [path] --profile advisory|balanced|strict` | Controls exit severity for rollout, default CI, or strict enforcement. |
 | `scan [path] --baseline .awg-baseline.json` | Suppresses existing findings so CI can fail only on new risks. |
 | `baseline create [path]` | Writes `.awg-baseline.json` with stable finding fingerprints. |
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
@@ -205,12 +212,22 @@ Add `.awg.yml` to tune CI behavior:
 ignore:
   - node_modules/**
   - dist/**
+profile: balanced
 severityThreshold: high
 rules:
   AWI007: off
 ```
 
-`severityThreshold` controls the CLI exit code. `rules` can disable noisy checks for a repository, while `ignore` removes generated files or fixture directories from scanning. Use `.awg-baseline.json` when adopting the scanner in an existing repository and you want CI to fail only on newly introduced findings.
+`profile` controls rollout mode: `advisory` reports without blocking normal findings, `balanced` fails on high severity findings, and `strict` fails on medium and high findings. `severityThreshold` can override the profile default. `rules` can disable noisy checks for a repository, while `ignore` removes generated files or fixture directories from scanning. Use `.awg-baseline.json` when adopting the scanner in an existing repository and you want CI to fail only on newly introduced findings.
+
+For reviewed exceptions, use inline suppressions with a reason:
+
+```yaml
+# awg-ignore AWI001: issue body is copied from an internal release form
+prompt: "Summarize ${{ github.event.issue.body }}"
+```
+
+Suppression comments without a reason are ignored. See [Policy Profiles and Suppressions](docs/policy-profiles-and-suppressions.md) for rollout guidance.
 
 ## GitHub Action
 
@@ -229,7 +246,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.5.0
+      - uses: guorunjie/agentic-workflow-guard@v0.6.0
         with:
           path: .
           format: sarif
@@ -239,7 +256,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.5.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.6.0`.
 
 ## Examples
 

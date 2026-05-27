@@ -1,6 +1,7 @@
 ignore:
   - node_modules/**
   - dist/**
+profile: balanced
 severityThreshold: high
 rules:
   AWI001: on
@@ -12,3 +13,4 @@ rules:
   AWI007: on
   AWI008: on
   AWI009: on
+  AWI010: on

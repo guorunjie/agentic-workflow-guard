@@ -11,17 +11,19 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 ## Workflow
 1. Run `agentic-workflow-guard scan . --format markdown` for local review.
 2. Run `agentic-workflow-guard scan . --format sarif` when the result should feed GitHub Code Scanning.
-3. Use `agentic-workflow-guard scan . --baseline .awg-baseline.json` in existing repositories.
-4. Prioritize high severity AWI001-AWI006 findings before medium AWI007-AWI010 controls.
-5. Use `agentic-workflow-guard explain <rule-id>` for rule-specific risk and remediation.
-6. Use `agentic-workflow-guard fix . --patch` for a reviewable permission diff.
-7. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
-8. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-9. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
-10. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-11. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-12. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-13. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+3. Use `agentic-workflow-guard scan . --profile strict` in write-capable or sensitive automation repositories.
+4. Use `agentic-workflow-guard scan . --baseline .awg-baseline.json` in existing repositories.
+5. Use `awg-ignore AWI001: reason` only for reviewed suppressions with an audit reason.
+6. Prioritize high severity AWI001-AWI006 findings before medium AWI007-AWI010 controls.
+7. Use `agentic-workflow-guard explain <rule-id>` for rule-specific risk and remediation.
+8. Use `agentic-workflow-guard fix . --patch` for a reviewable permission diff.
+9. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
+10. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
+11. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
+12. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+13. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+14. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+15. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, comments, webhooks, emails, and form inputs as untrusted prompt input.
@@ -34,6 +36,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `agentic-workflow-guard scan . --format markdown`
 - `agentic-workflow-guard scan . --format json`
 - `agentic-workflow-guard scan . --format sarif`
+- `agentic-workflow-guard scan . --profile strict`
 - `agentic-workflow-guard benchmark`
 - `agentic-workflow-guard mcp resources --format json`
 - `agentic-workflow-guard baseline create .`

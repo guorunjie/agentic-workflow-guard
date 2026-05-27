@@ -72,6 +72,8 @@ North star:
 - Add smoke tests that verify every generated agent instruction file mentions the current rule catalog and CLI commands.
 - Add docs for using the scanner inside agent review loops, PR bots, and local coding-agent sessions.
 - Add versioned skill package metadata for future marketplace distribution. MCP resource manifest shipped in v0.5.
+- Add policy profiles for advisory, balanced, and strict CI rollout. Shipped in v0.6.
+- Add audited inline suppressions with required reasons. Shipped in v0.6.
 
 ## v1.0: Stable Automation Safety Layer
 

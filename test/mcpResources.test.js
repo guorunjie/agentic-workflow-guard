@@ -16,6 +16,7 @@ test("MCP resource pack uses resource descriptors with stable custom URIs", () =
   assert.equal(mcpResourcePack.protocolRevision, "2025-06-18");
   assert.ok(uris.includes("awg://rules/core"));
   assert.ok(uris.includes("awg://benchmarks/fixtures"));
+  assert.ok(uris.includes("awg://policies/profiles"));
   assert.ok(uris.includes("awg://playbooks/github-actions"));
   assert.ok(mcpResourcePack.resources.every((resource) => resource.uri.startsWith("awg://")));
   assert.ok(mcpResourcePack.resources.every((resource) => resource.name && resource.mimeType && resource.path));
