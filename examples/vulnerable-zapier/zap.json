@@ -1,0 +1,23 @@
+{
+  "zap_id": "ai-ticket-router",
+  "trigger": {
+    "app": "Webhooks by Zapier",
+    "event": "Catch Hook",
+    "name": "Customer request"
+  },
+  "actions": [
+    {
+      "id": "summarize",
+      "app": "OpenAI",
+      "event": "Conversation",
+      "name": "Summarize inbound ticket"
+    },
+    {
+      "id": "update_crm",
+      "app": "Salesforce",
+      "event": "Update Record",
+      "name": "Update CRM",
+      "credential": "salesforce-write"
+    }
+  ]
+}

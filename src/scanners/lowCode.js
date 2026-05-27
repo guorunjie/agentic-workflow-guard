@@ -75,6 +75,25 @@ function pipedreamEvidence(json) {
   return "Pipedream workflow chains AI output into side-effect actions";
 }
 
+function zapierSteps(json) {
+  if (Array.isArray(json.actions)) return json.actions.map((step, index) => [valueLabel(step, `action-${index + 1}`), step]);
+  if (Array.isArray(json.steps)) return json.steps.map((step, index) => [valueLabel(step, `step-${index + 1}`), step]);
+  if (json.steps && typeof json.steps === "object") return Object.entries(json.steps);
+  return [];
+}
+
+function zapierEvidence(json) {
+  const steps = zapierSteps(json);
+  const aiStep = steps.find(([, step]) => includesAny(step, /openai|anthropic|chatgpt|ai|agent|llm/));
+  const sideEffectStep = steps.find(([, step]) =>
+    includesAny(step, /webhook|http|code by zapier|code|slack|gmail|email|google sheets|salesforce|hubspot|github|jira|notion|airtable|database|stripe|shopify|credential/)
+  );
+  if (aiStep && sideEffectStep) {
+    return `Zapier Zap chains AI action ${aiStep[0]} (${moduleLabel(aiStep[1])}) into side-effect action ${sideEffectStep[0]} (${moduleLabel(sideEffectStep[1])})`;
+  }
+  return "Zapier Zap chains AI steps into side-effect actions";
+}
+
 function platformEvidence(file, json, text) {
   if (/activepieces/i.test(file) || /activepieces|@activepieces|pieceName|actionName/i.test(text)) {
     return activepiecesEvidence(json);
@@ -88,8 +107,8 @@ function platformEvidence(file, json, text) {
   if (/pipedream/i.test(file) || (json.steps && typeof json.steps === "object" && /slack|github|http|notion|database/i.test(text))) {
     return pipedreamEvidence(json);
   }
-  if (/zapier|zap/i.test(text)) {
-    return "Zapier workflow chains AI steps into side-effect actions";
+  if (/zapier|zap_id|zap[-_ ]?step/i.test(file) || /zapier|zap_id|zap[-_ ]?step/i.test(text)) {
+    return zapierEvidence(json);
   }
   return "AI step appears in the same low-code workflow as side-effect actions";
 }
@@ -131,7 +150,7 @@ export async function scanLowCodeWorkflows(root) {
     }
     if (!isLowCodeAutomation(json)) continue;
     const text = flatten(json);
-    if (/(openai|anthropic|ai|agent|llm)/.test(text) && /(http|webhook|code|script|gmail|slack|github|notion|database|credential)/.test(text)) {
+    if (/(openai|anthropic|ai|agent|llm)/.test(text) && /(http|webhook|code|script|gmail|email|slack|github|notion|database|credential|salesforce|hubspot|google sheets|airtable|jira|stripe|shopify)/.test(text)) {
       findings.push(makeFinding("AWI009", file, platformEvidence(file, json, text)));
     }
   }

@@ -59,6 +59,24 @@ test("detects Pipedream workflows that chain AI output into actions", async () =
   assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Pipedream.*generate.*send/i.test(finding.evidence)));
 });
 
+test("detects Zapier Zaps that chain AI output into app actions", async () => {
+  const root = await writeFixture(
+    "zapier-zap.json",
+    JSON.stringify({
+      zap_id: "ai-ticket-router",
+      trigger: { app: "Webhooks by Zapier", event: "Catch Hook", name: "Customer request" },
+      actions: [
+        { id: "summarize", app: "OpenAI", event: "Conversation", name: "Summarize inbound ticket" },
+        { id: "update_crm", app: "Salesforce", event: "Update Record", name: "Update CRM", credential: "salesforce-write" }
+      ]
+    })
+  );
+
+  const findings = await scanProject(root);
+
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Zapier Zap.*Summarize inbound ticket.*Update CRM/i.test(finding.evidence)));
+});
+
 test("detects Activepieces flows that chain AI output into side effects", async () => {
   const root = await writeFixture(
     "activepieces-flow.json",

@@ -46,6 +46,7 @@ Activepieces, Zapier, Make, Pipedream, Node-RED, and similar platforms are conve
 Agentic Workflow Guard detects:
 
 - AI or LLM steps in the same flow as HTTP, code, GitHub, Slack, Notion, database, or credential-bearing actions.
+- Zapier Zaps that route AI actions into app updates such as CRM, issue tracker, messaging, or webhook writes.
 - Node-RED, Make, and Pipedream exports that combine AI modules with side-effect steps.
 - Airflow DAGs that combine LLM calls with Bash, HTTP, Docker, Kubernetes, or Python side-effect operators.
 - Browser automation traces where AI decisions reach clicks, forms, submissions, uploads, approvals, or payment-like actions.

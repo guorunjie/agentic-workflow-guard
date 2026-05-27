@@ -2,11 +2,14 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.11 docs site and marketplace release", async () => {
+test("package metadata reflects the expanded v0.12 Zapier benchmark and marketplace release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.11.0");
+  assert.equal(pkg.version, "0.12.0");
   assert.match(pkg.description, /portable skill pack/i);
+  assert.ok(pkg.keywords.includes("zapier"));
+  assert.ok(pkg.keywords.includes("make"));
+  assert.ok(pkg.keywords.includes("pipedream"));
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
   assert.ok(pkg.keywords.includes("browser-use"));
@@ -79,12 +82,14 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-node-red/flows.json",
     "examples/vulnerable-make/scenario.blueprint.json",
     "examples/vulnerable-pipedream/workflow.json",
+    "examples/vulnerable-zapier/zap.json",
     "examples/vulnerable-airflow/agent_dag.py",
     "examples/vulnerable-browser-trace/browser-trace.json",
     "benchmarks/fixtures.json",
     "examples/safe-node-red/flows.json",
     "examples/safe-make/scenario.blueprint.json",
     "examples/safe-pipedream/workflow.json",
+    "examples/safe-zapier/zap.json",
     "examples/safe-airflow/agent_dag.py",
     "examples/safe-browser-trace/browser-trace.json",
     "examples/unsafe-ai-pr-bot/.github/workflows/pr-bot.yml",

@@ -51,7 +51,7 @@ export const rules = {
     severity: "medium",
     title: "Workflow automation chains AI into side effects",
     risk: "Automation platforms such as Activepieces, Zapier, Make, Pipedream, Node-RED, or Airflow can route model output into API calls, shell commands, deployment operators, or code nodes.",
-    remediation: "Validate model output before side effects and require approvals for credential-bearing actions in low-code flows, Node-RED flows, Pipedream workflows, Make scenarios, and Airflow DAGs."
+    remediation: "Validate model output before side effects and require approvals for credential-bearing actions in low-code flows, Zapier Zaps, Node-RED flows, Pipedream workflows, Make scenarios, and Airflow DAGs."
   },
   AWI010: {
     severity: "medium",

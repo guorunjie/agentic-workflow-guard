@@ -15,7 +15,7 @@ npx agentic-workflow-guard skillpack > skillpack.yaml
 
 The exported `skillpack.yaml` can be compiled by [Skillpack Forge](https://github.com/guorunjie/skillpack-forge) into `AGENTS.md`, Claude Skills, Codex Skills, Cursor rules, Copilot instructions, and portable skill bundles for Gemini, OpenClaw, and Hermes.
 
-Public docs and stable schema URLs are prepared for GitHub Pages at `https://guorunjie.github.io/agentic-workflow-guard/`.
+Public docs and stable schema URLs are available on GitHub Pages at `https://guorunjie.github.io/agentic-workflow-guard/`.
 
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
@@ -264,7 +264,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.11.0
+      - uses: guorunjie/agentic-workflow-guard@v0.12.0
         with:
           path: .
           format: sarif
@@ -276,7 +276,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.11.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.12.0`.
 
 ## Examples
 
@@ -289,6 +289,7 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-mcp --format markd
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-node-red --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-make --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-pipedream --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-zapier --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-airflow --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/safe-browser-trace --format markdown
@@ -311,6 +312,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.9 | Structured remediation plans | `fix --format json`, recipe confidence, automatic/manual modes, fix report schema |
 | v0.10 | Trusted marketplace metadata | Rule pack schema, compatibility metadata, provenance, install lock file |
 | v0.11 | Public docs and schema URLs | GitHub Pages artifact, Marketplace page, schema aliases, `docs:build` |
+| v0.12 | Zapier benchmark coverage | Zapier-specific evidence, vulnerable/safe Zap fixtures, benchmark matrix |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

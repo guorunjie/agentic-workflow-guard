@@ -4,7 +4,7 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 
 | Fixture | Platform | Expected rule |
 | --- | --- | --- |
-| `examples/vulnerable-github-action` | GitHub Actions | `AWI001`, `AWI002`, `AWI003`, `AWI004`, `AWI008` |
+| `examples/vulnerable-github-action` | GitHub Actions | `AWI001`, `AWI002`, `AWI003`, `AWI008` |
 | `examples/vulnerable-n8n` | n8n | `AWI005` |
 | `examples/safe-n8n` | n8n | none |
 | `examples/vulnerable-mcp` | MCP | `AWI006` |
@@ -17,6 +17,8 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/safe-make` | Make | none |
 | `examples/vulnerable-pipedream` | Pipedream | `AWI009` |
 | `examples/safe-pipedream` | Pipedream | none |
+| `examples/vulnerable-zapier` | Zapier | `AWI009` |
+| `examples/safe-zapier` | Zapier | none |
 | `examples/vulnerable-airflow` | Airflow | `AWI009` |
 | `examples/safe-airflow` | Airflow | none |
 | `examples/vulnerable-browser-trace` | browser-use / browser traces | `AWI010` |

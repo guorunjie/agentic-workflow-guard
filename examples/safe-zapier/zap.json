@@ -1,0 +1,22 @@
+{
+  "zap_id": "ai-ticket-preview",
+  "trigger": {
+    "app": "Schedule by Zapier",
+    "event": "Every Day",
+    "name": "Daily review"
+  },
+  "actions": [
+    {
+      "id": "summarize",
+      "app": "OpenAI",
+      "event": "Conversation",
+      "name": "Summarize queued tickets"
+    },
+    {
+      "id": "preview",
+      "app": "Formatter by Zapier",
+      "event": "Text",
+      "name": "Create human review preview"
+    }
+  ]
+}

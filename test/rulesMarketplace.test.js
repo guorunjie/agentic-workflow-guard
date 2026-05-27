@@ -24,6 +24,13 @@ test("rules search finds expanded workflow platforms", async () => {
   assert.match(stdout, /Airflow/i);
 });
 
+test("rules search finds Zapier low-code coverage", async () => {
+  const { stdout } = await execFileAsync("node", [bin, "rules", "search", "zapier"]);
+
+  assert.match(stdout, /AWI009/);
+  assert.match(stdout, /Zapier/i);
+});
+
 test("rules install writes core rule pack metadata", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "awg-rules-"));
 

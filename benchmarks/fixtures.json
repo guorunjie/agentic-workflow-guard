@@ -72,6 +72,16 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-zapier",
+      "path": "examples/vulnerable-zapier",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-zapier",
+      "path": "examples/safe-zapier",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-airflow",
       "path": "examples/vulnerable-airflow",
       "expectedRules": ["AWI009"]

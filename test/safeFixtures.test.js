@@ -7,6 +7,7 @@ const safeFixtures = [
   "examples/safe-node-red",
   "examples/safe-make",
   "examples/safe-pipedream",
+  "examples/safe-zapier",
   "examples/safe-airflow",
   "examples/safe-browser-trace"
 ];

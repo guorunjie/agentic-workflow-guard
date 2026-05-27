@@ -110,6 +110,12 @@ North star:
 - Add a Marketplace-ready Action landing page and generated schema index.
 - Add `docs:build` so release checks can validate the Pages artifact locally.
 
+## v0.12: Zapier Benchmark Coverage
+
+- Add Zapier-specific evidence for AI action -> app side-effect paths.
+- Add vulnerable and safe Zapier fixtures to the benchmark matrix.
+- Keep low-code marketplace coverage aligned across Activepieces, Zapier, Make, Pipedream, Node-RED, and Airflow.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
