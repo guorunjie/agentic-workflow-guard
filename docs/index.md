@@ -42,6 +42,7 @@ node ./bin/agentic-workflow-guard.js schema fix
 node ./bin/agentic-workflow-guard.js schema rule-pack
 node ./bin/agentic-workflow-guard.js schema benchmark-corpus
 node ./bin/agentic-workflow-guard.js schema benchmark-report
+node ./bin/agentic-workflow-guard.js release check --target 1.0.0
 npm run docs:build
 npm run smoke:package
 npm pack --dry-run

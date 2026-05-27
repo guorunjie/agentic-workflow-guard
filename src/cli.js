@@ -12,6 +12,7 @@ import { renderMcpResources } from "./mcpResources.js";
 import { renderJson, summarize } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
+import { buildReleaseCheck, renderReleaseCheck } from "./releaseCheck.js";
 import { renderBenchmarkCorpusSchema, renderBenchmarkReportSchema, renderFixReportSchema, renderReportSchema, renderRulePackSchema } from "./schema.js";
 import { installRulePack, renderRulePacks, renderRuleRegistry, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
@@ -24,7 +25,7 @@ function argValue(args, name, fallback) {
 }
 
 function firstPositional(args, fallback = ".") {
-  const optionsWithValues = new Set(["--baseline", "--format", "--output", "--profile"]);
+  const optionsWithValues = new Set(["--baseline", "--format", "--output", "--profile", "--target"]);
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
     if (optionsWithValues.has(arg)) {
@@ -50,6 +51,7 @@ Usage:
   agentic-workflow-guard benchmark [path]|corpus [path] [--format markdown|json]
   agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard agents install <target|all> [path]
+  agentic-workflow-guard release check [path] [--target 1.0.0] [--require-npm-auth] [--format markdown|json]
   agentic-workflow-guard skillpack
 `;
 }
@@ -225,6 +227,23 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
     const format = argValue(args, "--format", "markdown");
     output.write(format === "json" ? renderAgentSupportJson() : renderAgentSupportMarkdown());
     return 0;
+  }
+
+  if (command === "release") {
+    const subcommand = args[0] ?? "check";
+    if (subcommand !== "check") {
+      error.write(`Unknown release command: ${subcommand}\n`);
+      return 1;
+    }
+    const releaseArgs = args.slice(1);
+    const root = path.resolve(firstPositional(releaseArgs));
+    const format = argValue(releaseArgs, "--format", "markdown");
+    const report = await buildReleaseCheck(root, {
+      targetVersion: argValue(releaseArgs, "--target"),
+      requireNpmAuth: releaseArgs.includes("--require-npm-auth")
+    });
+    output.write(renderReleaseCheck(report, format));
+    return report.summary.fail ? 1 : 0;
   }
 
   if (command === "skillpack") {

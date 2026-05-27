@@ -176,7 +176,7 @@ North star:
 ## v0.21: v1.0 Release Candidate Hardening
 
 - Resolve npm authentication and prove `npm publish --dry-run`.
-- Add a v1.0 release gate checklist for schema stability, rule-ID stability, Marketplace proof, npm publication, public docs, platform fixtures, and agent compatibility.
+- Add a `release check` gate for schema stability, rule-ID stability, Marketplace proof, npm publication, public docs, platform fixtures, and agent compatibility.
 - Cut `v1.0.0-rc.1` only after local package smoke, docs build, Skillpack Forge doctor, remote `test`, remote `pages`, and `action-smoke` are green.
 - Use the release candidate to verify the release-tagged GitHub Action and public install path before the final v1.0 tag.
 

@@ -27,6 +27,7 @@ try {
   await run("npx", ["agentic-workflow-guard", "schema", "benchmark-report"], { cwd: workspace });
   await run("npx", ["agentic-workflow-guard", "scan", "node_modules/agentic-workflow-guard/examples/safe-github-action", "--format", "json"], { cwd: workspace });
   await run("npx", ["agentic-workflow-guard", "benchmark", "node_modules/agentic-workflow-guard", "--format", "json"], { cwd: workspace });
+  await run("npx", ["agentic-workflow-guard", "release", "check", "node_modules/agentic-workflow-guard", "--format", "json"], { cwd: workspace });
 
   console.log(`Package smoke passed in ${workspace}`);
 } finally {

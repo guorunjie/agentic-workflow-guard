@@ -21,6 +21,7 @@
     "schema:benchmark-report": "node ./bin/agentic-workflow-guard.js schema benchmark-report",
     "docs:build": "node ./scripts/build-pages.js",
     "smoke:package": "node ./scripts/smoke-package.js",
+    "release:check": "node ./bin/agentic-workflow-guard.js release check",
     "agents": "node ./bin/agentic-workflow-guard.js agents",
     "marketplace": "node ./bin/agentic-workflow-guard.js rules --format markdown"
   },
@@ -78,6 +79,7 @@
     ".claude",
     ".codex",
     ".cursor",
+    ".github/copilot-instructions.md",
     ".gemini",
     ".openclaw",
     ".hermes",

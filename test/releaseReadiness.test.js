@@ -31,11 +31,13 @@ test("package metadata reflects the v0.20 marketplace and install readiness rele
   assert.equal(pkg.scripts["schema:benchmark-report"], "node ./bin/agentic-workflow-guard.js schema benchmark-report");
   assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
   assert.equal(pkg.scripts["smoke:package"], "node ./scripts/smoke-package.js");
+  assert.equal(pkg.scripts["release:check"], "node ./bin/agentic-workflow-guard.js release check");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
   assert.ok(pkg.files.includes("schemas"));
   assert.ok(pkg.files.includes("docs-site"));
   assert.ok(pkg.files.includes("scripts"));
+  assert.ok(pkg.files.includes(".github/copilot-instructions.md"));
 });
 
 test("README documents marketplace SARIF upload, output files, schemas, structured fixes, rule packs, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
@@ -69,6 +71,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /benchmarks\/corpus\.json/);
   assert.match(readme, /Demo Playbook/);
   assert.match(readme, /v1-readiness\.md/);
+  assert.match(readme, /release check \[path\] --target 1\.0\.0/);
+  assert.match(readme, /npm run release:check/);
   assert.match(readme, /npm run smoke:package/);
   assert.match(readme, /mcp resources/);
   assert.match(readme, /--profile strict/);
