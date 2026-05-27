@@ -32,6 +32,26 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-azure-pipelines",
+      "path": "examples/vulnerable-azure-pipelines",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-azure-pipelines",
+      "path": "examples/safe-azure-pipelines",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-jenkins",
+      "path": "examples/vulnerable-jenkins",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-jenkins",
+      "path": "examples/safe-jenkins",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-n8n",
       "path": "examples/vulnerable-n8n",
       "expectedRules": ["AWI005"]

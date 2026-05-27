@@ -31,6 +31,16 @@ test("rules search finds CI platform coverage", async () => {
   assert.match(stdout, /GitLab|CI/i);
 });
 
+test("rules search finds Azure Pipelines and Jenkins coverage", async () => {
+  const azure = await execFileAsync("node", [bin, "rules", "search", "azure"]);
+  const jenkins = await execFileAsync("node", [bin, "rules", "search", "jenkins"]);
+
+  assert.match(azure.stdout, /AWI001/);
+  assert.match(azure.stdout, /Azure Pipelines/i);
+  assert.match(jenkins.stdout, /AWI001/);
+  assert.match(jenkins.stdout, /Jenkins/i);
+});
+
 test("rules search finds Zapier low-code coverage", async () => {
   const { stdout } = await execFileAsync("node", [bin, "rules", "search", "zapier"]);
 

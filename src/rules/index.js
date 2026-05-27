@@ -1,8 +1,8 @@
 export const rules = {
   AWI001: {
     severity: "high",
-    title: "Untrusted GitHub, GitLab, or CircleCI context reaches an agent prompt",
-    risk: "Issue, pull request, GitLab merge request, CircleCI branch, discussion, comment, or commit text can contain prompt-injection instructions that influence an agent.",
+    title: "Untrusted CI or workflow context reaches an agent prompt",
+    risk: "Issue, pull request, merge request, branch, discussion, comment, or commit text from GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, or Jenkins can contain prompt-injection instructions that influence an agent.",
     remediation: "Gate untrusted content, check author association, summarize in read-only mode, or require human approval before tool execution."
   },
   AWI002: {

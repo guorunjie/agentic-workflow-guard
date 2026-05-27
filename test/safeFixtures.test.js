@@ -6,6 +6,8 @@ import { scanProject } from "../src/scan.js";
 const safeFixtures = [
   "examples/safe-gitlab-ci",
   "examples/safe-circleci",
+  "examples/safe-azure-pipelines",
+  "examples/safe-jenkins",
   "examples/safe-node-red",
   "examples/safe-make",
   "examples/safe-pipedream",

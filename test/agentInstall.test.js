@@ -47,5 +47,6 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(rulePackSchema, /Agentic Workflow Guard Rule Pack/);
   assert.match(rules, /agentic-workflow-guard-core-rules/);
   assert.match(playbook, /GitHub Actions/);
-  assert.match(ciPlaybook, /GitLab CI and CircleCI/);
+  assert.match(ciPlaybook, /Azure Pipelines/);
+  assert.match(ciPlaybook, /Jenkins/);
 });

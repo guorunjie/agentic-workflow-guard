@@ -2,13 +2,15 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.13 CI platform benchmark and marketplace release", async () => {
+test("package metadata reflects the expanded v0.14 CI platform benchmark and marketplace release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.13.0");
+  assert.equal(pkg.version, "0.14.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("gitlab-ci"));
   assert.ok(pkg.keywords.includes("circleci"));
+  assert.ok(pkg.keywords.includes("azure-pipelines"));
+  assert.ok(pkg.keywords.includes("jenkins"));
   assert.ok(pkg.keywords.includes("zapier"));
   assert.ok(pkg.keywords.includes("make"));
   assert.ok(pkg.keywords.includes("pipedream"));
@@ -34,6 +36,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
   assert.match(readme, /GitLab CI/);
   assert.match(readme, /CircleCI/);
+  assert.match(readme, /Azure Pipelines/);
+  assert.match(readme, /Jenkins/);
   assert.match(readme, /--output awg\.sarif/);
   assert.match(readme, /schema report/);
   assert.match(readme, /schema fix/);
@@ -86,6 +90,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-node-red/flows.json",
     "examples/vulnerable-gitlab-ci/.gitlab-ci.yml",
     "examples/vulnerable-circleci/.circleci/config.yml",
+    "examples/vulnerable-azure-pipelines/azure-pipelines.yml",
+    "examples/vulnerable-jenkins/Jenkinsfile",
     "examples/vulnerable-make/scenario.blueprint.json",
     "examples/vulnerable-pipedream/workflow.json",
     "examples/vulnerable-zapier/zap.json",
@@ -95,6 +101,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/safe-node-red/flows.json",
     "examples/safe-gitlab-ci/.gitlab-ci.yml",
     "examples/safe-circleci/.circleci/config.yml",
+    "examples/safe-azure-pipelines/azure-pipelines.yml",
+    "examples/safe-jenkins/Jenkinsfile",
     "examples/safe-make/scenario.blueprint.json",
     "examples/safe-pipedream/workflow.json",
     "examples/safe-zapier/zap.json",

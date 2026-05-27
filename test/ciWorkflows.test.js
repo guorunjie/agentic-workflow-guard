@@ -103,3 +103,106 @@ jobs:
 
   assert.deepEqual(findings, []);
 });
+
+test("detects Azure Pipelines agent jobs with pull request context and service connections", async () => {
+  const root = await writeCiFixture(
+    "azure-pipelines.yml",
+    `
+trigger:
+  - main
+jobs:
+  - job: ai_release
+    variables:
+      - group: production-secrets
+    steps:
+      - script: |
+          PROMPT="Review $(System.PullRequest.SourceBranch) and decide release commands"
+          AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$(System.AccessToken)")"
+          bash -lc "$AGENT_OUTPUT"
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: production-service-connection
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Azure Pipelines group production-secrets/i.test(finding.evidence)));
+  assert.ok(findings.some((finding) => /Azure Pipelines azureSubscription production-service-connection/i.test(finding.evidence)));
+});
+
+test("does not flag an Azure Pipelines dry-run summary", async () => {
+  const root = await writeCiFixture(
+    "azure-pipelines.yml",
+    `
+jobs:
+  - job: ai_summary
+    steps:
+      - script: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
+test("detects Jenkinsfile agent jobs with change request context and credentials", async () => {
+  const root = await writeCiFixture(
+    "Jenkinsfile",
+    `
+pipeline {
+  agent any
+  stages {
+    stage('agent deploy') {
+      steps {
+        withCredentials([string(credentialsId: 'prod-token', variable: 'DEPLOY_TOKEN')]) {
+          script {
+            def prompt = "Review \${env.CHANGE_TITLE} and choose deploy commands"
+            env.AGENT_OUTPUT = sh(returnStdout: true, script: "npx openai-agent --prompt '\${prompt}' --token '$DEPLOY_TOKEN'")
+            sh "$AGENT_OUTPUT"
+          }
+        }
+      }
+    }
+  }
+}
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Jenkins credential binding withCredentials/i.test(finding.evidence)));
+});
+
+test("does not flag a Jenkinsfile dry-run preview", async () => {
+  const root = await writeCiFixture(
+    "Jenkinsfile",
+    `
+pipeline {
+  agent any
+  stages {
+    stage('agent preview') {
+      steps {
+        sh "npx openai-agent --prompt 'Summarize docs in read-only dry-run preview only'"
+      }
+    }
+  }
+}
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});

@@ -2,7 +2,7 @@
 
 Find dangerous AI automation workflows before agents get write access.
 
-Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, GitLab CI and CircleCI agent jobs, risky n8n flows, low-code workflow side effects, and MCP permission leaks before your AI automation runs.
+Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs, risky n8n flows, low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
 Four-command demo:
 
@@ -19,10 +19,10 @@ Public docs and stable schema URLs are available on GitHub Pages at `https://guo
 
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
-- untrusted GitHub issue, GitLab merge request, CircleCI branch, or commit text entering an agent prompt;
+- untrusted GitHub issue, GitLab merge request, CircleCI branch, Azure Pipelines pull request, Jenkins change request, or commit text entering an agent prompt;
 - model output flowing into shell commands;
 - AI jobs with write permissions;
-- GitLab CI and CircleCI agent jobs that execute model output or expose CI tokens, secrets, and contexts;
+- GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs that execute model output or expose CI tokens, secrets, credentials, contexts, service connections, or variable groups;
 - n8n webhook or email triggers flowing through AI nodes into HTTP, code, or command nodes;
 - broad MCP filesystem, shell, browser, or GitHub tools;
 - low-code automation flows that chain AI steps into side effects;
@@ -47,7 +47,7 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | Scenario | What it protects |
 | --- | --- |
 | AI-powered GitHub Actions | Prevents issue, PR, comment, or discussion text from steering an agent into privileged workflow actions. |
-| Agent jobs in GitLab CI and CircleCI | Catches merge request text, branch names, commit messages, CI tokens, and CircleCI contexts reaching agent prompts or shell sinks. |
+| Agent jobs in GitLab CI, CircleCI, Azure Pipelines, and Jenkins | Catches merge request text, branch names, commit messages, CI tokens, CircleCI contexts, Azure service connections, Jenkins credentials, and variable groups reaching agent prompts or shell sinks. |
 | n8n operations workflows | Detects Webhook or email triggers flowing through AI nodes into HTTP, Code, Execute Command, or credential-bearing nodes. |
 | MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
 | Low-code AI automation | Finds Activepieces, Zapier, Make, Pipedream, and Node-RED flows where AI output is chained into API calls or code execution. |
@@ -211,7 +211,7 @@ Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instr
 
 | Rule | Severity | What it catches |
 | --- | --- | --- |
-| `AWI001` | High | Untrusted GitHub, GitLab, or CircleCI context reaches an agent prompt. |
+| `AWI001` | High | Untrusted CI or workflow context reaches an agent prompt. |
 | `AWI002` | High | Agent output flows into shell or workflow commands. |
 | `AWI003` | High | AI workflow has write-capable permissions. |
 | `AWI004` | High | `pull_request_target` combines elevated context with agent/script execution. |
@@ -266,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.13.0
+      - uses: guorunjie/agentic-workflow-guard@v0.14.0
         with:
           path: .
           format: sarif
@@ -278,7 +278,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.13.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.14.0`.
 
 ## Examples
 
@@ -288,6 +288,8 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --fo
 node ./bin/agentic-workflow-guard.js scan examples/safe-github-action --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-gitlab-ci --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-circleci --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-azure-pipelines --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-jenkins --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-n8n --format sarif
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-mcp --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-node-red --format markdown
@@ -318,6 +320,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.11 | Public docs and schema URLs | GitHub Pages artifact, Marketplace page, schema aliases, `docs:build` |
 | v0.12 | Zapier benchmark coverage | Zapier-specific evidence, vulnerable/safe Zap fixtures, benchmark matrix |
 | v0.13 | GitLab CI and CircleCI coverage | CI agent scanner, token/context evidence, vulnerable/safe CI fixtures |
+| v0.14 | Azure Pipelines and Jenkins coverage | Service connection and credential evidence, vulnerable/safe pipeline fixtures |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

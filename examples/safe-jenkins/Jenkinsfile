@@ -1,0 +1,10 @@
+pipeline {
+  agent any
+  stages {
+    stage('agent preview') {
+      steps {
+        sh "npx openai-agent --prompt 'Summarize docs in read-only dry-run preview only'"
+      }
+    }
+  }
+}

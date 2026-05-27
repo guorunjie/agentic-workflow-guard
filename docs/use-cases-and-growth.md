@@ -12,10 +12,10 @@ Teams increasingly add agents to issue triage, merge request review, release wor
 
 Agentic Workflow Guard detects:
 
-- untrusted GitHub, GitLab CI, and CircleCI event or pipeline context in prompts;
-- agent output entering GitHub Actions `run:` steps, GitLab CI `script:` lines, or CircleCI `run` commands;
+- untrusted GitHub, GitLab CI, CircleCI, Azure Pipelines, and Jenkins event or pipeline context in prompts;
+- agent output entering GitHub Actions `run:` steps, GitLab CI `script:` lines, CircleCI `run` commands, Azure Pipelines `script:` steps, or Jenkins `sh` steps;
 - high write permissions in AI jobs;
-- CI tokens, secret-like environment values, and CircleCI contexts near agent execution;
+- CI tokens, secret-like environment values, CircleCI contexts, Azure service connections, Azure variable groups, and Jenkins credential bindings near agent execution;
 - `pull_request_target` combined with agent or script execution;
 - secrets or environment values exposed to agent-visible context.
 
@@ -64,7 +64,7 @@ Highest-impact improvements:
    Add upload examples, GitHub Code Scanning screenshots, stable rule metadata, and release-tagged Marketplace usage.
 
 2. **Add native platform parsers**  
-   Deepen GitLab CI, CircleCI, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
+   Deepen GitLab CI, CircleCI, Azure Pipelines, Jenkins, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
 
 3. **Ship trusted examples**  
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
@@ -91,7 +91,7 @@ There is still meaningful room for iteration. The project is no longer just a CL
 Priority directions:
 
 1. **Deeper native parsers**
-   Replace broad heuristics with native understanding of GitHub Actions, GitLab CI, CircleCI, n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
+   Replace broad heuristics with native understanding of GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
 
 2. **Policy and fix engine**
    Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval gates, dry-run defaults, allowlists, split read/write jobs, permission minimization, and PR-ready patches with confidence levels.
@@ -126,5 +126,5 @@ The strongest star-growth path is to show one scary, easy-to-understand demo per
 Use this GitHub description:
 
 ```text
-Find dangerous AI automation workflows before agents get write access; covers GitHub Actions, GitLab CI, CircleCI, n8n, MCP, and ships a portable skill pack for Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.
+Find dangerous AI automation workflows before agents get write access; covers GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP, and ships a portable skill pack for Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.
 ```

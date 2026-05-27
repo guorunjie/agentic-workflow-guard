@@ -10,6 +10,10 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/safe-gitlab-ci` | GitLab CI | none |
 | `examples/vulnerable-circleci` | CircleCI | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
 | `examples/safe-circleci` | CircleCI | none |
+| `examples/vulnerable-azure-pipelines` | Azure Pipelines | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-azure-pipelines` | Azure Pipelines | none |
+| `examples/vulnerable-jenkins` | Jenkins | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-jenkins` | Jenkins | none |
 | `examples/vulnerable-n8n` | n8n | `AWI005` |
 | `examples/safe-n8n` | n8n | none |
 | `examples/vulnerable-mcp` | MCP | `AWI006` |

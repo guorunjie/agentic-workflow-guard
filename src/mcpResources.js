@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.13.0",
+  version: "0.14.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -100,8 +100,8 @@ export const mcpResourcePack = {
     {
       uri: "awg://playbooks/ci-pipelines",
       name: "ci-pipelines-playbook",
-      title: "GitLab CI and CircleCI Remediation Playbook",
-      description: "How to reduce prompt injection, shell sink, token, and context risks in GitLab CI and CircleCI agent jobs.",
+      title: "CI Pipeline Remediation Playbook",
+      description: "How to reduce prompt injection, shell sink, token, context, service connection, and credential risks in GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs.",
       mimeType: "text/markdown",
       path: "docs/playbooks/ci-pipelines.md",
       annotations: { audience: ["assistant", "user"], priority: 0.8 }

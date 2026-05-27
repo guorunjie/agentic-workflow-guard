@@ -1,0 +1,15 @@
+trigger:
+  - main
+
+jobs:
+  - job: ai_release
+    variables:
+      - group: production-secrets
+    steps:
+      - script: |
+          PROMPT="Review $(System.PullRequest.SourceBranch) and decide release commands"
+          AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$(System.AccessToken)")"
+          bash -lc "$AGENT_OUTPUT"
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: production-service-connection

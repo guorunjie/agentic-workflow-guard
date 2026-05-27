@@ -3,16 +3,24 @@ import { readText, walk } from "../utils/files.js";
 
 const agentSignalPattern = /(prompt|agent|openai|anthropic|llm|ai-inference|copilot|model|chatgpt|claude|gemini)/i;
 const untrustedCiContextPattern =
-  /(\$\{?(CI_MERGE_REQUEST_(DESCRIPTION|TITLE|SOURCE_BRANCH_NAME)|CI_COMMIT_(MESSAGE|TITLE|DESCRIPTION)|CIRCLE_BRANCH|CIRCLE_PULL_REQUEST|CIRCLE_USERNAME)\}?|<<\s*pipeline\.git\.(branch|tag|revision)\s*>>)/i;
+  /(\$\{?(CI_MERGE_REQUEST_(DESCRIPTION|TITLE|SOURCE_BRANCH_NAME)|CI_COMMIT_(MESSAGE|TITLE|DESCRIPTION)|CIRCLE_BRANCH|CIRCLE_PULL_REQUEST|CIRCLE_USERNAME|CHANGE_TITLE|CHANGE_BRANCH|BRANCH_NAME|GIT_BRANCH)\}?|\$\((Build\.(SourceVersionMessage|SourceBranchName|SourceBranch)|System\.PullRequest\.(SourceBranch|TargetBranch|PullRequestId))\)|env\.(CHANGE_TITLE|CHANGE_BRANCH|BRANCH_NAME|CHANGE_ID|CHANGE_URL|GIT_BRANCH)|<<\s*pipeline\.git\.(branch|tag|revision)\s*>>)/i;
 const modelOutputToShellPattern =
-  /((bash|sh|zsh|pwsh|powershell)\s+-[a-z]*c\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?|eval\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?)/i;
+  /((bash|sh|zsh|pwsh|powershell)\s+-[a-z]*c\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?|\bsh\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?|eval\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?)/i;
 const secretPromptPattern =
-  /(prompt|agent|openai|anthropic|llm)[\s\S]{0,500}(\$?(CI_JOB_TOKEN|GITLAB_TOKEN|CIRCLE_TOKEN|AWS_[A-Z0-9_]*|GCLOUD_[A-Z0-9_]*|GOOGLE_[A-Z0-9_]*|DOCKER_[A-Z0-9_]*|KUBE[A-Z0-9_]*|[A-Z0-9_]*(SECRET|TOKEN|KEY)))/i;
+  /(prompt|agent|openai|anthropic|llm)[\s\S]{0,500}(\$?(CI_JOB_TOKEN|GITLAB_TOKEN|CIRCLE_TOKEN|SYSTEM_ACCESSTOKEN|System\.AccessToken|AZURE_DEVOPS_EXT_PAT|ARM_CLIENT_SECRET|AWS_[A-Z0-9_]*|GCLOUD_[A-Z0-9_]*|GOOGLE_[A-Z0-9_]*|DOCKER_[A-Z0-9_]*|KUBE[A-Z0-9_]*|[A-Z0-9_]*(SECRET|TOKEN|KEY))|withCredentials\s*\(|credentials\s*\()/i;
 const circleContextPattern = /^\s*context:\s*([\w .:/@-]+|\[[^\]]+\])\s*$/gim;
+const azureCredentialPattern = /^\s*-?\s*(group|azureSubscription|connectedServiceNameARM|serviceConnection|secureFile):\s*["']?([^"'\n]+)["']?\s*$/gim;
+const jenkinsCredentialPattern = /(withCredentials\s*\(|credentials\s*\()/gim;
 const safetyControlPattern = /(human approval|manual approval|allowlist|allow-list|dry-run|dry_run|safe output|read-only|preview only|approval gate)/i;
 
 function ciWorkflowFiles(relative) {
-  return /^\.gitlab-ci\.ya?ml$/i.test(relative) || /^\.circleci\/config\.ya?ml$/i.test(relative);
+  return (
+    /^\.gitlab-ci\.ya?ml$/i.test(relative) ||
+    /^\.circleci\/config\.ya?ml$/i.test(relative) ||
+    /^azure-pipelines\.ya?ml$/i.test(relative) ||
+    /^\.azure-pipelines\/.+\.ya?ml$/i.test(relative) ||
+    /(^|\/)Jenkinsfile(\..*)?$/i.test(relative)
+  );
 }
 
 function lineOf(text, index) {
@@ -20,7 +28,10 @@ function lineOf(text, index) {
 }
 
 function platformName(file) {
-  return file.startsWith(".circleci/") ? "CircleCI" : "GitLab CI";
+  if (file.startsWith(".circleci/")) return "CircleCI";
+  if (/Jenkinsfile/i.test(file)) return "Jenkins";
+  if (/azure-pipelines|\.azure-pipelines/i.test(file)) return "Azure Pipelines";
+  return "GitLab CI";
 }
 
 export async function scanCiWorkflows(root) {
@@ -51,6 +62,20 @@ export async function scanCiWorkflows(root) {
       const contexts = [...text.matchAll(circleContextPattern)];
       for (const context of contexts) {
         findings.push(makeFinding("AWI007", `${file}:${lineOf(text, context.index)}`, `CircleCI context ${context[1].trim()} is attached to an agent job`));
+      }
+    }
+
+    if (hasAgent && platform === "Azure Pipelines") {
+      const credentials = [...text.matchAll(azureCredentialPattern)];
+      for (const credential of credentials) {
+        findings.push(makeFinding("AWI007", `${file}:${lineOf(text, credential.index)}`, `Azure Pipelines ${credential[1]} ${credential[2].trim()} is attached to an agent job`));
+      }
+    }
+
+    if (hasAgent && platform === "Jenkins") {
+      const credentials = [...text.matchAll(jenkinsCredentialPattern)];
+      for (const credential of credentials) {
+        findings.push(makeFinding("AWI007", `${file}:${lineOf(text, credential.index)}`, `Jenkins credential binding ${credential[1].trim()} is attached to an agent job`));
       }
     }
 

@@ -1,0 +1,16 @@
+pipeline {
+  agent any
+  stages {
+    stage('agent deploy') {
+      steps {
+        withCredentials([string(credentialsId: 'prod-token', variable: 'DEPLOY_TOKEN')]) {
+          script {
+            def prompt = "Review ${env.CHANGE_TITLE} and choose deploy commands"
+            env.AGENT_OUTPUT = sh(returnStdout: true, script: "npx openai-agent --prompt '${prompt}' --token '$DEPLOY_TOKEN'")
+            sh "$AGENT_OUTPUT"
+          }
+        }
+      }
+    }
+  }
+}

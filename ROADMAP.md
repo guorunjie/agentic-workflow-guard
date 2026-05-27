@@ -123,6 +123,14 @@ North star:
 - Detect model output executed by CI shell steps and agent jobs near CI tokens, secrets, or CircleCI contexts.
 - Add vulnerable and safe GitLab CI and CircleCI fixtures to the benchmark matrix.
 
+## v0.14: Azure Pipelines and Jenkins Coverage
+
+- Add scanner coverage for `azure-pipelines.yml`, `.azure-pipelines/*.yml`, and `Jenkinsfile`.
+- Detect Azure pull request variables and Jenkins change request variables entering agent prompts.
+- Detect model output executed by Azure or Jenkins shell steps.
+- Detect Azure variable groups, service connections, secure files, and Jenkins credential bindings near agent jobs.
+- Add vulnerable and safe Azure Pipelines and Jenkins fixtures to the benchmark matrix.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
@@ -132,6 +140,6 @@ North star:
 - GitHub Marketplace release.
 - npm release.
 - Documentation site.
-- Compatibility matrix across GitHub Actions, GitLab CI, CircleCI, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
+- Compatibility matrix across GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
 - Compatibility matrix across Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, and AGENTS.md-aware agents.
 - Public benchmark repo with vulnerable and safe workflow fixtures for every supported platform.
