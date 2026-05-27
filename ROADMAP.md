@@ -116,6 +116,13 @@ North star:
 - Add vulnerable and safe Zapier fixtures to the benchmark matrix.
 - Keep low-code marketplace coverage aligned across Activepieces, Zapier, Make, Pipedream, Node-RED, and Airflow.
 
+## v0.13: GitLab CI and CircleCI Coverage
+
+- Add scanner coverage for `.gitlab-ci.yml` and `.circleci/config.yml`.
+- Detect untrusted merge request, branch, and commit context entering agent prompts.
+- Detect model output executed by CI shell steps and agent jobs near CI tokens, secrets, or CircleCI contexts.
+- Add vulnerable and safe GitLab CI and CircleCI fixtures to the benchmark matrix.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
@@ -125,6 +132,6 @@ North star:
 - GitHub Marketplace release.
 - npm release.
 - Documentation site.
-- Compatibility matrix across GitHub Actions, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
+- Compatibility matrix across GitHub Actions, GitLab CI, CircleCI, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
 - Compatibility matrix across Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, and AGENTS.md-aware agents.
 - Public benchmark repo with vulnerable and safe workflow fixtures for every supported platform.

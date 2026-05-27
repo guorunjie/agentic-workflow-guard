@@ -3,7 +3,7 @@
 Generated from `skillpack.yaml` by Skillpack Forge.
 
 ## Project
-Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, GitLab CI, CircleCI, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Working Principles
 - Treat external workflow input as untrusted until validated
@@ -32,7 +32,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 
 ## Agent Workflows
 ### agentic-workflow-guard-auditor
-Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
+Use when auditing GitHub Actions, GitLab CI, CircleCI, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
 
 - Run agentic-workflow-guard scan . --format markdown
 - Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads

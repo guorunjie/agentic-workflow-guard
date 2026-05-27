@@ -12,6 +12,8 @@ test("benchmark command verifies fixture snapshots", async () => {
   const { stdout } = await execFileAsync("node", [bin, "benchmark"]);
 
   assert.match(stdout, /Benchmark passed/);
+  assert.match(stdout, /vulnerable-gitlab-ci/);
+  assert.match(stdout, /vulnerable-circleci/);
   assert.match(stdout, /vulnerable-browser-trace/);
   assert.match(stdout, /safe-activepieces/);
   assert.match(stdout, /vulnerable-zapier/);
@@ -26,6 +28,10 @@ test("benchmark fixture manifest includes safe and vulnerable platform pairs", a
   assert.ok(names.includes("safe-n8n"));
   assert.ok(names.includes("safe-mcp"));
   assert.ok(names.includes("safe-activepieces"));
+  assert.ok(names.includes("vulnerable-gitlab-ci"));
+  assert.ok(names.includes("safe-gitlab-ci"));
+  assert.ok(names.includes("vulnerable-circleci"));
+  assert.ok(names.includes("safe-circleci"));
   assert.ok(names.includes("vulnerable-zapier"));
   assert.ok(names.includes("safe-zapier"));
 });

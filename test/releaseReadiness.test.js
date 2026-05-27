@@ -2,11 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.12 Zapier benchmark and marketplace release", async () => {
+test("package metadata reflects the expanded v0.13 CI platform benchmark and marketplace release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.12.0");
+  assert.equal(pkg.version, "0.13.0");
   assert.match(pkg.description, /portable skill pack/i);
+  assert.ok(pkg.keywords.includes("gitlab-ci"));
+  assert.ok(pkg.keywords.includes("circleci"));
   assert.ok(pkg.keywords.includes("zapier"));
   assert.ok(pkg.keywords.includes("make"));
   assert.ok(pkg.keywords.includes("pipedream"));
@@ -30,6 +32,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
+  assert.match(readme, /GitLab CI/);
+  assert.match(readme, /CircleCI/);
   assert.match(readme, /--output awg\.sarif/);
   assert.match(readme, /schema report/);
   assert.match(readme, /schema fix/);
@@ -80,6 +84,8 @@ test("Pages workflow publishes generated docs and stable schema URLs", async () 
 test("repository ships examples for new workflow platform scanners", async () => {
   const files = [
     "examples/vulnerable-node-red/flows.json",
+    "examples/vulnerable-gitlab-ci/.gitlab-ci.yml",
+    "examples/vulnerable-circleci/.circleci/config.yml",
     "examples/vulnerable-make/scenario.blueprint.json",
     "examples/vulnerable-pipedream/workflow.json",
     "examples/vulnerable-zapier/zap.json",
@@ -87,6 +93,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-browser-trace/browser-trace.json",
     "benchmarks/fixtures.json",
     "examples/safe-node-red/flows.json",
+    "examples/safe-gitlab-ci/.gitlab-ci.yml",
+    "examples/safe-circleci/.circleci/config.yml",
     "examples/safe-make/scenario.blueprint.json",
     "examples/safe-pipedream/workflow.json",
     "examples/safe-zapier/zap.json",
@@ -95,6 +103,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/unsafe-ai-pr-bot/.github/workflows/pr-bot.yml",
     "mcp/resources/agentic-workflow-guard.resources.json",
     "docs/playbooks/github-actions.md",
+    "docs/playbooks/ci-pipelines.md",
     "docs/playbooks/n8n.md",
     "docs/playbooks/mcp.md",
     "docs/playbooks/low-code.md",

@@ -39,10 +39,10 @@ function recipeForFinding(finding) {
   const file = stripLineSuffix(finding.file);
   const recipes = {
     AWI001: {
-      id: "gate-untrusted-github-context",
+      id: "gate-untrusted-ci-context",
       mode: "manual",
       confidence: "medium",
-      title: "Gate untrusted GitHub event context before it reaches an agent prompt"
+      title: "Gate untrusted CI or workflow event context before it reaches an agent prompt"
     },
     AWI002: {
       id: "review-agent-output-before-shell",

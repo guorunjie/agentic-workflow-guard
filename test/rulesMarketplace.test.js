@@ -24,6 +24,13 @@ test("rules search finds expanded workflow platforms", async () => {
   assert.match(stdout, /Airflow/i);
 });
 
+test("rules search finds CI platform coverage", async () => {
+  const { stdout } = await execFileAsync("node", [bin, "rules", "search", "gitlab"]);
+
+  assert.match(stdout, /AWI001/);
+  assert.match(stdout, /GitLab|CI/i);
+});
+
 test("rules search finds Zapier low-code coverage", async () => {
   const { stdout } = await execFileAsync("node", [bin, "rules", "search", "zapier"]);
 

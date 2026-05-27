@@ -39,6 +39,7 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   const rulePackSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-rule-pack.schema.json"), "utf8");
   const rules = await readFile(path.join(root, "rules", "marketplace.json"), "utf8");
   const playbook = await readFile(path.join(root, "docs", "playbooks", "github-actions.md"), "utf8");
+  const ciPlaybook = await readFile(path.join(root, "docs", "playbooks", "ci-pipelines.md"), "utf8");
 
   assert.match(stdout, /Installed mcp-resources/);
   assert.match(manifest, /awg:\/\/rules\/core/);
@@ -46,4 +47,5 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(rulePackSchema, /Agentic Workflow Guard Rule Pack/);
   assert.match(rules, /agentic-workflow-guard-core-rules/);
   assert.match(playbook, /GitHub Actions/);
+  assert.match(ciPlaybook, /GitLab CI and CircleCI/);
 });

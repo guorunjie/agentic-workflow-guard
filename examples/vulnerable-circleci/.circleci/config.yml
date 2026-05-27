@@ -1,0 +1,14 @@
+version: 2.1
+jobs:
+  ai_deploy:
+    docker:
+      - image: cimg/node:24.0
+    context: production-deploy
+    steps:
+      - checkout
+      - run:
+          name: Agent deploy
+          command: |
+            PROMPT="Review branch $CIRCLE_BRANCH and choose deploy commands"
+            AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$CIRCLE_TOKEN")"
+            bash -lc "$AGENT_OUTPUT"

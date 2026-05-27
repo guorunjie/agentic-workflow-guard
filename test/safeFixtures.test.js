@@ -4,6 +4,8 @@ import { test } from "node:test";
 import { scanProject } from "../src/scan.js";
 
 const safeFixtures = [
+  "examples/safe-gitlab-ci",
+  "examples/safe-circleci",
   "examples/safe-node-red",
   "examples/safe-make",
   "examples/safe-pipedream",

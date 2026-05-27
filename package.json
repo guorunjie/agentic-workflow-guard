@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
-  "version": "0.12.0",
-  "description": "Find dangerous AI automation workflows before agents get write access; ships a portable skill pack for GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.",
+  "version": "0.13.0",
+  "description": "Find dangerous AI automation workflows before agents get write access; covers GitHub Actions, GitLab CI, CircleCI, n8n, MCP, and ships a portable skill pack for Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.",
   "type": "module",
   "bin": {
     "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"
@@ -24,6 +24,8 @@
     "automation",
     "workflow-automation",
     "github-actions",
+    "gitlab-ci",
+    "circleci",
     "n8n",
     "activepieces",
     "zapier",

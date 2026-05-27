@@ -25,6 +25,7 @@ const installTargets = {
     "docs/index.md",
     "docs/npm-publish.md",
     "docs/playbooks/github-actions.md",
+    "docs/playbooks/ci-pipelines.md",
     "docs/playbooks/n8n.md",
     "docs/playbooks/mcp.md",
     "docs/playbooks/low-code.md",

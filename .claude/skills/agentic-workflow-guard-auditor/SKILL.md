@@ -1,12 +1,12 @@
 ---
 name: agentic-workflow-guard-auditor
-description: Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
+description: Use when auditing GitHub Actions, GitLab CI, CircleCI, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
 ---
 
 # agentic-workflow-guard-auditor
 
 ## Project
-Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, GitLab CI, CircleCI, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Workflow
 - Run agentic-workflow-guard scan . --format markdown

@@ -10,7 +10,7 @@ const findings = [
   {
     ruleId: "AWI001",
     severity: "high",
-    title: "Untrusted GitHub event context reaches an agent prompt",
+    title: "Untrusted GitHub, GitLab, or CircleCI context reaches an agent prompt",
     file: ".github/workflows/agent.yml",
     evidence: "github.event.issue.body",
     remediation: "Gate untrusted content."
@@ -55,6 +55,6 @@ test("SARIF reporter emits GitHub code scanning compatible shape", () => {
 
 test("explainRule returns risk and remediation text", () => {
   const explanation = explainRule("AWI001");
-  assert.match(explanation, /Untrusted GitHub event context/);
+  assert.match(explanation, /Untrusted GitHub, GitLab, or CircleCI context/);
   assert.match(explanation, /Remediation/);
 });

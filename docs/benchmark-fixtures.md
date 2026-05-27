@@ -5,6 +5,11 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | Fixture | Platform | Expected rule |
 | --- | --- | --- |
 | `examples/vulnerable-github-action` | GitHub Actions | `AWI001`, `AWI002`, `AWI003`, `AWI008` |
+| `examples/safe-github-action` | GitHub Actions | none |
+| `examples/vulnerable-gitlab-ci` | GitLab CI | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-gitlab-ci` | GitLab CI | none |
+| `examples/vulnerable-circleci` | CircleCI | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-circleci` | CircleCI | none |
 | `examples/vulnerable-n8n` | n8n | `AWI005` |
 | `examples/safe-n8n` | n8n | none |
 | `examples/vulnerable-mcp` | MCP | `AWI006` |

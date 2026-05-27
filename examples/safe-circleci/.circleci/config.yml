@@ -1,0 +1,10 @@
+version: 2.1
+jobs:
+  ai_summary:
+    docker:
+      - image: cimg/node:24.0
+    steps:
+      - checkout
+      - run:
+          name: Dry-run summary
+          command: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

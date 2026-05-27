@@ -1,0 +1,4 @@
+agent_preview:
+  image: node:24
+  script:
+    - npx openai-agent --prompt "Summarize release notes for read-only dry-run preview only"

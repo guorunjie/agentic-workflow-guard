@@ -12,6 +12,26 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-gitlab-ci",
+      "path": "examples/vulnerable-gitlab-ci",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-gitlab-ci",
+      "path": "examples/safe-gitlab-ci",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-circleci",
+      "path": "examples/vulnerable-circleci",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-circleci",
+      "path": "examples/safe-circleci",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-n8n",
       "path": "examples/vulnerable-n8n",
       "expectedRules": ["AWI005"]

@@ -1,0 +1,6 @@
+agent_patch:
+  image: node:24
+  script:
+    - export PROMPT="Patch this merge request: $CI_MERGE_REQUEST_DESCRIPTION"
+    - export AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$CI_JOB_TOKEN")"
+    - bash -lc "$AGENT_OUTPUT"

@@ -1,6 +1,6 @@
 export function renderSkillpack() {
   return `name: "agentic-workflow-guard"
-summary: "Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports."
+summary: "Static security scanner for AI automation workflows across GitHub Actions, GitLab CI, CircleCI, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports."
 targets:
   - "agents"
   - "claude"
@@ -32,7 +32,7 @@ commands:
   install-agent: "node ./bin/agentic-workflow-guard.js agents install claude ."
 skills:
   - name: "agentic-workflow-guard-auditor"
-    description: "Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks."
+    description: "Use when auditing GitHub Actions, GitLab CI, CircleCI, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks."
     workflow:
       - "Run agentic-workflow-guard scan . --format markdown"
       - "Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads"

@@ -46,4 +46,4 @@ The likely high-star wedge is:
 
 > "Semgrep for AI automation workflows."
 
-The first version covers GitHub Actions, n8n exports, MCP configs, and low-code workflow JSON. The roadmap expands to Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser automation traces.
+The first version covers GitHub Actions, GitLab CI, CircleCI, n8n exports, MCP configs, and low-code workflow JSON. The roadmap expands to Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser automation traces.

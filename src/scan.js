@@ -1,5 +1,6 @@
 import { filterFindings, loadConfig, reachesSeverityThreshold } from "./config.js";
 import { scanBrowserTraces } from "./scanners/browserTrace.js";
+import { scanCiWorkflows } from "./scanners/ciWorkflows.js";
 import { scanGitHubActions } from "./scanners/githubActions.js";
 import { scanLowCodeWorkflows } from "./scanners/lowCode.js";
 import { scanMcpConfigs } from "./scanners/mcp.js";
@@ -24,6 +25,7 @@ export async function scanProjectWithMetadata(root, providedConfig) {
   const config = providedConfig ?? (await loadConfig(root));
   const groups = await Promise.all([
     scanGitHubActions(root),
+    scanCiWorkflows(root),
     scanN8nWorkflows(root),
     scanMcpConfigs(root),
     scanBrowserTraces(root),
