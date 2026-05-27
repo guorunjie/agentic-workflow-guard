@@ -14,6 +14,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - install: `npm install`
 - test: `npm test`
 - scan: `npm run scan`
+- agents: `node ./bin/agentic-workflow-guard.js agents`
 
 ## Agent Workflows
 ### agentic-workflow-guard-auditor
@@ -22,4 +23,5 @@ Use when auditing GitHub Actions, n8n workflows, MCP configs, or AI automation f
 - Run agentic-workflow-guard scan . --format markdown
 - Prioritize high severity AWI001-AWI006 findings
 - Use agentic-workflow-guard explain AWI001 for rule-specific remediation
+- Use agentic-workflow-guard agents to confirm Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md support files
 - Prefer dry-run and approval gates before write-capable automation

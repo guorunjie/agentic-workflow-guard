@@ -34,3 +34,11 @@ test("CLI skillpack emits Skillpack Forge manifest", async () => {
   assert.match(stdout, /agentic-workflow-guard/);
   assert.match(stdout, /AWI001/);
 });
+
+test("CLI agents emits mainstream compatibility matrix", async () => {
+  const { stdout } = await execFileAsync("node", [bin, "agents"]);
+  assert.match(stdout, /Claude Code/);
+  assert.match(stdout, /OpenClaw/);
+  assert.match(stdout, /Hermes/);
+  assert.match(stdout, /Gemini CLI/);
+});

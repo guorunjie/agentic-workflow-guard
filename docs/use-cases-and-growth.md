@@ -49,7 +49,7 @@ Agentic Workflow Guard detects:
 
 ### 5. Agent Skill and Repository Audits
 
-The scanner exports Skillpack Forge-compatible instructions so coding agents can consistently audit automation risks across AGENTS.md, Claude, Codex, Cursor, and Copilot.
+The scanner exports Skillpack Forge-compatible instructions and portable SKILL.md bundles so coding agents can consistently audit automation risks across AGENTS.md, Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, and Hermes.
 
 ## Optimization Directions
 
@@ -71,7 +71,7 @@ Highest-impact improvements:
    Support external rule packs, signed metadata, checksums, and community contributions.
 
 6. **Publish as a complete skill**  
-   Maintain generated AGENTS.md, Claude Skill, Codex Skill, Cursor rule, Copilot instructions, and eventually MCP resources.
+   Maintain generated AGENTS.md, Claude Skill, Codex Skill, Gemini context/skill files, Cursor rule, Copilot instructions, OpenClaw/Hermes SKILL.md bundles, and eventually MCP resources.
 
 7. **Create a benchmark dataset**  
    A public `agentic-workflow-vuln-fixtures` collection can become the reference dataset for this risk category.
@@ -80,7 +80,7 @@ Highest-impact improvements:
 
 - README headline: "Semgrep-style scanner for AI automation workflows."
 - First demo: one vulnerable GitHub Action producing SARIF and a fix plan.
-- Distribution: GitHub Action, npm package, Skillpack Forge, AGENTS.md, Claude/Codex skills.
+- Distribution: GitHub Action, npm package, Skillpack Forge, AGENTS.md, Claude/Codex/Gemini/OpenClaw/Hermes skills, Cursor rules, Copilot instructions.
 - Submit to lists: awesome-copilot, awesome-mcp-servers after MCP resources land, awesome-claude-skills after skill examples mature.
 - Content hooks:
   - "Your AI workflow has write access. Who reviewed the prompt boundary?"
@@ -92,5 +92,5 @@ Highest-impact improvements:
 Use this GitHub description:
 
 ```text
-Semgrep-style scanner for AI automation workflows: GitHub Actions, n8n, MCP configs, prompt-injection paths, and risky agent tools.
+Security scanner and portable skill pack for AI automation workflows across GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.
 ```

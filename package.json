@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
   "version": "0.1.0",
-  "description": "Semgrep-style security scanner for AI automation workflows: GitHub Actions, n8n, MCP configs, prompt-injection paths, and risky agent tools.",
+  "description": "Security scanner and portable skill pack for AI automation workflows across GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.",
   "type": "module",
   "bin": {
     "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"
@@ -9,6 +9,7 @@
   "scripts": {
     "test": "node --test",
     "scan": "node ./bin/agentic-workflow-guard.js scan .",
+    "agents": "node ./bin/agentic-workflow-guard.js agents",
     "marketplace": "node ./bin/agentic-workflow-guard.js rules --format markdown"
   },
   "keywords": [
@@ -19,6 +20,11 @@
     "n8n",
     "mcp",
     "ai-agents",
+    "agent-skills",
+    "claude-skills",
+    "gemini-cli",
+    "openclaw",
+    "hermes-agent",
     "prompt-injection",
     "sarif",
     "developer-tools"
@@ -28,6 +34,16 @@
     "src",
     "rules",
     "README.md",
+    "AGENTS.md",
+    "GEMINI.md",
+    "skillpack.yaml",
+    "skills",
+    ".claude",
+    ".codex",
+    ".cursor",
+    ".gemini",
+    ".openclaw",
+    ".hermes",
     "LICENSE",
     "action.yml"
   ],

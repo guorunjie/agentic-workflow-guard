@@ -18,3 +18,4 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - install: `npm install`
 - test: `npm test`
 - scan: `npm run scan`
+- agents: `node ./bin/agentic-workflow-guard.js agents`

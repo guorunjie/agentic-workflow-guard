@@ -1,6 +1,6 @@
 # Agentic Workflow Guard
 
-Semgrep-style security scanner for AI automation workflows.
+Security scanner and portable skill pack for AI automation workflows.
 
 Find prompt-injection paths, overpowered tools, unsafe GitHub Actions, risky n8n flows, low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
@@ -17,6 +17,7 @@ Agentic Workflow Guard is a static security scanner for AI automation workflows.
 npx agentic-workflow-guard scan . --format markdown
 npx agentic-workflow-guard scan . --format sarif
 npx agentic-workflow-guard explain AWI001
+npx agentic-workflow-guard agents
 ```
 
 ## Why This Can Win Stars
@@ -26,7 +27,7 @@ High-star automation projects show the pattern:
 - [n8n](https://github.com/n8n-io/n8n) and [Activepieces](https://github.com/activepieces/activepieces) prove workflow automation plus AI/MCP integrations is a large developer category.
 - [Dify](https://github.com/langgenius/dify) proves agentic workflow development is a production platform category.
 - [browser-use](https://github.com/browser-use/browser-use), [Skyvern](https://github.com/Skyvern-AI/skyvern), and [Playwright MCP](https://github.com/microsoft/playwright-mcp) prove browser/tool automation for agents is sticky.
-- [Anthropic Skills](https://github.com/anthropics/skills), [AGENTS.md](https://github.com/agentsmd/agents.md), and [awesome-copilot](https://github.com/github/awesome-copilot) show that agent instructions and skills are becoming a distribution layer.
+- [Anthropic Skills](https://github.com/anthropics/skills), [AGENTS.md](https://github.com/agentsmd/agents.md), Gemini CLI context files, and [awesome-copilot](https://github.com/github/awesome-copilot) show that agent instructions and skills are becoming a distribution layer.
 
 The crowded side is building more automation. The open wedge is guarding automation before it runs. Agentic Workflow Guard is built for that gap: a local, CI-friendly, no-LLM scanner that gives security teams and maintainers concrete findings before an agent gets write access.
 
@@ -41,7 +42,7 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
 | Low-code AI automation | Finds Activepieces/Zapier/Make/Pipedream-style flows where AI output is chained into API calls or code execution. |
 | CI and code scanning | Emits SARIF so workflow risks can be tracked like code vulnerabilities. |
-| Agent skill reviews | Generates a Skillpack Forge manifest and agent instructions so Codex, Claude, Cursor, and Copilot can audit workflows consistently. |
+| Agent skill reviews | Ships instructions and skill bundles so Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md-aware agents can audit workflows consistently. |
 
 ## Quick Start
 
@@ -75,6 +76,12 @@ Export a Skillpack Forge manifest:
 node ./bin/agentic-workflow-guard.js skillpack > skillpack.yaml
 ```
 
+Confirm mainstream agent support:
+
+```bash
+node ./bin/agentic-workflow-guard.js agents
+```
+
 ## Commands
 
 | Command | Purpose |
@@ -85,7 +92,25 @@ node ./bin/agentic-workflow-guard.js skillpack > skillpack.yaml
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
+| `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
+
+## Agent Compatibility
+
+Agentic Workflow Guard now covers the mainstream agent context surfaces used by AI coding tools.
+
+| Agent | Support | Files |
+| --- | --- | --- |
+| AGENTS.md ecosystem | Supported | `AGENTS.md` |
+| Claude Code | Supported | `.claude/skills/agentic-workflow-guard-auditor/SKILL.md` |
+| Codex | Supported | `.codex/skills/agentic-workflow-guard-auditor/SKILL.md` |
+| Cursor | Supported | `.cursor/rules/agentic-workflow-guard.mdc` |
+| GitHub Copilot | Supported | `.github/copilot-instructions.md` |
+| Gemini CLI | Supported | `GEMINI.md`, `.gemini/skills/agentic-workflow-guard-auditor/SKILL.md` |
+| OpenClaw | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.openclaw/skills/agentic-workflow-guard-auditor/SKILL.md` |
+| Hermes | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.hermes/skills/agentic-workflow-guard-auditor/SKILL.md` |
+
+Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory.
 
 ## Rule Catalog
 
@@ -143,7 +168,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.2 | Activepieces, Zapier, Make, Pipedream exports | More scanners and platform-specific examples |
 | v0.3 | Auto-fix recipes for permissions, prompt gates, dry-run wrappers | `fix --apply` with patch review |
 | v0.4 | Rule marketplace and community rule packs | `rules install`, external rule metadata |
-| v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/AGENTS generated and tested |
+| v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

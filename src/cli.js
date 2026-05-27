@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
+import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
 import { renderJson } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
@@ -27,6 +28,7 @@ Usage:
   agentic-workflow-guard fix [path] [--dry-run]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [--format markdown|json]
+  agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard skillpack
 `;
 }
@@ -65,6 +67,12 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
 
   if (command === "rules") {
     output.write(renderRules(argValue(args, "--format", "markdown")));
+    return 0;
+  }
+
+  if (command === "agents") {
+    const format = argValue(args, "--format", "markdown");
+    output.write(format === "json" ? renderAgentSupportJson() : renderAgentSupportMarkdown());
     return 0;
   }
 
