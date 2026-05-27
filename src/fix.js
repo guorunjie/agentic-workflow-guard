@@ -35,6 +35,86 @@ function fixableFiles(findings) {
   return [...new Set(findings.filter((finding) => ["AWI003", "AWI008"].includes(finding.ruleId)).map((finding) => stripLineSuffix(finding.file)))];
 }
 
+function recipeForFinding(finding) {
+  const file = stripLineSuffix(finding.file);
+  const recipes = {
+    AWI001: {
+      id: "gate-untrusted-github-context",
+      mode: "manual",
+      confidence: "medium",
+      title: "Gate untrusted GitHub event context before it reaches an agent prompt"
+    },
+    AWI002: {
+      id: "review-agent-output-before-shell",
+      mode: "manual",
+      confidence: "high",
+      title: "Move agent output into a review artifact before shell execution"
+    },
+    AWI003: {
+      id: "github-permissions-read-only",
+      mode: "automatic",
+      confidence: "high",
+      title: "Downgrade write-capable GitHub token permissions"
+    },
+    AWI004: {
+      id: "split-pull-request-target-agent",
+      mode: "manual",
+      confidence: "high",
+      title: "Separate elevated pull_request_target work from untrusted agent execution"
+    },
+    AWI005: {
+      id: "low-code-approval-before-side-effect",
+      mode: "manual",
+      confidence: "medium",
+      title: "Add validation or approval before n8n side-effect nodes"
+    },
+    AWI006: {
+      id: "scope-high-risk-mcp-tools",
+      mode: "manual",
+      confidence: "high",
+      title: "Scope high-risk MCP tools to narrow read-only access"
+    },
+    AWI007: {
+      id: "remove-secrets-from-agent-context",
+      mode: "manual",
+      confidence: "high",
+      title: "Keep secrets out of prompt-visible agent context"
+    },
+    AWI008: {
+      id: "github-dry-run-env",
+      mode: "automatic",
+      confidence: "medium",
+      title: "Add an explicit dry-run safety marker to the workflow"
+    },
+    AWI009: {
+      id: "automation-approval-before-side-effect",
+      mode: "manual",
+      confidence: "medium",
+      title: "Validate model output before workflow automation side effects"
+    },
+    AWI010: {
+      id: "browser-action-allowlist",
+      mode: "manual",
+      confidence: "medium",
+      title: "Add browser action allowlists and approval gates"
+    }
+  };
+  const recipe = recipes[finding.ruleId] ?? {
+    id: "review-agentic-workflow-risk",
+    mode: "manual",
+    confidence: "low",
+    title: "Review the agentic workflow risk manually"
+  };
+
+  return {
+    ...recipe,
+    ruleId: finding.ruleId,
+    file,
+    findingFile: finding.file,
+    remediation: finding.remediation
+  };
+}
+
 function applyRecipes(original, file, findings) {
   const fileFindings = findings.filter((finding) => stripLineSuffix(finding.file) === file);
   let text = original;
@@ -87,6 +167,35 @@ async function buildFixChanges(root, findings) {
   return changes;
 }
 
+async function buildFixReport(root, findings, options = {}) {
+  const recipes = findings.map(recipeForFinding);
+  const patchChanges = await buildFixChanges(root, findings);
+  const changedFiles = options.apply ? await applyFixes(root, findings) : [];
+  const changedFileSet = new Set(changedFiles);
+  const automaticRecipes = recipes.filter((recipe) => recipe.mode === "automatic");
+  const manualRecipes = recipes.filter((recipe) => recipe.mode === "manual");
+  const changes = patchChanges.map((change) => ({
+    file: change.file,
+    applied: changedFileSet.has(change.file),
+    recipeIds: automaticRecipes.filter((recipe) => recipe.file === change.file).map((recipe) => recipe.id)
+  }));
+
+  return {
+    schemaVersion: "1.0.0",
+    mode: options.apply ? "apply" : "dry-run",
+    summary: {
+      findings: findings.length,
+      automaticRecipes: automaticRecipes.length,
+      manualRecipes: manualRecipes.length,
+      availablePatches: patchChanges.length,
+      changedFiles: changedFiles.length
+    },
+    changes,
+    recipes,
+    findings
+  };
+}
+
 function renderPatch(changes) {
   if (!changes.length) return "# Patch preview\n\nNo safe automatic patches were available.\n";
   const lines = ["# Patch preview", ""];
@@ -127,6 +236,10 @@ function diffLines(original, updated) {
 
 export async function renderFixPlan(root, options = {}) {
   const findings = await scanProject(root);
+  if (options.format === "json") {
+    return `${JSON.stringify(await buildFixReport(root, findings, options), null, 2)}\n`;
+  }
+
   if (options.patch) {
     return renderPatch(await buildFixChanges(root, findings));
   }

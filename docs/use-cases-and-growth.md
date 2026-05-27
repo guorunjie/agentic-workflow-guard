@@ -67,8 +67,8 @@ Highest-impact improvements:
 3. **Ship trusted examples**  
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
 
-4. **Turn `fix` into a patch generator**
-   Expand from current permission downgrades and `fix --patch` into dry-run defaults, approval gates, split write jobs, and richer PR-ready patches.
+4. **Turn `fix` into a remediation engine**
+   Expand from current permission downgrades, `fix --patch`, and `fix --format json` recipes into dry-run defaults, approval gates, split write jobs, and richer PR-ready patches.
 
 5. **Build the rule marketplace**
    Grow the current `rules list/search/install` into external rule packs, signed metadata, checksums, and community contributions.
@@ -84,7 +84,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, rule metadata, benchmark snapshots, structured fix recipes, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 
@@ -92,7 +92,7 @@ Priority directions:
    Replace broad heuristics with native understanding of GitHub Actions, n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
 
 2. **Policy and fix engine**
-   Expand `fix --patch` into policy-aware remediation: approval gates, dry-run defaults, allowlists, split read/write jobs, permission minimization, and PR-ready patches with confidence levels.
+   Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval gates, dry-run defaults, allowlists, split read/write jobs, permission minimization, and PR-ready patches with confidence levels.
 
 3. **Trusted rule marketplace**
    Evolve the local rule catalog into signed community rule packs with checksum verification, SemVer compatibility, provenance metadata, and review guidelines.

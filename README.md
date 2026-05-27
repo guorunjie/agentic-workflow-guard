@@ -82,6 +82,7 @@ Print the stable JSON report schema:
 
 ```bash
 node ./bin/agentic-workflow-guard.js schema report
+node ./bin/agentic-workflow-guard.js schema fix
 ```
 
 Explain a rule:
@@ -94,6 +95,7 @@ Preview remediation:
 
 ```bash
 node ./bin/agentic-workflow-guard.js fix . --dry-run
+node ./bin/agentic-workflow-guard.js fix . --format json
 ```
 
 Generate a reviewable patch without editing files:
@@ -164,6 +166,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `scan [path] --baseline .awg-baseline.json` | Suppresses existing findings so CI can fail only on new risks. |
 | `baseline create [path]` | Writes `.awg-baseline.json` with stable finding fingerprints. |
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
+| `fix [path] --format json` | Emits structured fix recipes with confidence, automatic/manual mode, patch availability, and changed file counts. |
 | `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades without editing files. |
 | `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades and leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
@@ -173,6 +176,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules install core [path]` | Installs core rule pack metadata into `.awg/rules/`. |
 | `rules verify <file>` | Verifies a rule pack checksum before use. |
 | `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
+| `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
 | `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
 | `mcp resources --format markdown|json` | Prints MCP-style resource descriptors for rules, benchmarks, skills, and remediation playbooks. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
@@ -193,9 +197,9 @@ Agentic Workflow Guard now covers the mainstream agent context surfaces used by 
 | Gemini CLI | Supported | `GEMINI.md`, `.gemini/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | OpenClaw | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.openclaw/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | Hermes | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.hermes/skills/agentic-workflow-guard-auditor/SKILL.md` |
-| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `docs/playbooks/*.md` |
+| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `rules/marketplace.json`, `benchmarks/fixtures.json`, `schemas/*.json`, `docs/playbooks/*.md` |
 
-Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory. The MCP resource pack uses stable `awg://` URIs so an MCP server or agent runtime can expose the core rules, benchmark fixtures, auditor skill, and remediation playbooks as contextual resources.
+Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory. The MCP resource pack uses stable `awg://` URIs so an MCP server or agent runtime can expose the core rules, benchmark fixtures, report schemas, auditor skill, and remediation playbooks as contextual resources.
 
 ## Rule Catalog
 
@@ -256,7 +260,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.8.0
+      - uses: guorunjie/agentic-workflow-guard@v0.9.0
         with:
           path: .
           format: sarif
@@ -268,7 +272,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.8.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.9.0`.
 
 ## Examples
 
@@ -284,6 +288,7 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-pipedream --format
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-airflow --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/safe-browser-trace --format markdown
+node ./bin/agentic-workflow-guard.js fix examples/unsafe-ai-pr-bot --format json
 node ./bin/agentic-workflow-guard.js benchmark
 node ./bin/agentic-workflow-guard.js mcp resources
 ```
@@ -299,6 +304,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.3 | Baseline mode, browser traces, agent install helpers, patch output | `baseline create`, `fix --patch`, `agents install`, AWI010 |
 | v0.4 | Rule marketplace and benchmark snapshots | `rules list/search/install/verify`, checksums, `benchmark` |
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested, MCP resources, remediation playbooks |
+| v0.9 | Structured remediation plans | `fix --format json`, recipe confidence, automatic/manual modes, fix report schema |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

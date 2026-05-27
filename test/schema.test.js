@@ -35,6 +35,16 @@ test("CLI schema report emits the shipped report schema", async () => {
   assert.equal(parsed.properties.schemaVersion.const, "1.0.0");
 });
 
+test("CLI schema fix emits the shipped fix report schema", async () => {
+  const schema = JSON.parse(await readFile("schemas/agentic-workflow-guard-fix-report.schema.json", "utf8"));
+  const { stdout } = await execFileAsync("node", [bin, "schema", "fix"]);
+  const parsed = JSON.parse(stdout);
+
+  assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/fix-report.schema.json");
+  assert.equal(parsed.title, "Agentic Workflow Guard Fix Report");
+  assert.ok(parsed.required.includes("recipes"));
+});
+
 test("scan --output writes the selected report format and prints a summary", async () => {
   const output = path.join((await import("node:os")).tmpdir(), `awg-report-${Date.now()}.json`);
   const { stdout } = await execFileAsync("node", [bin, "scan", "examples/safe-github-action", "--format", "json", "--output", output]);

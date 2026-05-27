@@ -12,7 +12,7 @@ import { renderMcpResources } from "./mcpResources.js";
 import { renderJson, summarize } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
-import { renderReportSchema } from "./schema.js";
+import { renderFixReportSchema, renderReportSchema } from "./schema.js";
 import { installRulePack, renderRulePacks, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
@@ -42,10 +42,10 @@ function help() {
 Usage:
   agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--output report] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
-  agentic-workflow-guard fix [path] [--dry-run|--apply|--patch]
+  agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|search <query>|install core [path]|verify <file>] [--format markdown|json]
-  agentic-workflow-guard schema report
+  agentic-workflow-guard schema report|fix
   agentic-workflow-guard mcp resources [--format markdown|json]
   agentic-workflow-guard benchmark [path]
   agentic-workflow-guard agents [--format markdown|json]
@@ -111,7 +111,7 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
 
   if (command === "fix") {
     const root = path.resolve(firstPositional(args));
-    output.write(await renderFixPlan(root, { apply: args.includes("--apply"), patch: args.includes("--patch") }));
+    output.write(await renderFixPlan(root, { apply: args.includes("--apply"), patch: args.includes("--patch"), format: argValue(args, "--format", "markdown") }));
     return 0;
   }
 
@@ -154,12 +154,18 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
 
   if (command === "schema") {
     const subcommand = args[0] ?? "report";
-    if (subcommand !== "report") {
+    if (subcommand === "report") {
+      output.write(await renderReportSchema());
+      return 0;
+    }
+    if (subcommand === "fix") {
+      output.write(await renderFixReportSchema());
+      return 0;
+    }
+    if (!["report", "fix"].includes(subcommand)) {
       error.write(`Unknown schema command: ${subcommand}\n`);
       return 1;
     }
-    output.write(await renderReportSchema());
-    return 0;
   }
 
   if (command === "benchmark") {

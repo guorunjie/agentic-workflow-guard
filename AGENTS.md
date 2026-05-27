@@ -19,7 +19,9 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
+- schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
+- fix-json: `node ./bin/agentic-workflow-guard.js fix . --format json`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`
@@ -33,6 +35,7 @@ Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, 
 - Run agentic-workflow-guard scan . --format markdown
 - Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads
 - Use agentic-workflow-guard schema report when integrating machine-readable JSON reports
+- Use agentic-workflow-guard schema fix when integrating structured fix recipe reports
 - Use agentic-workflow-guard scan . --profile strict in write-capable or sensitive automation repositories
 - Use agentic-workflow-guard scan . --baseline .awg-baseline.json in existing repositories
 - Use awg-ignore AWI001: reason only for reviewed suppressions with an audit reason
@@ -40,6 +43,7 @@ Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, 
 - Prioritize high severity AWI001-AWI006 findings and review medium AWI007-AWI010 findings
 - Use agentic-workflow-guard explain AWI001 for rule-specific remediation
 - Use agentic-workflow-guard fix . --patch for a reviewable permission diff
+- Use agentic-workflow-guard fix . --format json for agent loops, PR bots, and UIs that need recipe confidence and automatic/manual modes
 - Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades
 - Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules
 - Use agentic-workflow-guard rules verify <file> before trusting external rule packs

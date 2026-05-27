@@ -19,7 +19,8 @@ Untrusted issue, pull request, comment, discussion, or release text reaches an a
 
 ```bash
 agentic-workflow-guard fix . --patch
+agentic-workflow-guard fix . --format json
 agentic-workflow-guard scan . --format sarif > awg.sarif
 ```
 
-Review the patch before applying it. The scanner can safely downgrade broad permissions and add dry-run defaults, but shell sinks and prompt boundaries still need human review.
+Review the patch before applying it. Use the JSON fix report when a PR bot, UI, or agent loop needs recipe confidence and automatic/manual remediation modes. The scanner can safely downgrade broad permissions and add dry-run defaults, but shell sinks and prompt boundaries still need human review.

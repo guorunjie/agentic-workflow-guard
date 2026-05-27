@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.8 schema and action release", async () => {
+test("package metadata reflects the expanded v0.9 fix schema and action release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.8.0");
+  assert.equal(pkg.version, "0.9.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
@@ -13,17 +13,20 @@ test("package metadata reflects the expanded v0.8 schema and action release", as
   assert.equal(pkg.scripts.benchmark, "node ./bin/agentic-workflow-guard.js benchmark");
   assert.equal(pkg.scripts["mcp:resources"], "node ./bin/agentic-workflow-guard.js mcp resources --format json");
   assert.equal(pkg.scripts["schema:report"], "node ./bin/agentic-workflow-guard.js schema report");
+  assert.equal(pkg.scripts["schema:fix"], "node ./bin/agentic-workflow-guard.js schema fix");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
   assert.ok(pkg.files.includes("schemas"));
 });
 
-test("README documents marketplace SARIF upload, output files, schemas, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
+test("README documents marketplace SARIF upload, output files, schemas, structured fixes, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
   assert.match(readme, /--output awg\.sarif/);
   assert.match(readme, /schema report/);
+  assert.match(readme, /schema fix/);
+  assert.match(readme, /fix \. --format json/);
   assert.match(readme, /fix \. --apply/);
   assert.match(readme, /fix \. --patch/);
   assert.match(readme, /baseline create/);
@@ -80,6 +83,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/index.md",
     "docs/npm-publish.md",
     "schemas/agentic-workflow-guard-report.schema.json",
+    "schemas/agentic-workflow-guard-fix-report.schema.json",
     ".awg.example.yml"
   ];
 

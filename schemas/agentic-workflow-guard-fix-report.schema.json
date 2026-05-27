@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guorunjie.github.io/agentic-workflow-guard/schemas/fix-report.schema.json",
+  "title": "Agentic Workflow Guard Fix Report",
+  "type": "object",
+  "required": ["schemaVersion", "mode", "summary", "changes", "recipes", "findings"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["dry-run", "apply"]
+    },
+    "summary": {
+      "type": "object",
+      "required": ["findings", "automaticRecipes", "manualRecipes", "availablePatches", "changedFiles"],
+      "additionalProperties": false,
+      "properties": {
+        "findings": { "type": "integer", "minimum": 0 },
+        "automaticRecipes": { "type": "integer", "minimum": 0 },
+        "manualRecipes": { "type": "integer", "minimum": 0 },
+        "availablePatches": { "type": "integer", "minimum": 0 },
+        "changedFiles": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "applied", "recipeIds"],
+        "additionalProperties": false,
+        "properties": {
+          "file": { "type": "string", "minLength": 1 },
+          "applied": { "type": "boolean" },
+          "recipeIds": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "mode", "confidence", "title", "ruleId", "file", "findingFile", "remediation"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "mode": { "type": "string", "enum": ["automatic", "manual"] },
+          "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+          "title": { "type": "string", "minLength": 1 },
+          "ruleId": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+          "file": { "type": "string", "minLength": 1 },
+          "findingFile": { "type": "string", "minLength": 1 },
+          "remediation": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "report.schema.json#/$defs/finding" }
+    }
+  }
+}

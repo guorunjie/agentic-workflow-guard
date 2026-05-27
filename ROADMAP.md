@@ -89,9 +89,17 @@ North star:
 - Add `scan --output` for report files without shell redirection.
 - Improve GitHub Action inputs and outputs for profile, baseline, report path, and Step Summary.
 
+## v0.9: Structured Fix Recipes
+
+- Add `fix --format json` for agent loops, PR bots, and UIs that need machine-readable remediation plans.
+- Add automatic/manual recipe modes and confidence levels for each finding.
+- Add stable fix report schema and `schema fix` command.
+- Publish fix schema through MCP resources and package files.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
+- Stable fix recipe schema.
 - Stable rule IDs and severity policy.
 - GitHub Marketplace release.
 - npm release.
