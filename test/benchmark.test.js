@@ -6,6 +6,7 @@ import { test } from "node:test";
 import { promisify } from "node:util";
 
 import { loadBenchmarkCorpus } from "../src/benchmark.js";
+import { packageVersion } from "../src/version.js";
 
 const execFileAsync = promisify(execFile);
 const bin = path.resolve("bin/agentic-workflow-guard.js");
@@ -31,7 +32,7 @@ test("benchmark command emits scored JSON reports", async () => {
 
   assert.equal(report.schemaVersion, "1.0.0");
   assert.equal(report.name, "agentic-workflow-guard-benchmark-report");
-  assert.equal(report.version, "0.20.0");
+  assert.equal(report.version, packageVersion);
   assert.deepEqual(report.summary, { fixtureCount: 28, passed: 28, failed: 0, passRate: 100 });
   assert.ok(report.platforms.includes("GitHub Actions"));
   assert.ok(report.ruleIds.includes("AWI010"));
@@ -69,7 +70,7 @@ test("benchmark corpus command emits portable fixture metadata", async () => {
   const vulnerableGithubAction = corpus.fixtures.find((fixture) => fixture.name === "vulnerable-github-action");
 
   assert.equal(corpus.schemaVersion, "1.0.0");
-  assert.equal(corpus.version, "0.20.0");
+  assert.equal(corpus.version, packageVersion);
   assert.equal(corpus.fixtureCount, 28);
   assert.ok(corpus.platforms.includes("GitHub Actions"));
   assert.ok(corpus.platforms.includes("Azure Pipelines"));

@@ -3,14 +3,14 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { rules } from "./rules/index.js";
+import { packageVersion, packageVersionRange, semverPattern } from "./version.js";
 
-const packageVersion = "0.20.0";
 const rulePackSchemaVersion = "1.0.0";
 const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
 const coreRuleIds = Object.keys(rules);
 const repository = "https://github.com/guorunjie/agentic-workflow-guard";
 const rulePackCompatibility = {
-  cli: `>=${packageVersion} <1.0.0`,
+  cli: packageVersionRange(),
   schema: "agentic-workflow-guard-rule-pack@1"
 };
 
@@ -119,7 +119,7 @@ export function validateRulePack(pack) {
   if (pack.schemaVersion !== rulePackSchemaVersion) {
     throw new Error(`Rule pack schema validation failed: expected schemaVersion ${rulePackSchemaVersion}, got ${pack.schemaVersion}`);
   }
-  if (!/^\d+\.\d+\.\d+$/.test(pack.version)) {
+  if (!semverPattern.test(pack.version)) {
     throw new Error(`Rule pack schema validation failed: invalid version ${pack.version}`);
   }
   if (!pack.compatibility?.cli || !pack.compatibility?.schema || !pack.compatibility?.ruleIds) {

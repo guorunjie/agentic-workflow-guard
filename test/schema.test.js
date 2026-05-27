@@ -54,6 +54,8 @@ test("CLI schema benchmark-corpus emits the shipped benchmark corpus schema", as
 
   assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-corpus.schema.json");
   assert.equal(parsed.title, "Agentic Workflow Guard Benchmark Corpus");
+  assert.match("1.0.0-rc.1", new RegExp(parsed.properties.version.pattern));
+  assert.match("agentic-workflow-guard@1.0.0-rc.1", new RegExp(parsed.properties.generatedBy.pattern));
   assert.ok(parsed.required.includes("fixtures"));
   assert.ok(parsed.properties.fixtures.items.$ref);
 });
@@ -65,6 +67,8 @@ test("CLI schema benchmark-report emits the shipped benchmark report schema", as
 
   assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-report.schema.json");
   assert.equal(parsed.title, "Agentic Workflow Guard Benchmark Report");
+  assert.match("1.0.0-rc.1", new RegExp(parsed.properties.version.pattern));
+  assert.match("agentic-workflow-guard@1.0.0-rc.1", new RegExp(parsed.properties.generatedBy.pattern));
   assert.ok(parsed.required.includes("summary"));
   assert.ok(parsed.properties.results.items.$ref);
 });

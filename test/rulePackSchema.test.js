@@ -7,6 +7,7 @@ import { test } from "node:test";
 import { promisify } from "node:util";
 
 import { availableRulePacks, coreRulePack, ruleRegistry, withChecksum } from "../src/rulesCatalog.js";
+import { packageVersion, packageVersionRange } from "../src/version.js";
 
 const execFileAsync = promisify(execFile);
 const bin = path.resolve("bin/agentic-workflow-guard.js");
@@ -17,12 +18,12 @@ test("rules list exposes v1 marketplace metadata for the core rule pack", async 
   const pack = parsed.packs[0];
 
   assert.equal(pack.schemaVersion, "1.0.0");
-  assert.equal(pack.version, "0.20.0");
+  assert.equal(pack.version, packageVersion);
   assert.ok(parsed.packs.length >= 3);
   assert.ok(parsed.packs.some((entry) => entry.provenance.source === "community"));
   assert.equal(pack.ruleCount, pack.rules.length);
-  assert.match(pack.compatibility.cli, /^>=0\.20\.0/);
-  assert.equal(pack.provenance.releaseTag, "v0.20.0");
+  assert.equal(pack.compatibility.cli, packageVersionRange());
+  assert.equal(pack.provenance.releaseTag, `v${packageVersion}`);
   assert.match(pack.checksum, /^sha256:[a-f0-9]{64}$/);
 });
 
@@ -52,6 +53,7 @@ test("schema rule-pack emits the shipped rule pack schema", async () => {
 
   assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/rule-pack.schema.json");
   assert.equal(parsed.title, "Agentic Workflow Guard Rule Pack");
+  assert.match("1.0.0-rc.1", new RegExp(parsed.properties.version.pattern));
   assert.ok(parsed.required.includes("compatibility"));
   assert.ok(parsed.required.includes("provenance"));
 });

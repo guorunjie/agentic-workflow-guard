@@ -2,8 +2,8 @@ import path from "node:path";
 
 import { scanProject } from "./scan.js";
 import { readJson } from "./utils/files.js";
+import { packageVersion } from "./version.js";
 
-const packageVersion = "0.20.0";
 const corpusSchemaVersion = "1.0.0";
 const reportSchemaVersion = "1.0.0";
 
