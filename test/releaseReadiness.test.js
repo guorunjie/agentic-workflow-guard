@@ -2,13 +2,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the v0.19 benchmark schema and scoring release", async () => {
+test("package metadata reflects the v0.20 marketplace and install readiness release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.19.0");
+  assert.equal(pkg.version, "0.20.0");
   assert.match(pkg.description, /Semgrep-style scanner/i);
-  assert.match(pkg.description, /benchmark corpus schemas/i);
-  assert.match(pkg.description, /scoring reports/i);
+  assert.match(pkg.description, /marketplace action smoke tests/i);
   assert.match(pkg.description, /portable skills/i);
   assert.ok(pkg.keywords.includes("gitlab-ci"));
   assert.ok(pkg.keywords.includes("circleci"));
@@ -31,6 +30,7 @@ test("package metadata reflects the v0.19 benchmark schema and scoring release",
   assert.equal(pkg.scripts["schema:benchmark-corpus"], "node ./bin/agentic-workflow-guard.js schema benchmark-corpus");
   assert.equal(pkg.scripts["schema:benchmark-report"], "node ./bin/agentic-workflow-guard.js schema benchmark-report");
   assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
+  assert.equal(pkg.scripts["smoke:package"], "node ./scripts/smoke-package.js");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
   assert.ok(pkg.files.includes("schemas"));
@@ -67,6 +67,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /benchmark/);
   assert.match(readme, /benchmark corpus/);
   assert.match(readme, /benchmarks\/corpus\.json/);
+  assert.match(readme, /Demo Playbook/);
+  assert.match(readme, /npm run smoke:package/);
   assert.match(readme, /mcp resources/);
   assert.match(readme, /--profile strict/);
   assert.match(readme, /awg-ignore AWI001/);
@@ -78,6 +80,8 @@ test("GitHub Action writes SARIF output files for Code Scanning upload", async (
   const action = await readFile("action.yml", "utf8");
 
   assert.match(action, /output:/);
+  assert.match(action, /author: guorunjie/);
+  assert.match(action, /color: blue/);
   assert.match(action, /awg\.sarif/);
   assert.match(action, /profile:/);
   assert.match(action, /baseline:/);
@@ -91,6 +95,10 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /actions\/checkout@v6/);
   assert.match(workflow, /actions\/setup-node@v6/);
   assert.match(workflow, /node-version: 24/);
+  assert.match(workflow, /action-smoke/);
+  assert.match(workflow, /uses: \.\//);
+  assert.match(workflow, /profile: advisory/);
+  assert.match(workflow, /awg-action-smoke\.json/);
 });
 
 test("Pages workflow publishes generated docs and stable schema URLs", async () => {
@@ -139,10 +147,12 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/playbooks/browser-automation.md",
     "docs/policy-profiles-and-suppressions.md",
     "docs/rule-marketplace.md",
+    "docs/demos.md",
     "docs/index.md",
     "docs-site/index.html",
     "docs-site/marketplace.html",
     "scripts/build-pages.js",
+    "scripts/smoke-package.js",
     "docs/npm-publish.md",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",

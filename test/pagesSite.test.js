@@ -29,6 +29,7 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   await stat(path.join(outDir, "404.html"));
   assert.match(index, /Semgrep-style scanning for AI automation workflows/);
   assert.match(index, /schemas\/report\.schema\.json/);
+  assert.match(index, /Demo playbook/);
   assert.match(marketplace, /GitHub Action Marketplace/);
   assert.equal(reportSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/report.schema.json");
   assert.equal(fixSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/fix-report.schema.json");

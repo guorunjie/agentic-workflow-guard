@@ -16,3 +16,22 @@ jobs:
           node-version: 24
       - run: npm test
       - run: node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --format sarif > awg.sarif || test "$?" = "1"
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Run local marketplace action
+        uses: ./
+        with:
+          path: examples/vulnerable-github-action
+          format: json
+          profile: advisory
+          output: awg-action-smoke.json
+      - name: Verify local action output
+        run: |
+          test -s awg-action-smoke.json
+          node -e 'const fs = require("node:fs"); const report = JSON.parse(fs.readFileSync("awg-action-smoke.json", "utf8")); if (!report.findings.some((finding) => finding.ruleId === "AWI001")) process.exit(1);'

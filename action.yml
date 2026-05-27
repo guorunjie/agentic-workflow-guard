@@ -1,8 +1,9 @@
 name: Agentic Workflow Guard
-description: Security scanner and portable skill pack for AI automation workflows, prompt-injection paths, risky tools, and overpowered permissions.
+author: guorunjie
+description: Scan AI automation workflows for prompt injection, risky tools, CI side effects, MCP exposure, and overpowered permissions.
 branding:
   icon: shield
-  color: purple
+  color: blue
 inputs:
   path:
     description: Repository path to scan.

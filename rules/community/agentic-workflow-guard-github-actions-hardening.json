@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-github-actions-hardening",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "Focused GitHub Actions rule pack for prompt-injection, shell-sink, token, pull_request_target, and missing-control risks.",
   "publisher": "guorunjie",
   "license": "MIT",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "compatibility": {
-    "cli": ">=0.19.0 <1.0.0",
+    "cli": ">=0.20.0 <1.0.0",
     "schema": "agentic-workflow-guard-rule-pack@1",
     "ruleIds": "AWI001-AWI004,AWI007-AWI008"
   },
@@ -26,7 +26,7 @@
   "provenance": {
     "source": "community",
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
-    "releaseTag": "v0.19.0"
+    "releaseTag": "v0.20.0"
   },
-  "checksum": "sha256:1e9c35480e5c16a1c60a91289dfaed5aca12611d3444c45b9013ec45a0549c38"
+  "checksum": "sha256:e5fa378a8cd09c623652a4971f5e725e80766e617b60b350d7e305cdc44b95ad"
 }

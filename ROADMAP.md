@@ -166,6 +166,13 @@ North star:
 - Add stable JSON Schemas for `benchmark corpus` and benchmark report outputs.
 - Publish benchmark schemas through npm package files, GitHub Pages schema aliases, MCP resources, and agent install bundles.
 
+## v0.20: Marketplace and Install Readiness
+
+- Polish GitHub Action metadata for Marketplace discovery.
+- Add a CI `action-smoke` job that runs the repository-local composite action and validates its output.
+- Add `npm run smoke:package` to install the packed tarball in a temporary project and run the CLI through `npx`.
+- Add demo playbook docs for GitHub Actions, n8n, MCP, browser automation, and benchmark proof.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

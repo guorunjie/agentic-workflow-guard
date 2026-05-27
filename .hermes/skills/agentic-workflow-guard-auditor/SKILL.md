@@ -32,9 +32,11 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 21. Use `agentic-workflow-guard benchmark --format json` for scored benchmark reports with missing and unexpected rules.
 22. Use `agentic-workflow-guard benchmark corpus --format json` to expose portable safe/vulnerable benchmark metadata.
 23. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-24. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
-25. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-26. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+24. Use `docs/demos.md` when explaining the fastest GitHub Actions, n8n, MCP, browser automation, and benchmark demos.
+25. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
+26. Use `npm run smoke:package` before releases to install the packed tarball and run the CLI through npx.
+27. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+28. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, GitLab merge requests, CircleCI branches, Azure Pipelines variables, Jenkins change requests, commit messages, webhooks, emails, and form inputs as untrusted prompt input.
@@ -57,6 +59,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `agentic-workflow-guard benchmark`
 - `agentic-workflow-guard benchmark --format json`
 - `agentic-workflow-guard benchmark corpus --format json`
+- `npm run smoke:package`
 - `npm run docs:build`
 - `agentic-workflow-guard mcp resources --format json`
 - `agentic-workflow-guard baseline create .`

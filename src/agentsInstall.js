@@ -29,6 +29,7 @@ const installTargets = {
     "skills/agentic-workflow-guard-auditor/SKILL.md",
     "docs/policy-profiles-and-suppressions.md",
     "docs/rule-marketplace.md",
+    "docs/demos.md",
     "docs/index.md",
     "docs/npm-publish.md",
     "docs/playbooks/github-actions.md",

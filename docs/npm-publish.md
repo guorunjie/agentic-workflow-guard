@@ -20,6 +20,7 @@ node ./bin/agentic-workflow-guard.js schema rule-pack
 node ./bin/agentic-workflow-guard.js schema benchmark-corpus
 node ./bin/agentic-workflow-guard.js schema benchmark-report
 npm run docs:build
+npm run smoke:package
 npm pack --dry-run
 ```
 
@@ -36,6 +37,8 @@ npm view agentic-workflow-guard version
 npx agentic-workflow-guard --help
 npx agentic-workflow-guard scan examples/vulnerable-github-action --format markdown
 ```
+
+If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configure an automation token before running `npm publish`.
 
 ## Release Notes
 

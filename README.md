@@ -17,6 +17,8 @@ The exported `skillpack.yaml` can be compiled by [Skillpack Forge](https://githu
 
 Public docs and stable schema URLs are available on GitHub Pages at `https://guorunjie.github.io/agentic-workflow-guard/`.
 
+Start with [Demo Playbook](docs/demos.md) when you want a quick story for the risk: untrusted input -> AI decision -> write-capable side effect.
+
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
 - untrusted GitHub issue, GitLab merge request, CircleCI branch, Azure Pipelines pull request, Jenkins change request, or commit text entering an agent prompt;
@@ -286,9 +288,12 @@ on:
 jobs:
   guard:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.19.0
+      - uses: guorunjie/agentic-workflow-guard@v0.20.0
         with:
           path: .
           format: sarif
@@ -300,7 +305,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.19.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.20.0`.
 
 ## Examples
 
@@ -350,6 +355,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.17 | Community rule-pack registry | Installable `github-actions-hardening` and `low-code-automation` packs, registry JSON, docs, and MCP resources |
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
 | v0.19 | Benchmark schemas and scoring | `benchmark --format json`, pass-rate scoring, corpus/report schemas, Pages and MCP schema distribution |
+| v0.20 | Marketplace and install readiness | Action self-smoke workflow, Marketplace metadata polish, package smoke script, demo playbook |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
@@ -363,6 +369,7 @@ node ./bin/agentic-workflow-guard.js benchmark --format json
 node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 npm run docs:build
+npm run smoke:package
 npm pack --dry-run
 ```
 

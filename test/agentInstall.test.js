@@ -46,6 +46,7 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   const playbook = await readFile(path.join(root, "docs", "playbooks", "github-actions.md"), "utf8");
   const ciPlaybook = await readFile(path.join(root, "docs", "playbooks", "ci-pipelines.md"), "utf8");
   const marketplaceGuide = await readFile(path.join(root, "docs", "rule-marketplace.md"), "utf8");
+  const demos = await readFile(path.join(root, "docs", "demos.md"), "utf8");
 
   assert.match(stdout, /Installed mcp-resources/);
   assert.match(manifest, /awg:\/\/rules\/core/);
@@ -61,4 +62,5 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(ciPlaybook, /Azure Pipelines/);
   assert.match(ciPlaybook, /Jenkins/);
   assert.match(marketplaceGuide, /rules registry/);
+  assert.match(demos, /Demo Playbook/);
 });

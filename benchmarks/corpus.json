@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-benchmark-corpus",
-  "version": "0.19.0",
-  "generatedBy": "agentic-workflow-guard@0.19.0",
+  "version": "0.20.0",
+  "generatedBy": "agentic-workflow-guard@0.20.0",
   "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "fixtureManifestVersion": 1,

@@ -17,12 +17,12 @@ test("rules list exposes v1 marketplace metadata for the core rule pack", async 
   const pack = parsed.packs[0];
 
   assert.equal(pack.schemaVersion, "1.0.0");
-  assert.equal(pack.version, "0.19.0");
+  assert.equal(pack.version, "0.20.0");
   assert.ok(parsed.packs.length >= 3);
   assert.ok(parsed.packs.some((entry) => entry.provenance.source === "community"));
   assert.equal(pack.ruleCount, pack.rules.length);
-  assert.match(pack.compatibility.cli, /^>=0\.19\.0/);
-  assert.equal(pack.provenance.releaseTag, "v0.19.0");
+  assert.match(pack.compatibility.cli, /^>=0\.20\.0/);
+  assert.equal(pack.provenance.releaseTag, "v0.20.0");
   assert.match(pack.checksum, /^sha256:[a-f0-9]{64}$/);
 });
 

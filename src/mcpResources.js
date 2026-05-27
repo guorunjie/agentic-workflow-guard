@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.19.0",
+  version: "0.20.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -123,6 +123,15 @@ export const mcpResourcePack = {
       mimeType: "text/markdown",
       path: "docs/index.md",
       annotations: { audience: ["assistant", "user"], priority: 0.8 }
+    },
+    {
+      uri: "awg://docs/demos",
+      name: "demo-playbook",
+      title: "Agentic Workflow Guard Demo Playbook",
+      description: "High-signal demos for GitHub Actions, n8n, MCP, browser automation, and benchmark proof.",
+      mimeType: "text/markdown",
+      path: "docs/demos.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.9 }
     },
     {
       uri: "awg://release/npm-publish",
