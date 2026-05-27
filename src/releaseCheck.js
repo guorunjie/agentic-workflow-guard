@@ -111,14 +111,9 @@ async function targetVersionGate(root, targetVersion) {
 
 async function versionSyncGate(root) {
   const pkg = await readJson(root, "package.json");
-  const versionFiles = [
-    ["rules/marketplace.json", "version"],
-    ["rules/registry.json", "version"],
-    ["rules/community/agentic-workflow-guard-github-actions-hardening.json", "version"],
-    ["rules/community/agentic-workflow-guard-low-code-automation.json", "version"],
-    ["benchmarks/corpus.json", "version"],
-    ["mcp/resources/agentic-workflow-guard.resources.json", "version"]
-  ];
+  const versionFiles = (await staticMetadataTargets(root))
+    .filter((target) => target.value && typeof target.value === "object" && "version" in target.value)
+    .map((target) => [target.path, "version"]);
   const mismatches = [];
   for (const [file, field] of versionFiles) {
     const json = await readJson(root, file);

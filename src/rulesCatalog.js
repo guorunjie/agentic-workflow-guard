@@ -78,6 +78,27 @@ export const communityRulePacks = [
       repository,
       releaseTag: `v${packageVersion}`
     }
+  },
+  {
+    schemaVersion: rulePackSchemaVersion,
+    name: "agentic-workflow-guard-mcp-tool-governance",
+    version: packageVersion,
+    description: "Focused MCP tool governance rule pack for broad filesystem, shell, browser, repository, container, and cloud tool exposure.",
+    publisher: "guorunjie",
+    license: "MIT",
+    homepage: repository,
+    compatibility: {
+      ...rulePackCompatibility,
+      ruleIds: "AWI006"
+    },
+    platforms: ["mcp"],
+    rules: ["AWI006"],
+    ruleCount: 1,
+    provenance: {
+      source: "community",
+      repository,
+      releaseTag: `v${packageVersion}`
+    }
   }
 ];
 

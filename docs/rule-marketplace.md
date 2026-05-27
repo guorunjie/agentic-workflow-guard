@@ -17,6 +17,7 @@ The registry includes aliases, checksums, install commands, source labels, platf
 agentic-workflow-guard rules install core .
 agentic-workflow-guard rules install github-actions-hardening .
 agentic-workflow-guard rules install low-code-automation .
+agentic-workflow-guard rules install mcp-tool-governance .
 ```
 
 Installed packs are written to `.awg/rules/` with `agentic-workflow-guard-rules.lock.json`. The lock file records the pack name, version, checksum, relative path, and source.
@@ -26,6 +27,7 @@ Installed packs are written to `.awg/rules/` with `agentic-workflow-guard-rules.
 ```bash
 agentic-workflow-guard rules verify .awg/rules/agentic-workflow-guard-core-rules.json
 agentic-workflow-guard rules verify rules/community/agentic-workflow-guard-github-actions-hardening.json
+agentic-workflow-guard rules verify rules/community/agentic-workflow-guard-mcp-tool-governance.json
 ```
 
 Verification checks required schema metadata before trusting a checksum, then recomputes the checksum from canonical JSON.
@@ -37,6 +39,7 @@ Verification checks required schema metadata before trusting a checksum, then re
 | `core` | bundled | GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP, low-code, Dify, Flowise, Langflow, Airflow, browser automation | AWI001-AWI010 |
 | `github-actions-hardening` | community | GitHub Actions | AWI001-AWI004, AWI007-AWI008 |
 | `low-code-automation` | community | n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, browser automation | AWI005, AWI009-AWI010 |
+| `mcp-tool-governance` | community | MCP | AWI006 |
 
 ## Contribution Checklist
 

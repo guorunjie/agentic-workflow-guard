@@ -97,6 +97,22 @@
       "checksum": "sha256:aeadc977d09cc1d5b2b448e5f56160f2e95a3e2a43792f527b49c550d230f082",
       "install": "agentic-workflow-guard rules install low-code-automation .",
       "path": "rules/community/agentic-workflow-guard-low-code-automation.json"
+    },
+    {
+      "name": "agentic-workflow-guard-mcp-tool-governance",
+      "alias": "mcp-tool-governance",
+      "version": "0.20.0",
+      "description": "Focused MCP tool governance rule pack for broad filesystem, shell, browser, repository, container, and cloud tool exposure.",
+      "source": "community",
+      "platforms": [
+        "mcp"
+      ],
+      "rules": [
+        "AWI006"
+      ],
+      "checksum": "sha256:f4aa0719fe0ea56c2a93cf1d830b6574273f609704663cf92234f67f9763d84d",
+      "install": "agentic-workflow-guard rules install mcp-tool-governance .",
+      "path": "rules/community/agentic-workflow-guard-mcp-tool-governance.json"
     }
   ]
 }

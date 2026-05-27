@@ -2,7 +2,12 @@ import { cp, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { availableRulePacks } from "./rulesCatalog.js";
+
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const communityRulePackFiles = availableRulePacks
+  .filter((pack) => pack.provenance.source === "community")
+  .map((pack) => `rules/community/${pack.name}.json`);
 
 const installTargets = {
   "agents-md": ["AGENTS.md"],
@@ -17,8 +22,7 @@ const installTargets = {
     "mcp/resources/agentic-workflow-guard.resources.json",
     "rules/marketplace.json",
     "rules/registry.json",
-    "rules/community/agentic-workflow-guard-github-actions-hardening.json",
-    "rules/community/agentic-workflow-guard-low-code-automation.json",
+    ...communityRulePackFiles,
     "benchmarks/fixtures.json",
     "benchmarks/corpus.json",
     "schemas/agentic-workflow-guard-report.schema.json",

@@ -77,6 +77,7 @@ test("rules registry lists installable community packs", async () => {
   assert.equal(registry.schemaVersion, "1.0.0");
   assert.ok(registry.packs.some((pack) => pack.alias === "github-actions-hardening" && pack.source === "community"));
   assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation" && /rules install low-code-automation/.test(pack.install)));
+  assert.ok(registry.packs.some((pack) => pack.alias === "mcp-tool-governance" && pack.rules.includes("AWI006")));
 });
 
 test("rules install writes community rule pack metadata and lock source", async () => {
@@ -91,4 +92,16 @@ test("rules install writes community rule pack metadata and lock source", async 
   assert.deepEqual(installed.platforms, ["github-actions"]);
   assert.equal(lock.packs[0].source, "community");
   assert.equal(lock.packs[0].checksum, installed.checksum);
+});
+
+test("rules install writes MCP tool governance community pack metadata", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-mcp-rules-"));
+
+  const { stdout } = await execFileAsync("node", [bin, "rules", "install", "mcp-tool-governance", root]);
+  const installed = JSON.parse(await readFile(path.join(root, ".awg", "rules", "agentic-workflow-guard-mcp-tool-governance.json"), "utf8"));
+
+  assert.match(stdout, /Installed mcp-tool-governance/);
+  assert.equal(installed.provenance.source, "community");
+  assert.deepEqual(installed.platforms, ["mcp"]);
+  assert.deepEqual(installed.rules, ["AWI006"]);
 });

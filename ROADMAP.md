@@ -148,7 +148,7 @@ North star:
 
 ## v0.17: Community Rule-Pack Registry
 
-- Add installable focused rule packs for GitHub Actions hardening and low-code/browser automation.
+- Add installable focused rule packs for GitHub Actions hardening, MCP tool governance, and low-code/browser automation.
 - Add `rules registry` with aliases, checksums, install commands, platform lists, and source labels.
 - Ship static registry and community pack JSON through the npm package, GitHub Pages, MCP resources, and agent install bundles.
 - Document contribution expectations for future external packs and benchmark fixtures.

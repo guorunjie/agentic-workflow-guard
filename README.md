@@ -150,6 +150,7 @@ Inspect and install focused rule packs:
 ```bash
 node ./bin/agentic-workflow-guard.js rules registry --format json
 node ./bin/agentic-workflow-guard.js rules install github-actions-hardening .
+node ./bin/agentic-workflow-guard.js rules install mcp-tool-governance .
 ```
 
 Start from the sample config:
@@ -200,6 +201,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules install core [path]` | Installs v1 core rule pack metadata and a lock file into `.awg/rules/`. |
 | `rules install github-actions-hardening [path]` | Installs a focused GitHub Actions community rule pack. |
 | `rules install low-code-automation [path]` | Installs a focused low-code and browser automation community rule pack. |
+| `rules install mcp-tool-governance [path]` | Installs a focused MCP tool governance community rule pack. |
 | `rules verify <file>` | Verifies rule pack schema metadata and checksum before use. |
 | `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
 | `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
@@ -358,7 +360,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.14 | Azure Pipelines and Jenkins coverage | Service connection and credential evidence, vulnerable/safe pipeline fixtures |
 | v0.15 | Platform-aware remediation engine | GitHub permissions, MCP filesystem read-only scoping, and GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
 | v0.16 | Approval snippet recipes | `fix --format json` and Markdown plans include next steps plus approval, artifact, scope, and allowlist snippets |
-| v0.17 | Community rule-pack registry | Installable `github-actions-hardening` and `low-code-automation` packs, registry JSON, docs, and MCP resources |
+| v0.17 | Community rule-pack registry | Installable `github-actions-hardening`, `low-code-automation`, and `mcp-tool-governance` packs, registry JSON, docs, and MCP resources |
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
 | v0.19 | Benchmark schemas and scoring | `benchmark --format json`, pass-rate scoring, corpus/report schemas, Pages and MCP schema distribution |
 | v0.20 | Marketplace and install readiness | Action self-smoke workflow, Marketplace metadata polish, package smoke script, demo playbook |

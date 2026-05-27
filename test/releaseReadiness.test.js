@@ -70,6 +70,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /agents install/);
   assert.match(readme, /rules registry/);
   assert.match(readme, /github-actions-hardening/);
+  assert.match(readme, /mcp-tool-governance/);
   assert.match(readme, /rules verify/);
   assert.match(readme, /rule pack schema/);
   assert.match(readme, /benchmark/);
@@ -151,6 +152,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "rules/registry.json",
     "rules/community/agentic-workflow-guard-github-actions-hardening.json",
     "rules/community/agentic-workflow-guard-low-code-automation.json",
+    "rules/community/agentic-workflow-guard-mcp-tool-governance.json",
     "examples/safe-node-red/flows.json",
     "examples/safe-gitlab-ci/.gitlab-ci.yml",
     "examples/safe-circleci/.circleci/config.yml",

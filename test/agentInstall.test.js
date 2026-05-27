@@ -43,6 +43,7 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   const registry = await readFile(path.join(root, "rules", "registry.json"), "utf8");
   const corpus = await readFile(path.join(root, "benchmarks", "corpus.json"), "utf8");
   const community = await readFile(path.join(root, "rules", "community", "agentic-workflow-guard-github-actions-hardening.json"), "utf8");
+  const mcpCommunity = await readFile(path.join(root, "rules", "community", "agentic-workflow-guard-mcp-tool-governance.json"), "utf8");
   const playbook = await readFile(path.join(root, "docs", "playbooks", "github-actions.md"), "utf8");
   const ciPlaybook = await readFile(path.join(root, "docs", "playbooks", "ci-pipelines.md"), "utf8");
   const marketplaceGuide = await readFile(path.join(root, "docs", "rule-marketplace.md"), "utf8");
@@ -57,8 +58,10 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(benchmarkReportSchema, /Agentic Workflow Guard Benchmark Report/);
   assert.match(rules, /agentic-workflow-guard-core-rules/);
   assert.match(registry, /github-actions-hardening/);
+  assert.match(registry, /mcp-tool-governance/);
   assert.match(corpus, /agentic-workflow-guard-benchmark-corpus/);
   assert.match(community, /AWI004/);
+  assert.match(mcpCommunity, /AWI006/);
   assert.match(playbook, /GitHub Actions/);
   assert.match(ciPlaybook, /Azure Pipelines/);
   assert.match(ciPlaybook, /Jenkins/);

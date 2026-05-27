@@ -2,6 +2,8 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { staticMetadataTargets } from "../src/staticMetadata.js";
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outArgIndex = process.argv.indexOf("--out");
 const outDir = path.resolve(outArgIndex === -1 ? "site-dist" : process.argv[outArgIndex + 1]);
@@ -39,15 +41,7 @@ const schemaAliases = [
   }
 ];
 
-const jsonCopies = [
-  "rules/marketplace.json",
-  "rules/registry.json",
-  "rules/community/agentic-workflow-guard-github-actions-hardening.json",
-  "rules/community/agentic-workflow-guard-low-code-automation.json",
-  "benchmarks/fixtures.json",
-  "benchmarks/corpus.json",
-  "mcp/resources/agentic-workflow-guard.resources.json"
-];
+const jsonCopies = (await staticMetadataTargets(root)).map((target) => target.path);
 
 async function copyProjectFile(relative) {
   const target = path.join(outDir, relative);
