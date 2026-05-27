@@ -26,6 +26,14 @@ test("GitHub Action writes SARIF output files for Code Scanning upload", async (
   assert.match(action, /awg\.sarif/);
 });
 
+test("CI workflow uses current Node runtime actions", async () => {
+  const workflow = await readFile(".github/workflows/test.yml", "utf8");
+
+  assert.match(workflow, /actions\/checkout@v6/);
+  assert.match(workflow, /actions\/setup-node@v6/);
+  assert.match(workflow, /node-version: 24/);
+});
+
 test("repository ships examples for new workflow platform scanners", async () => {
   const files = [
     "examples/vulnerable-node-red/flows.json",
