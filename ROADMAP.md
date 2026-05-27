@@ -103,6 +103,13 @@ North star:
 - Add install lock files for bundled rule packs.
 - Make `rules verify` validate schema metadata before checksum trust.
 
+## v0.11: Public Docs and Schema URLs
+
+- Add GitHub Pages workflow for a static project docs site.
+- Add stable public schema URL aliases for report, fix report, and rule pack schemas.
+- Add a Marketplace-ready Action landing page and generated schema index.
+- Add `docs:build` so release checks can validate the Pages artifact locally.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

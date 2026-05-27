@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agentic Workflow Guard</title>
+    <meta name="description" content="Semgrep-style scanning for AI automation workflows before agents get write access.">
+    <link rel="stylesheet" href="assets/site.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">Agentic Workflow Guard</div>
+        <nav class="nav" aria-label="Primary">
+          <a href="https://github.com/guorunjie/agentic-workflow-guard">GitHub</a>
+          <a href="marketplace.html">Marketplace</a>
+          <a href="schemas/index.json">Schemas</a>
+          <a href="rules/marketplace.json">Rules</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="eyebrow">AI automation security scanner</div>
+        <h1>Semgrep-style scanning for AI automation workflows.</h1>
+        <p class="lede">Find prompt-injection paths, write-capable agent jobs, risky n8n flows, broad MCP tools, low-code side effects, browser automation risks, and unsafe workflow permissions before an agent runs.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/guorunjie/agentic-workflow-guard">View repository</a>
+          <a class="button" href="marketplace.html">GitHub Action setup</a>
+          <a class="button" href="schemas/report.schema.json">Report schema</a>
+        </div>
+      </section>
+
+      <section class="grid" aria-label="Core capabilities">
+        <article class="card">
+          <h2>Scan workflows</h2>
+          <p>Audit GitHub Actions, n8n, MCP configs, Activepieces, Zapier-style flows, Make, Pipedream, Node-RED, Airflow, and browser automation traces.</p>
+        </article>
+        <article class="card">
+          <h2>Emit CI evidence</h2>
+          <p>Output Markdown, JSON, and SARIF reports. Upload SARIF to GitHub Code Scanning and keep suppression reasons visible.</p>
+        </article>
+        <article class="card">
+          <h2>Guide remediation</h2>
+          <p>Use dry-run fix plans, patch previews, low-risk permission fixes, and structured fix reports for PR bots and agent loops.</p>
+        </article>
+        <article class="card">
+          <h2>Ship agent skills</h2>
+          <p>Install Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, AGENTS.md, and MCP resource pack context files.</p>
+        </article>
+      </section>
+
+      <section class="band">
+        <h2>Quick start</h2>
+        <pre><code>npx agentic-workflow-guard scan . --format sarif --output awg.sarif
+npx agentic-workflow-guard fix . --format json
+npx agentic-workflow-guard rules verify .awg/rules/agentic-workflow-guard-core-rules.json</code></pre>
+      </section>
+
+      <section class="band">
+        <h2>Stable public schemas</h2>
+        <ul class="schema-list">
+          <li><a href="schemas/report.schema.json">schemas/report.schema.json</a> for scan JSON reports</li>
+          <li><a href="schemas/fix-report.schema.json">schemas/fix-report.schema.json</a> for structured fix reports</li>
+          <li><a href="schemas/rule-pack.schema.json">schemas/rule-pack.schema.json</a> for marketplace rule packs</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

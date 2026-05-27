@@ -22,6 +22,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - scan-output: `node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif`
 - benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
+- docs-build: `npm run docs:build`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
 - schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
 - schema-rule-pack: `node ./bin/agentic-workflow-guard.js schema rule-pack`

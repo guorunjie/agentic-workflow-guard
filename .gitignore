@@ -1,6 +1,7 @@
 node_modules/
 coverage/
 dist/
+site-dist/
 .DS_Store
 npm-debug.log*
 *.sarif

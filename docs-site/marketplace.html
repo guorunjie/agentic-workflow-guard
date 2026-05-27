@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agentic Workflow Guard GitHub Action</title>
+    <meta name="description" content="GitHub Action setup for Agentic Workflow Guard SARIF and Step Summary reports.">
+    <link rel="stylesheet" href="assets/site.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">Agentic Workflow Guard</div>
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html">Docs home</a>
+          <a href="https://github.com/guorunjie/agentic-workflow-guard">GitHub</a>
+          <a href="rules/marketplace.json">Rule pack</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="eyebrow">GitHub Action Marketplace</div>
+        <h1>Add AI workflow security scanning to pull requests.</h1>
+        <p class="lede">Use the release-tagged action to generate SARIF, upload findings to GitHub Code Scanning, and publish a human-readable Step Summary.</p>
+      </section>
+
+      <section class="band">
+        <h2>Recommended workflow</h2>
+        <pre><code>name: agentic workflow guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: guorunjie/agentic-workflow-guard@v0.11.0
+        with:
+          path: .
+          format: sarif
+          profile: balanced
+          output: awg.sarif
+        continue-on-error: true
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: awg.sarif</code></pre>
+      </section>
+
+      <section class="grid" aria-label="Marketplace checks">
+        <article class="card">
+          <h2>Inputs</h2>
+          <p>`path`, `format`, `output`, `profile`, and `baseline` let teams move from advisory scans to strict enforcement.</p>
+        </article>
+        <article class="card">
+          <h2>Outputs</h2>
+          <p>`report-path` points to the generated report so follow-up jobs can upload or archive it.</p>
+        </article>
+        <article class="card">
+          <h2>Artifacts</h2>
+          <p>Use SARIF for Code Scanning, JSON for dashboards, and Markdown for local reviews or issue comments.</p>
+        </article>
+      </section>
+
+      <section class="band">
+        <p class="note">Use a pinned release tag for repeatable Marketplace installs.</p>
+      </section>
+    </main>
+  </body>
+</html>

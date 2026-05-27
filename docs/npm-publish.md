@@ -15,6 +15,7 @@ node ./bin/agentic-workflow-guard.js mcp resources --format json
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
 node ./bin/agentic-workflow-guard.js schema rule-pack
+npm run docs:build
 npm pack --dry-run
 ```
 

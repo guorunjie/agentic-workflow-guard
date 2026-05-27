@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.10.0",
+  version: "0.11.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {

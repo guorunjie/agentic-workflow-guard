@@ -15,6 +15,8 @@ npx agentic-workflow-guard skillpack > skillpack.yaml
 
 The exported `skillpack.yaml` can be compiled by [Skillpack Forge](https://github.com/guorunjie/skillpack-forge) into `AGENTS.md`, Claude Skills, Codex Skills, Cursor rules, Copilot instructions, and portable skill bundles for Gemini, OpenClaw, and Hermes.
 
+Public docs and stable schema URLs are prepared for GitHub Pages at `https://guorunjie.github.io/agentic-workflow-guard/`.
+
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
 - untrusted GitHub issue or pull request text entering an agent prompt;
@@ -262,7 +264,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.10.0
+      - uses: guorunjie/agentic-workflow-guard@v0.11.0
         with:
           path: .
           format: sarif
@@ -274,7 +276,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.10.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.11.0`.
 
 ## Examples
 
@@ -308,6 +310,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested, MCP resources, remediation playbooks |
 | v0.9 | Structured remediation plans | `fix --format json`, recipe confidence, automatic/manual modes, fix report schema |
 | v0.10 | Trusted marketplace metadata | Rule pack schema, compatibility metadata, provenance, install lock file |
+| v0.11 | Public docs and schema URLs | GitHub Pages artifact, Marketplace page, schema aliases, `docs:build` |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
@@ -318,6 +321,7 @@ See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage a
 npm test
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
+npm run docs:build
 npm pack --dry-run
 ```
 

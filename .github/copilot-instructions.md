@@ -15,6 +15,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - scan-output: `node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif`
 - benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
+- docs-build: `npm run docs:build`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
 - schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
 - schema-rule-pack: `node ./bin/agentic-workflow-guard.js schema rule-pack`
@@ -45,6 +46,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - Use agentic-workflow-guard rules verify <file> before trusting external rule packs; it checks schema metadata and checksum
 - Use agentic-workflow-guard benchmark to verify fixture snapshots
 - Use agentic-workflow-guard mcp resources --format json to expose rules, benchmarks, skill instructions, and remediation playbooks
+- Use npm run docs:build to verify the GitHub Pages artifact and stable schema URL aliases
 - Use agentic-workflow-guard agents install <target> to install agent context files into another project
 - Use agentic-workflow-guard agents to confirm Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md support files
 - Prefer dry-run and approval gates before write-capable automation

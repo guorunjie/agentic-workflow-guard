@@ -11,6 +11,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 - [Report Schema](../schemas/agentic-workflow-guard-report.schema.json): stable JSON schema for machine-readable scan reports.
 - [Fix Report Schema](../schemas/agentic-workflow-guard-fix-report.schema.json): stable JSON schema for structured remediation recipes.
 - [Rule Pack Schema](../schemas/agentic-workflow-guard-rule-pack.schema.json): stable JSON schema for trusted marketplace metadata.
+- [GitHub Pages Site Source](../docs-site/index.html): static docs landing page, Marketplace page, and schema URL aliases.
 - [Use Cases and Growth Strategy](use-cases-and-growth.md): positioning, growth path, and optimization directions.
 - [NPM Publish Checklist](npm-publish.md): package publication and release verification steps.
 
@@ -31,5 +32,6 @@ node ./bin/agentic-workflow-guard.js mcp resources --format json
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
 node ./bin/agentic-workflow-guard.js schema rule-pack
+npm run docs:build
 npm pack --dry-run
 ```

@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.10 marketplace schema and action release", async () => {
+test("package metadata reflects the expanded v0.11 docs site and marketplace release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.10.0");
+  assert.equal(pkg.version, "0.11.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
@@ -15,9 +15,12 @@ test("package metadata reflects the expanded v0.10 marketplace schema and action
   assert.equal(pkg.scripts["schema:report"], "node ./bin/agentic-workflow-guard.js schema report");
   assert.equal(pkg.scripts["schema:fix"], "node ./bin/agentic-workflow-guard.js schema fix");
   assert.equal(pkg.scripts["schema:rule-pack"], "node ./bin/agentic-workflow-guard.js schema rule-pack");
+  assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
   assert.ok(pkg.files.includes("schemas"));
+  assert.ok(pkg.files.includes("docs-site"));
+  assert.ok(pkg.files.includes("scripts"));
 });
 
 test("README documents marketplace SARIF upload, output files, schemas, structured fixes, rule packs, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
@@ -62,6 +65,15 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /node-version: 24/);
 });
 
+test("Pages workflow publishes generated docs and stable schema URLs", async () => {
+  const workflow = await readFile(".github/workflows/pages.yml", "utf8");
+
+  assert.match(workflow, /npm run docs:build/);
+  assert.match(workflow, /actions\/upload-pages-artifact@v5/);
+  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(workflow, /site-dist/);
+});
+
 test("repository ships examples for new workflow platform scanners", async () => {
   const files = [
     "examples/vulnerable-node-red/flows.json",
@@ -84,6 +96,9 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/playbooks/browser-automation.md",
     "docs/policy-profiles-and-suppressions.md",
     "docs/index.md",
+    "docs-site/index.html",
+    "docs-site/marketplace.html",
+    "scripts/build-pages.js",
     "docs/npm-publish.md",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
