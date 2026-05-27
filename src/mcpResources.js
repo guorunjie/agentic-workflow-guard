@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.7.0",
+  version: "0.8.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -24,6 +24,15 @@ export const mcpResourcePack = {
       mimeType: "application/json",
       path: "benchmarks/fixtures.json",
       annotations: { audience: ["assistant"], priority: 0.9 }
+    },
+    {
+      uri: "awg://schemas/report",
+      name: "report-schema",
+      title: "Agentic Workflow Guard Report Schema",
+      description: "Stable JSON Schema for Agentic Workflow Guard scan reports.",
+      mimeType: "application/schema+json",
+      path: "schemas/agentic-workflow-guard-report.schema.json",
+      annotations: { audience: ["assistant", "user"], priority: 0.95 }
     },
     {
       uri: "awg://skill/auditor",

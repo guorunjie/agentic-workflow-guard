@@ -2,24 +2,28 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.7 auditability release", async () => {
+test("package metadata reflects the expanded v0.8 schema and action release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.7.0");
+  assert.equal(pkg.version, "0.8.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
   assert.ok(pkg.keywords.includes("browser-use"));
   assert.equal(pkg.scripts.benchmark, "node ./bin/agentic-workflow-guard.js benchmark");
   assert.equal(pkg.scripts["mcp:resources"], "node ./bin/agentic-workflow-guard.js mcp resources --format json");
+  assert.equal(pkg.scripts["schema:report"], "node ./bin/agentic-workflow-guard.js schema report");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
+  assert.ok(pkg.files.includes("schemas"));
 });
 
-test("README documents marketplace SARIF upload, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
+test("README documents marketplace SARIF upload, output files, schemas, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
+  assert.match(readme, /--output awg\.sarif/);
+  assert.match(readme, /schema report/);
   assert.match(readme, /fix \. --apply/);
   assert.match(readme, /fix \. --patch/);
   assert.match(readme, /baseline create/);
@@ -38,6 +42,10 @@ test("GitHub Action writes SARIF output files for Code Scanning upload", async (
 
   assert.match(action, /output:/);
   assert.match(action, /awg\.sarif/);
+  assert.match(action, /profile:/);
+  assert.match(action, /baseline:/);
+  assert.match(action, /report-path/);
+  assert.match(action, /GITHUB_STEP_SUMMARY/);
 });
 
 test("CI workflow uses current Node runtime actions", async () => {
@@ -71,6 +79,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/policy-profiles-and-suppressions.md",
     "docs/index.md",
     "docs/npm-publish.md",
+    "schemas/agentic-workflow-guard-report.schema.json",
     ".awg.example.yml"
   ];
 

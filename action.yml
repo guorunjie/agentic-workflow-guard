@@ -16,14 +16,51 @@ inputs:
     description: Optional report output file. Defaults to awg.sarif for SARIF scans.
     required: false
     default: awg.sarif
+  profile:
+    description: Policy profile: advisory, balanced, or strict.
+    required: false
+    default: balanced
+  baseline:
+    description: Optional .awg-baseline.json file for suppressing existing findings.
+    required: false
+    default: ""
+outputs:
+  report-path:
+    description: Path to the generated report file.
+    value: ${{ steps.guard.outputs.report-path }}
 runs:
   using: composite
   steps:
     - name: Run Agentic Workflow Guard
+      id: guard
       shell: bash
+      env:
+        AWG_PATH: ${{ inputs.path }}
+        AWG_FORMAT: ${{ inputs.format }}
+        AWG_OUTPUT: ${{ inputs.output }}
+        AWG_PROFILE: ${{ inputs.profile }}
+        AWG_BASELINE: ${{ inputs.baseline }}
       run: |
-        if [ -n "${{ inputs.output }}" ]; then
-          node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" scan "${{ inputs.path }}" --format "${{ inputs.format }}" > "${{ inputs.output }}"
-        else
-          node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" scan "${{ inputs.path }}" --format "${{ inputs.format }}"
+        set +e
+        args=(scan "$AWG_PATH" --format "$AWG_FORMAT" --profile "$AWG_PROFILE")
+        if [ -n "$AWG_BASELINE" ]; then
+          args+=(--baseline "$AWG_BASELINE")
         fi
+        if [ -n "$AWG_OUTPUT" ]; then
+          args+=(--output "$AWG_OUTPUT")
+        fi
+        node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" "${args[@]}"
+        status=$?
+        if [ -n "$AWG_OUTPUT" ]; then
+          echo "report-path=$AWG_OUTPUT" >> "$GITHUB_OUTPUT"
+        fi
+        {
+          echo "## Agentic Workflow Guard"
+          echo
+          summary_args=(scan "$AWG_PATH" --format markdown --profile "$AWG_PROFILE")
+          if [ -n "$AWG_BASELINE" ]; then
+            summary_args+=(--baseline "$AWG_BASELINE")
+          fi
+          node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" "${summary_args[@]}"
+        } >> "$GITHUB_STEP_SUMMARY" || true
+        exit "$status"

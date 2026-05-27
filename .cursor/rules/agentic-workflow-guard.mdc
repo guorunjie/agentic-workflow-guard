@@ -19,8 +19,10 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - test: `npm test`
 - scan: `npm run scan`
 - scan-strict: `node ./bin/agentic-workflow-guard.js scan . --profile strict`
+- scan-output: `node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif`
 - benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
+- schema: `node ./bin/agentic-workflow-guard.js schema report`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guorunjie.github.io/agentic-workflow-guard/schemas/report.schema.json",
+  "title": "Agentic Workflow Guard Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "summary",
+    "findings",
+    "suppressions"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total",
+        "high",
+        "medium",
+        "low",
+        "suppressed"
+      ],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "low": { "type": "integer", "minimum": 0 },
+        "suppressed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "suppressions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/suppression" }
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "ruleId",
+        "severity",
+        "title",
+        "file",
+        "evidence",
+        "remediation"
+      ],
+      "properties": {
+        "ruleId": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+        "severity": { "enum": ["low", "medium", "high", "critical"] },
+        "title": { "type": "string", "minLength": 1 },
+        "file": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "remediation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "suppression": {
+      "allOf": [
+        { "$ref": "#/$defs/finding" },
+        {
+          "type": "object",
+          "required": ["suppressionFile", "reason"],
+          "properties": {
+            "suppressionFile": { "type": "string", "minLength": 1 },
+            "reason": { "type": "string", "minLength": 1 }
+          }
+        }
+      ]
+    }
+  }
+}

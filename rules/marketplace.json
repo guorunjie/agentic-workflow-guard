@@ -1,6 +1,6 @@
 {
   "name": "agentic-workflow-guard-core-rules",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Core static-analysis rules for AI automation workflow security.",
   "platforms": [
     "github-actions",

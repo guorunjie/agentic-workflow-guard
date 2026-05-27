@@ -1,4 +1,5 @@
 import path from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
 
 import { suppressBaseline, writeBaseline } from "./baseline.js";
 import { renderBenchmark, runBenchmark } from "./benchmark.js";
@@ -8,9 +9,10 @@ import { renderFixPlan } from "./fix.js";
 import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
 import { agentInstallTargets, installAgent } from "./agentsInstall.js";
 import { renderMcpResources } from "./mcpResources.js";
-import { renderJson } from "./reporters/json.js";
+import { renderJson, summarize } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
+import { renderReportSchema } from "./schema.js";
 import { installRulePack, renderRulePacks, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
@@ -22,24 +24,39 @@ function argValue(args, name, fallback) {
 }
 
 function firstPositional(args, fallback = ".") {
-  return args.find((arg) => !arg.startsWith("--")) ?? fallback;
+  const optionsWithValues = new Set(["--baseline", "--format", "--output", "--profile"]);
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (optionsWithValues.has(arg)) {
+      index += 1;
+      continue;
+    }
+    if (!arg.startsWith("--")) return arg;
+  }
+  return fallback;
 }
 
 function help() {
   return `Agentic Workflow Guard
 
 Usage:
-  agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
+  agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--output report] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|search <query>|install core [path]|verify <file>] [--format markdown|json]
+  agentic-workflow-guard schema report
   agentic-workflow-guard mcp resources [--format markdown|json]
   agentic-workflow-guard benchmark [path]
   agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard agents install <target|all> [path]
   agentic-workflow-guard skillpack
 `;
+}
+
+async function writeReport(file, content) {
+  await mkdir(path.dirname(file), { recursive: true });
+  await writeFile(file, content);
 }
 
 function renderFindings(findings, format, metadata = {}) {
@@ -67,7 +84,16 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
     }
     const result = await scanProjectWithMetadata(root, config);
     const findings = await suppressBaseline(result.findings, argValue(args, "--baseline"));
-    output.write(renderFindings(findings, format, { suppressions: result.suppressions }));
+    const report = renderFindings(findings, format, { suppressions: result.suppressions });
+    const outputPath = argValue(args, "--output");
+    if (outputPath) {
+      await writeReport(path.resolve(outputPath), report);
+      const summary = summarize(findings);
+      output.write(`Wrote ${format} report to ${outputPath}\n`);
+      output.write(`Summary: ${summary.total} total, ${summary.high} high, ${summary.medium} medium, ${summary.low} low, ${result.suppressions.length} suppressed.\n`);
+    } else {
+      output.write(report);
+    }
     return hasHighFindings(findings, config) ? 1 : 0;
   }
 
@@ -123,6 +149,16 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       return 0;
     }
     output.write(renderRules(format));
+    return 0;
+  }
+
+  if (command === "schema") {
+    const subcommand = args[0] ?? "report";
+    if (subcommand !== "report") {
+      error.write(`Unknown schema command: ${subcommand}\n`);
+      return 1;
+    }
+    output.write(await renderReportSchema());
     return 0;
   }
 

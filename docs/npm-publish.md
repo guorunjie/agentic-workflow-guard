@@ -12,6 +12,7 @@ Use this checklist before publishing `agentic-workflow-guard` to npm.
 npm test
 node ./bin/agentic-workflow-guard.js benchmark
 node ./bin/agentic-workflow-guard.js mcp resources --format json
+node ./bin/agentic-workflow-guard.js schema report
 npm pack --dry-run
 ```
 
@@ -31,4 +32,4 @@ npx agentic-workflow-guard scan examples/vulnerable-github-action --format markd
 
 ## Release Notes
 
-Mention scanner coverage, policy profiles, suppression audit trails, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.
+Mention scanner coverage, policy profiles, suppression audit trails, stable report schema, `scan --output`, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.

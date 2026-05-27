@@ -82,6 +82,13 @@ North star:
 - Add documentation index for a future docs site.
 - Add npm publish checklist and package verification steps.
 
+## v0.8: Stable Schemas and Code Scanning Ergonomics
+
+- Add stable JSON report schema with `schemaVersion`.
+- Add `schema report` command for tooling integrations.
+- Add `scan --output` for report files without shell redirection.
+- Improve GitHub Action inputs and outputs for profile, baseline, report path, and Step Summary.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

@@ -10,6 +10,8 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 
 ## Workflow
 - Run agentic-workflow-guard scan . --format markdown
+- Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads
+- Use agentic-workflow-guard schema report when integrating machine-readable JSON reports
 - Use agentic-workflow-guard scan . --profile strict in write-capable or sensitive automation repositories
 - Use agentic-workflow-guard scan . --baseline .awg-baseline.json in existing repositories
 - Use awg-ignore AWI001: reason only for reviewed suppressions with an audit reason
@@ -31,8 +33,10 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - test: `npm test`
 - scan: `npm run scan`
 - scan-strict: `node ./bin/agentic-workflow-guard.js scan . --profile strict`
+- scan-output: `node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif`
 - benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
+- schema: `node ./bin/agentic-workflow-guard.js schema report`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`

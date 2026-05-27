@@ -11,5 +11,5 @@ export function summarize(findings) {
 
 export function renderJson(findings, metadata = {}) {
   const suppressions = metadata.suppressions ?? [];
-  return `${JSON.stringify({ summary: { ...summarize(findings), suppressed: suppressions.length }, findings, suppressions }, null, 2)}\n`;
+  return `${JSON.stringify({ schemaVersion: "1.0.0", summary: { ...summarize(findings), suppressed: suppressions.length }, findings, suppressions }, null, 2)}\n`;
 }

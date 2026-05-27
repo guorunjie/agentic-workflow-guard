@@ -8,7 +8,7 @@ Four-command demo:
 
 ```bash
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format markdown
-npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format sarif > awg.sarif
+npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format sarif --output awg.sarif
 npx agentic-workflow-guard fix examples/unsafe-ai-pr-bot --patch
 npx agentic-workflow-guard skillpack > skillpack.yaml
 ```
@@ -75,7 +75,13 @@ node ./bin/agentic-workflow-guard.js scan . --profile strict --format sarif > aw
 Emit SARIF for GitHub Code Scanning:
 
 ```bash
-node ./bin/agentic-workflow-guard.js scan . --format sarif > awg.sarif
+node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif
+```
+
+Print the stable JSON report schema:
+
+```bash
+node ./bin/agentic-workflow-guard.js schema report
 ```
 
 Explain a rule:
@@ -153,6 +159,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `scan [path] --format markdown` | Human-readable report for local review, issues, and PRs. |
 | `scan [path] --format json` | Machine-readable findings. |
 | `scan [path] --format sarif` | GitHub Code Scanning compatible output. |
+| `scan [path] --output awg.sarif` | Writes the selected report format to a file and prints a short summary. |
 | `scan [path] --profile advisory|balanced|strict` | Controls exit severity for rollout, default CI, or strict enforcement. |
 | `scan [path] --baseline .awg-baseline.json` | Suppresses existing findings so CI can fail only on new risks. |
 | `baseline create [path]` | Writes `.awg-baseline.json` with stable finding fingerprints. |
@@ -165,6 +172,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules search <query>` | Searches rules by platform, risk, or remediation text. |
 | `rules install core [path]` | Installs core rule pack metadata into `.awg/rules/`. |
 | `rules verify <file>` | Verifies a rule pack checksum before use. |
+| `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
 | `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
 | `mcp resources --format markdown|json` | Prints MCP-style resource descriptors for rules, benchmarks, skills, and remediation playbooks. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
@@ -248,17 +256,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.7.0
+      - uses: guorunjie/agentic-workflow-guard@v0.8.0
         with:
           path: .
           format: sarif
+          profile: balanced
+          output: awg.sarif
         continue-on-error: true
       - uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.7.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.8.0`.
 
 ## Examples
 
