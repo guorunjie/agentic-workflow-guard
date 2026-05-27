@@ -35,3 +35,15 @@ jobs:
         run: |
           test -s awg-action-smoke.json
           node -e 'const fs = require("node:fs"); const report = JSON.parse(fs.readFileSync("awg-action-smoke.json", "utf8")); if (!report.findings.some((finding) => finding.ruleId === "AWI001")) process.exit(1);'
+
+  release-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm run release:sync:check
+      - run: npm run release:check -- --format json
+      - run: npm run smoke:package
+      - run: npm pack --dry-run

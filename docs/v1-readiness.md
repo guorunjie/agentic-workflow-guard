@@ -22,6 +22,7 @@ With npm access resolved, this is a 1-2 day release-candidate task and a 2-4 day
 | GitHub Marketplace | A release-tagged `uses: guorunjie/agentic-workflow-guard@v1.0.0` example runs and uploads SARIF. |
 | npm release | `npm whoami`, `npm pack --dry-run`, `npm run smoke:package`, and `npm publish --dry-run` pass before publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
+| CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
 | Platform matrix | Vulnerable and safe examples exist for GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation. |
 | Agent matrix | Generated instructions are present and tested for AGENTS.md, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and GitHub Copilot. |
 
@@ -51,9 +52,10 @@ git diff --check
 ```
 
 6. Push, wait for remote `test` and `pages`, and verify `action-smoke`.
-7. Create `v1.0.0-rc.1`; test the release-tagged Action in a clean workflow.
-8. Publish npm after the release candidate passes.
-9. Create `v1.0.0`; verify GitHub Release, GitHub Marketplace, npm package page, Pages site, and install smoke.
+7. Verify the remote `release-gates` job is green.
+8. Create `v1.0.0-rc.1`; test the release-tagged Action in a clean workflow.
+9. Publish npm after the release candidate passes.
+10. Create `v1.0.0`; verify GitHub Release, GitHub Marketplace, npm package page, Pages site, and install smoke.
 
 ## Post-1.0 Growth
 

@@ -106,9 +106,14 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /actions\/setup-node@v6/);
   assert.match(workflow, /node-version: 24/);
   assert.match(workflow, /action-smoke/);
+  assert.match(workflow, /release-gates/);
   assert.match(workflow, /uses: \.\//);
   assert.match(workflow, /profile: advisory/);
   assert.match(workflow, /awg-action-smoke\.json/);
+  assert.match(workflow, /npm run release:sync:check/);
+  assert.match(workflow, /npm run release:check -- --format json/);
+  assert.match(workflow, /npm run smoke:package/);
+  assert.match(workflow, /npm pack --dry-run/);
 });
 
 test("Pages workflow publishes generated docs and stable schema URLs", async () => {
