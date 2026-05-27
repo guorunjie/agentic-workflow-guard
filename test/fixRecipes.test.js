@@ -177,3 +177,79 @@ pipeline {
   assert.match(updated, /  agent any\n  environment \{\n    AGENTIC_WORKFLOW_GUARD_DRY_RUN = 'true'\n  \}/);
   assert.match(updated, /env\.CHANGE_TITLE/);
 });
+
+test("fix --patch scopes broad MCP filesystem servers to read-only repository access", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".cursor", "mcp.json"),
+    JSON.stringify(
+      {
+        mcpServers: {
+          filesystem: {
+            command: "npx",
+            args: ["@modelcontextprotocol/server-filesystem", "/"]
+          }
+        }
+      },
+      null,
+      2
+    )
+  );
+
+  const before = await readFile(filePath, "utf8");
+  const { stdout } = await execFileAsync("node", [bin, "fix", root, "--patch"]);
+  const after = await readFile(filePath, "utf8");
+
+  assert.equal(after, before);
+  assert.match(stdout, /diff --git a\/\.cursor\/mcp\.json b\/\.cursor\/mcp\.json/);
+  assert.match(stdout, /-\s+"\/"/);
+  assert.match(stdout, /\+\s+"\.\/"/);
+  assert.match(stdout, /\+\s+"readOnly": true/);
+});
+
+test("fix --apply scopes MCP filesystem servers and clears the AWI006 finding", async () => {
+  const { root, filePath } = await projectFile(
+    ".mcp.json",
+    JSON.stringify({
+      mcpServers: {
+        filesystem: {
+          command: "npx",
+          args: ["@modelcontextprotocol/server-filesystem", "/"]
+        }
+      }
+    })
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = JSON.parse(await readFile(filePath, "utf8"));
+
+  assert.deepEqual(updated.mcpServers.filesystem.args, ["@modelcontextprotocol/server-filesystem", "./"]);
+  assert.equal(updated.mcpServers.filesystem.readOnly, true);
+
+  const { stdout } = await execFileAsync("node", [bin, "scan", root, "--format", "json"]);
+  const report = JSON.parse(stdout);
+  assert.equal(report.findings.length, 0);
+});
+
+test("fix --apply scopes MCP filesystem root flags", async () => {
+  const { root, filePath } = await projectFile(
+    "mcp-config.json",
+    JSON.stringify({
+      servers: {
+        repoFiles: {
+          command: "npx",
+          args: ["@modelcontextprotocol/server-filesystem", "--root=/"]
+        }
+      }
+    })
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = JSON.parse(await readFile(filePath, "utf8"));
+
+  assert.deepEqual(updated.servers.repoFiles.args, ["@modelcontextprotocol/server-filesystem", "--root=./"]);
+  assert.equal(updated.servers.repoFiles.readOnly, true);
+
+  const { stdout } = await execFileAsync("node", [bin, "scan", root, "--format", "json"]);
+  const report = JSON.parse(stdout);
+  assert.equal(report.findings.length, 0);
+});

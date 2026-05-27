@@ -15,7 +15,7 @@ With npm access resolved, this is a 1-2 day release-candidate task and a 2-4 day
 | Gate | Required evidence |
 | --- | --- |
 | Stable finding schema | `node ./bin/agentic-workflow-guard.js schema report` matches the shipped JSON schema and README integration examples. |
-| Stable fix recipe schema | `schema fix` covers recipe mode, confidence, patch availability, snippets, next steps, and changed files. |
+| Stable fix recipe schema | `schema fix` covers recipe mode, confidence, patch availability, snippets, next steps, changed files, CI dry-run defaults, and MCP filesystem read-only scoping. |
 | Stable rule pack schema | `schema rule-pack`, `rules registry`, `rules install`, and `rules verify` agree on provenance, checksum, compatibility, and license metadata. |
 | Stable benchmark schemas | `schema benchmark-corpus`, `schema benchmark-report`, `benchmark corpus --format json`, and `benchmark --format json` stay in sync. |
 | Stable rule IDs | Existing `AWI###` IDs, severity levels, and default profile behavior are frozen for SemVer compatibility. |

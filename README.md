@@ -190,8 +190,8 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `baseline create [path]` | Writes `.awg-baseline.json` with stable finding fingerprints. |
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
 | `fix [path] --format json` | Emits structured fix recipes with confidence, automatic/manual mode, patch availability, approval snippets, next steps, and changed file counts. |
-| `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades and CI dry-run defaults without editing files. |
-| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades plus GitHub/GitLab/CircleCI/Azure/Jenkins dry-run markers, then leaves remaining findings for review. |
+| `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades, MCP filesystem read-only scoping, and CI dry-run defaults without editing files. |
+| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades, MCP filesystem root narrowing/read-only settings, and GitHub/GitLab/CircleCI/Azure/Jenkins dry-run markers, then leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
 | `rules list` | Lists installable rule packs. |
@@ -356,7 +356,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.12 | Zapier benchmark coverage | Zapier-specific evidence, vulnerable/safe Zap fixtures, benchmark matrix |
 | v0.13 | GitLab CI and CircleCI coverage | CI agent scanner, token/context evidence, vulnerable/safe CI fixtures |
 | v0.14 | Azure Pipelines and Jenkins coverage | Service connection and credential evidence, vulnerable/safe pipeline fixtures |
-| v0.15 | Platform-aware remediation engine | GitHub permissions plus GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
+| v0.15 | Platform-aware remediation engine | GitHub permissions, MCP filesystem read-only scoping, and GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
 | v0.16 | Approval snippet recipes | `fix --format json` and Markdown plans include next steps plus approval, artifact, scope, and allowlist snippets |
 | v0.17 | Community rule-pack registry | Installable `github-actions-hardening` and `low-code-automation` packs, registry JSON, docs, and MCP resources |
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |

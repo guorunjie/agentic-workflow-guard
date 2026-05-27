@@ -29,3 +29,43 @@ test("detects broad high-risk MCP tools", async () => {
 
   assert.ok(findings.some((finding) => finding.ruleId === "AWI006" && finding.severity === "high"));
 });
+
+test("allows narrow read-only filesystem MCP servers", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-mcp-safe-"));
+  await writeFile(
+    path.join(root, ".mcp.json"),
+    JSON.stringify({
+      mcpServers: {
+        filesystem: {
+          command: "npx",
+          args: ["@modelcontextprotocol/server-filesystem", "./"],
+          readOnly: true
+        }
+      }
+    })
+  );
+
+  const findings = await scanMcpConfigs(root);
+
+  assert.equal(findings.length, 0);
+});
+
+test("allows narrow read-only filesystem MCP root flags", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-mcp-safe-root-"));
+  await writeFile(
+    path.join(root, "mcp-config.json"),
+    JSON.stringify({
+      servers: {
+        repoFiles: {
+          command: "npx",
+          args: ["@modelcontextprotocol/server-filesystem", "--root=./"],
+          readOnly: true
+        }
+      }
+    })
+  );
+
+  const findings = await scanMcpConfigs(root);
+
+  assert.equal(findings.length, 0);
+});

@@ -135,6 +135,7 @@ North star:
 
 - Extend `fix --patch` and `fix --apply` beyond GitHub permission downgrades.
 - Add dry-run environment defaults for GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent workflows.
+- Add automatic MCP filesystem root narrowing and `readOnly: true` scoping for broad filesystem servers.
 - Expose the shared `ci-dry-run-env` recipe through structured JSON fix reports for agents, PR bots, and UIs.
 - Keep shell sinks, prompt boundaries, credential scopes, and approval gates as manual review items.
 

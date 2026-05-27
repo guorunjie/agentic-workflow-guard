@@ -1,5 +1,10 @@
 {
   "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "./"],
+      "readOnly": true
+    },
     "docs-context": {
       "command": "node",
       "args": ["servers/docs-context.js", "--readonly"]

@@ -80,3 +80,54 @@ test("fix --apply --format json reports changed files after applying safe recipe
   assert.match(updated, /pull-requests: read/);
   assert.ok(report.changes.some((change) => change.applied === true));
 });
+
+test("fix --format json marks MCP filesystem scoping as an automatic recipe", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-fix-json-mcp-"));
+  const mcpDir = path.join(root, ".cursor");
+  await mkdir(mcpDir, { recursive: true });
+  await writeFile(
+    path.join(mcpDir, "mcp.json"),
+    JSON.stringify({
+      mcpServers: {
+        filesystem: {
+          command: "npx",
+          args: ["@modelcontextprotocol/server-filesystem", "/Users"]
+        }
+      }
+    })
+  );
+
+  const { stdout } = await execFileAsync("node", [bin, "fix", root, "--format", "json"]);
+  const report = JSON.parse(stdout);
+  const recipe = report.recipes.find((item) => item.ruleId === "AWI006");
+
+  assert.equal(recipe.id, "scope-mcp-filesystem-readonly");
+  assert.equal(recipe.mode, "automatic");
+  assert.equal(recipe.confidence, "high");
+  assert.ok(recipe.nextSteps.some((step) => /automatic filesystem patch/i.test(step)));
+  assert.ok(report.changes.some((change) => change.file === ".cursor/mcp.json" && change.recipeIds.includes("scope-mcp-filesystem-readonly")));
+});
+
+test("fix --format json leaves non-filesystem high-risk MCP tools as manual recipes", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-fix-json-mcp-browser-"));
+  await writeFile(
+    path.join(root, ".mcp.json"),
+    JSON.stringify({
+      mcpServers: {
+        browser: {
+          command: "npx",
+          args: ["@playwright/mcp", "--allow-write"]
+        }
+      }
+    })
+  );
+
+  const { stdout } = await execFileAsync("node", [bin, "fix", root, "--format", "json"]);
+  const report = JSON.parse(stdout);
+  const recipe = report.recipes.find((item) => item.ruleId === "AWI006");
+
+  assert.equal(recipe.id, "scope-high-risk-mcp-tools");
+  assert.equal(recipe.mode, "manual");
+  assert.ok(!recipe.nextSteps.some((step) => /automatic filesystem patch/i.test(step)));
+  assert.equal(report.summary.availablePatches, 0);
+});

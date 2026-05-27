@@ -99,8 +99,117 @@ function applyDryRunGuard(text, file) {
   return { text, changed: false };
 }
 
+const filesystemMcpServerPattern = /(filesystem|file-system|server-filesystem)/i;
+const mcpWriteFlagPattern = /^--(?:allow-write|dangerously|unsafe|all)(?:=.*)?$/i;
+
+function isRecord(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function mcpConfigFile(file) {
+  return /(^|\/)(\.?mcp\.json|mcp-config\.json)$/i.test(file) || /^\.cursor\/mcp\.json$/i.test(file) || /claude.*desktop.*config.*\.json$/i.test(file);
+}
+
+function mcpServerText(name, server) {
+  if (!isRecord(server)) return String(name);
+  const args = Array.isArray(server.args) ? server.args.join(" ") : "";
+  return `${name} ${server.command ?? ""} ${args}`.replace(/\s+/g, " ").trim();
+}
+
+function isFilesystemMcpServer(name, server) {
+  return filesystemMcpServerPattern.test(mcpServerText(name, server));
+}
+
+function isBroadMcpRoot(value) {
+  return value === "/" || value === "/Users" || value === "/home" || value === ".." || value.startsWith("../");
+}
+
+function rewriteMcpRootValue(value) {
+  if (typeof value !== "string") return value;
+  if (isBroadMcpRoot(value)) return "./";
+  return value.replace(/^(--(?:root|path|dir|directory|workspace)=)(\/|\/Users|\/home|\.{2}(?:\/.*)?)$/i, "$1./");
+}
+
+function scopedMcpArgs(args) {
+  if (!Array.isArray(args)) return { args, changed: false };
+  let changed = false;
+  const scoped = [];
+  for (const arg of args) {
+    if (typeof arg === "string" && mcpWriteFlagPattern.test(arg)) {
+      changed = true;
+      continue;
+    }
+    const rewritten = rewriteMcpRootValue(arg);
+    changed ||= rewritten !== arg;
+    scoped.push(rewritten);
+  }
+  return { args: scoped, changed };
+}
+
+function scopedMcpRoots(roots) {
+  if (!Array.isArray(roots)) return { roots, changed: false };
+  const scoped = roots.map(rewriteMcpRootValue);
+  return {
+    roots: scoped,
+    changed: scoped.some((root, index) => root !== roots[index])
+  };
+}
+
+function serverCollections(config) {
+  const collections = [];
+  if (isRecord(config.mcpServers)) collections.push(config.mcpServers);
+  if (isRecord(config.servers)) collections.push(config.servers);
+  return collections;
+}
+
+function applyMcpFilesystemScopeFix(text) {
+  let config;
+  try {
+    config = JSON.parse(text);
+  } catch {
+    return { text, changed: false };
+  }
+
+  let changed = false;
+  for (const collection of serverCollections(config)) {
+    for (const [name, server] of Object.entries(collection)) {
+      if (!isRecord(server) || !isFilesystemMcpServer(name, server)) continue;
+
+      const args = scopedMcpArgs(server.args);
+      if (args.changed) {
+        server.args = args.args;
+        changed = true;
+      }
+
+      const roots = scopedMcpRoots(server.roots);
+      if (roots.changed) {
+        server.roots = roots.roots;
+        changed = true;
+      }
+
+      if (typeof server.root === "string") {
+        const root = rewriteMcpRootValue(server.root);
+        if (root !== server.root) {
+          server.root = root;
+          changed = true;
+        }
+      }
+
+      if (server.readOnly !== true) {
+        server.readOnly = true;
+        changed = true;
+      }
+    }
+  }
+
+  return {
+    text: changed ? `${JSON.stringify(config, null, 2)}\n` : text,
+    changed
+  };
+}
+
 function fixableFiles(findings) {
-  return [...new Set(findings.filter((finding) => ["AWI003", "AWI008"].includes(finding.ruleId)).map((finding) => stripLineSuffix(finding.file)))];
+  return [...new Set(findings.filter((finding) => ["AWI003", "AWI006", "AWI008"].includes(finding.ruleId)).map((finding) => stripLineSuffix(finding.file)))];
 }
 
 function platformForFile(file) {
@@ -109,7 +218,7 @@ function platformForFile(file) {
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
   if (/^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) return "azure-pipelines";
   if (/(^|\/)Jenkinsfile(\..*)?$/i.test(file)) return "jenkins";
-  if (/\.mcp\.json$/i.test(file)) return "mcp";
+  if (mcpConfigFile(file)) return "mcp";
   if (/browser-trace\.json$/i.test(file)) return "browser-automation";
   return "automation";
 }
@@ -173,7 +282,7 @@ input message: 'Approve agent side effects?', ok: 'Approve'
   );
 }
 
-function guidanceForFinding(ruleId, platform) {
+function guidanceForFinding(ruleId, platform, options = {}) {
   const approval = approvalSnippet(platform);
   const guidance = {
     AWI001: {
@@ -252,6 +361,7 @@ permissions:
     },
     AWI006: {
       nextSteps: [
+        ...(options.filesystemMcpFinding ? ["Use the automatic filesystem patch for broad MCP filesystem roots, then review the diff."] : []),
         "Narrow broad MCP tool roots, hosts, repositories, and command scopes.",
         "Place write-capable tools behind approval or remove them from default agent contexts."
       ],
@@ -261,8 +371,12 @@ permissions:
           "json",
           `
 {
-  "tools": {
-    "filesystem": { "roots": ["./"], "readOnly": true }
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "./"],
+      "readOnly": true
+    }
   }
 }
 `
@@ -339,6 +453,7 @@ permissions:
 function recipeForFinding(finding) {
   const file = stripLineSuffix(finding.file);
   const platform = platformForFile(file);
+  const filesystemMcpFinding = finding.ruleId === "AWI006" && platform === "mcp" && filesystemMcpServerPattern.test(finding.evidence ?? "");
   const recipes = {
     AWI001: {
       id: "gate-untrusted-ci-context",
@@ -370,12 +485,19 @@ function recipeForFinding(finding) {
       confidence: "medium",
       title: "Add validation or approval before n8n side-effect nodes"
     },
-    AWI006: {
-      id: "scope-high-risk-mcp-tools",
-      mode: "manual",
-      confidence: "high",
-      title: "Scope high-risk MCP tools to narrow read-only access"
-    },
+    AWI006: filesystemMcpFinding
+      ? {
+          id: "scope-mcp-filesystem-readonly",
+          mode: "automatic",
+          confidence: "high",
+          title: "Scope MCP filesystem roots to read-only repository access"
+        }
+      : {
+          id: "scope-high-risk-mcp-tools",
+          mode: "manual",
+          confidence: "high",
+          title: "Scope high-risk MCP tools to narrow read-only access"
+        },
     AWI007: {
       id: "remove-secrets-from-agent-context",
       mode: "manual",
@@ -414,7 +536,7 @@ function recipeForFinding(finding) {
     file,
     findingFile: finding.file,
     remediation: finding.remediation,
-    ...guidanceForFinding(finding.ruleId, platform)
+    ...guidanceForFinding(finding.ruleId, platform, { filesystemMcpFinding })
   };
 }
 
@@ -431,6 +553,12 @@ function applyRecipes(original, file, findings) {
 
   if (fileFindings.some((finding) => finding.ruleId === "AWI008")) {
     const result = applyDryRunGuard(text, file);
+    text = result.text;
+    changed ||= result.changed;
+  }
+
+  if (fileFindings.some((finding) => finding.ruleId === "AWI006")) {
+    const result = applyMcpFilesystemScopeFix(text);
     text = result.text;
     changed ||= result.changed;
   }

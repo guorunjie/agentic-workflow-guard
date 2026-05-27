@@ -15,6 +15,17 @@ An agent can call broad tools such as filesystem roots, shell, browser automatio
 5. Use allowlists for hosts, repositories, commands, file globs, and operation names.
 6. Log every write-capable tool call with prompt source, arguments, and approval status.
 
+## Automatic Filesystem Fix
+
+`fix --patch` and `fix --apply` can safely narrow MCP filesystem server roots from `/`, `/Users`, `/home`, or parent directories to `./` and add `readOnly: true`.
+
+```bash
+agentic-workflow-guard fix . --patch
+agentic-workflow-guard fix . --apply
+```
+
+Review the diff before merging. Browser, shell, repository, container, cloud, and other write-capable MCP servers remain manual because they need project-specific allowlists and approvals.
+
 ## Verification
 
 ```bash

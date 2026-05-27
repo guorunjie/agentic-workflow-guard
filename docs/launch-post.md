@@ -29,8 +29,8 @@ The project is intentionally small:
 - GitHub Action support for Code Scanning upload;
 - baseline mode for incremental adoption;
 - browser automation trace checks;
-- `fix --patch` for PR-ready GitHub permission and CI dry-run diffs;
-- low-risk `fix --apply` for permission downgrades and CI dry-run defaults;
+- `fix --patch` for PR-ready GitHub permission, MCP filesystem, and CI dry-run diffs;
+- low-risk `fix --apply` for permission downgrades, MCP filesystem read-only scoping, and CI dry-run defaults;
 - `agents install` helpers for project-local agent context;
 - portable skillpack export for agent instructions.
 
