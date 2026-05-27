@@ -68,6 +68,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /benchmark corpus/);
   assert.match(readme, /benchmarks\/corpus\.json/);
   assert.match(readme, /Demo Playbook/);
+  assert.match(readme, /v1-readiness\.md/);
   assert.match(readme, /npm run smoke:package/);
   assert.match(readme, /mcp resources/);
   assert.match(readme, /--profile strict/);
@@ -150,6 +151,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/policy-profiles-and-suppressions.md",
     "docs/rule-marketplace.md",
     "docs/demos.md",
+    "docs/v1-readiness.md",
     "docs/index.md",
     "docs-site/index.html",
     "docs-site/marketplace.html",

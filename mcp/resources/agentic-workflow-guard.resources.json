@@ -216,6 +216,21 @@
       }
     },
     {
+      "uri": "awg://release/v1-readiness",
+      "name": "v1-readiness",
+      "title": "Agentic Workflow Guard v1.0 Readiness",
+      "description": "Release gates, blockers, timeline, and cut plan for the stable v1.0 automation safety layer.",
+      "mimeType": "text/markdown",
+      "path": "docs/v1-readiness.md",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.85
+      }
+    },
+    {
       "uri": "awg://release/npm-publish",
       "name": "npm-publish-checklist",
       "title": "NPM Publish Checklist",

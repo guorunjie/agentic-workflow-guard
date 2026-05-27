@@ -358,7 +358,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.20 | Marketplace and install readiness | Action self-smoke workflow, Marketplace metadata polish, package smoke script, demo playbook |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
-See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
+See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage, [docs/v1-readiness.md](docs/v1-readiness.md) for the remaining 1.0 release gates, and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
 
 ## Development
 

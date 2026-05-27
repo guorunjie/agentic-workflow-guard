@@ -26,6 +26,7 @@ test("agent support markdown describes output files", () => {
   assert.match(markdown, /benchmarks\/corpus\.json/);
   assert.match(markdown, /schemas\/\*\.json/);
   assert.match(markdown, /docs\/demos\.md/);
+  assert.match(markdown, /docs\/v1-readiness\.md/);
   assert.match(markdown, /skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /GEMINI.md/);
 });
