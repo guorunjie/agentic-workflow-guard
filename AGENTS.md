@@ -31,6 +31,7 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - schema-benchmark-report: `node ./bin/agentic-workflow-guard.js schema benchmark-report`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
 - fix-json: `node ./bin/agentic-workflow-guard.js fix . --format json`
+- fix-output: `node ./bin/agentic-workflow-guard.js fix . --format json --output awg-fix.json`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`
@@ -56,6 +57,7 @@ Use when auditing GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins,
 - Use agentic-workflow-guard explain AWI001 for rule-specific remediation
 - Use agentic-workflow-guard fix . --patch for reviewable GitHub permission, MCP filesystem scope, and CI dry-run diffs
 - Use agentic-workflow-guard fix . --format json for recipe confidence, automatic/manual modes, approval snippets, and next steps
+- Use agentic-workflow-guard fix . --format json --output awg-fix.json when PR bots or agent loops need a fix artifact
 - Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades, MCP filesystem read-only scoping, and CI dry-run defaults
 - Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules
 - Use agentic-workflow-guard rules registry --format json to inspect bundled and community rule-pack aliases and checksums

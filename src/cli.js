@@ -43,7 +43,7 @@ function help() {
 Usage:
   agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--output report] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
-  agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json]
+  agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json] [--output report]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|registry|search <query>|install <pack> [path]|verify <file>] [--format markdown|json]
   agentic-workflow-guard schema report|fix|rule-pack|benchmark-corpus|benchmark-report
@@ -113,7 +113,15 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
 
   if (command === "fix") {
     const root = path.resolve(firstPositional(args));
-    output.write(await renderFixPlan(root, { apply: args.includes("--apply"), patch: args.includes("--patch"), format: argValue(args, "--format", "markdown") }));
+    const format = argValue(args, "--format", "markdown");
+    const report = await renderFixPlan(root, { apply: args.includes("--apply"), patch: args.includes("--patch"), format });
+    const outputPath = argValue(args, "--output");
+    if (outputPath) {
+      await writeReport(path.resolve(outputPath), report);
+      output.write(`Wrote ${format} fix report to ${outputPath}\n`);
+    } else {
+      output.write(report);
+    }
     return 0;
   }
 

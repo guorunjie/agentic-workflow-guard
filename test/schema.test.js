@@ -83,3 +83,16 @@ test("scan --output writes the selected report format and prints a summary", asy
   assert.match(stdout, /Wrote json report/);
   assert.match(stdout, /0 total/);
 });
+
+test("fix --output writes the selected fix report for PR bots", async () => {
+  const output = path.join((await import("node:os")).tmpdir(), `awg-fix-${Date.now()}.json`);
+  const { stdout } = await execFileAsync("node", [bin, "fix", "examples/vulnerable-github-action", "--format", "json", "--output", output]);
+  const parsed = JSON.parse(await readFile(output, "utf8"));
+
+  await stat(output);
+  assert.equal(parsed.schemaVersion, "1.0.0");
+  assert.ok(parsed.summary.findings > 0);
+  assert.ok(parsed.recipes.some((recipe) => recipe.ruleId === "AWI003"));
+  assert.match(stdout, /Wrote json fix report/);
+  assert.doesNotMatch(stdout, /"recipes"/);
+});

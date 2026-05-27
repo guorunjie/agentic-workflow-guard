@@ -105,6 +105,7 @@ Preview remediation:
 ```bash
 node ./bin/agentic-workflow-guard.js fix . --dry-run
 node ./bin/agentic-workflow-guard.js fix . --format json
+node ./bin/agentic-workflow-guard.js fix . --format json --output awg-fix.json
 ```
 
 Generate a reviewable patch without editing files:
@@ -191,6 +192,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `baseline create [path]` | Writes `.awg-baseline.json` with stable finding fingerprints. |
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
 | `fix [path] --format json` | Emits structured fix recipes with confidence, automatic/manual mode, patch availability, approval snippets, next steps, and changed file counts. |
+| `fix [path] --output awg-fix.json` | Writes the selected fix plan, JSON recipe report, or patch preview to a file for PR bots and agent loops. |
 | `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades, MCP filesystem read-only scoping, and CI dry-run defaults without editing files. |
 | `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades, MCP filesystem root narrowing/read-only settings, and GitHub/GitLab/CircleCI/Azure/Jenkins dry-run markers, then leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
@@ -352,7 +354,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.3 | Baseline mode, browser traces, agent install helpers, patch output | `baseline create`, `fix --patch`, `agents install`, AWI010 |
 | v0.4 | Rule marketplace and benchmark snapshots | `rules list/search/install/verify`, checksums, `benchmark` |
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested, MCP resources, remediation playbooks |
-| v0.9 | Structured remediation plans | `fix --format json`, recipe confidence, automatic/manual modes, fix report schema |
+| v0.9 | Structured remediation plans | `fix --format json`, `fix --output`, recipe confidence, automatic/manual modes, fix report schema |
 | v0.10 | Trusted marketplace metadata | Rule pack schema, compatibility metadata, provenance, install lock file |
 | v0.11 | Public docs and schema URLs | GitHub Pages artifact, Marketplace page, schema aliases, `docs:build` |
 | v0.12 | Zapier benchmark coverage | Zapier-specific evidence, vulnerable/safe Zap fixtures, benchmark matrix |

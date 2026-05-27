@@ -46,4 +46,4 @@ If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configur
 
 ## Release Notes
 
-Mention scanner coverage, policy profiles, suppression audit trails, stable report, fix, rule pack, benchmark corpus, and benchmark report schemas, `scan --output`, `fix --format json` approval snippets, trusted rule marketplace metadata, community rule-pack registry, public benchmark corpus, scored benchmark reports, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.
+Mention scanner coverage, policy profiles, suppression audit trails, stable report, fix, rule pack, benchmark corpus, and benchmark report schemas, `scan --output`, `fix --format json`, `fix --output`, approval snippets, trusted rule marketplace metadata, community rule-pack registry, public benchmark corpus, scored benchmark reports, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.

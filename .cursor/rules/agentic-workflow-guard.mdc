@@ -35,6 +35,7 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - schema-benchmark-report: `node ./bin/agentic-workflow-guard.js schema benchmark-report`
 - baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
 - fix-json: `node ./bin/agentic-workflow-guard.js fix . --format json`
+- fix-output: `node ./bin/agentic-workflow-guard.js fix . --format json --output awg-fix.json`
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`

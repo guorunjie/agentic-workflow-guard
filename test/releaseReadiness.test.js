@@ -62,6 +62,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /schema benchmark-report/);
   assert.match(readme, /benchmark --format json/);
   assert.match(readme, /fix \. --format json/);
+  assert.match(readme, /--output awg-fix\.json/);
   assert.match(readme, /fix \. --apply/);
   assert.match(readme, /fix \. --patch/);
   assert.match(readme, /CI dry-run defaults/);
