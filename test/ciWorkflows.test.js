@@ -35,6 +35,52 @@ agent_patch:
   assert.ok(ids.includes("AWI008"));
 });
 
+test("detects Bitbucket Pipelines agent steps with PR context, deployment, OIDC, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    "bitbucket-pipelines.yml",
+    `
+pipelines:
+  default:
+    - step:
+        name: Agent deploy
+        deployment: production
+        oidc: true
+        script:
+          - PROMPT="Review $BITBUCKET_BRANCH and pull request $BITBUCKET_PR_ID, then choose deploy commands"
+          - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$BITBUCKET_STEP_OIDC_TOKEN")"
+          - bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Bitbucket Pipelines deployment production/i.test(finding.evidence)));
+  assert.ok(findings.some((finding) => /Bitbucket Pipelines oidc true/i.test(finding.evidence)));
+});
+
+test("does not flag a Bitbucket Pipelines read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    "bitbucket-pipelines.yml",
+    `
+pipelines:
+  default:
+    - step:
+        name: Agent preview
+        script:
+          - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
 test("does not flag a GitLab CI dry-run agent preview", async () => {
   const root = await writeCiFixture(
     ".gitlab-ci.yml",

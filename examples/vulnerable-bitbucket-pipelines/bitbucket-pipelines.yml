@@ -1,0 +1,10 @@
+pipelines:
+  default:
+    - step:
+        name: Agent deploy
+        deployment: production
+        oidc: true
+        script:
+          - PROMPT="Review $BITBUCKET_BRANCH and pull request $BITBUCKET_PR_ID, then choose deploy commands"
+          - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$BITBUCKET_STEP_OIDC_TOKEN")"
+          - bash -lc "$AGENT_OUTPUT"

@@ -9,6 +9,7 @@ const reportSchemaVersion = "1.0.0";
 
 const fixturePlatforms = [
   ["github-action", "github-actions", "GitHub Actions"],
+  ["bitbucket", "bitbucket-pipelines", "Bitbucket Pipelines"],
   ["gitlab-ci", "gitlab-ci", "GitLab CI"],
   ["circleci", "circleci", "CircleCI"],
   ["azure-pipelines", "azure-pipelines", "Azure Pipelines"],

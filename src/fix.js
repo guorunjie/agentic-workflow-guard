@@ -73,6 +73,16 @@ function insertYamlDryRunBlockBeforeSteps(text, blockName) {
   return { text: updated, changed: updated !== text };
 }
 
+function insertYamlScriptDryRunLine(text) {
+  const script = text.match(/^([ \t]*)script:\s*$/m);
+  if (!script) return { text, changed: false };
+
+  return {
+    text: insertIntoExistingBlock(text, script.index, `${script[1]}  - export ${dryRunVariable}="true"\n`),
+    changed: true
+  };
+}
+
 function applyJenkinsDryRunGuard(text) {
   const existingEnvironment = text.match(/^(\s*)environment\s*\{\s*$/m);
   if (existingEnvironment) {
@@ -91,6 +101,7 @@ function applyJenkinsDryRunGuard(text) {
 function applyDryRunGuard(text, file) {
   if (/AGENTIC_WORKFLOW_GUARD_DRY_RUN/.test(text)) return { text, changed: false };
   if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
+  if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return insertYamlScriptDryRunLine(text);
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^\.gitlab-ci\.ya?ml$/i.test(file) || /^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) {
@@ -215,6 +226,7 @@ function fixableFiles(findings) {
 
 function platformForFile(file) {
   if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return "github-actions";
+  if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return "bitbucket-pipelines";
   if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return "buildkite";
@@ -246,6 +258,23 @@ permissions:
       `
 when: manual
 allow_failure: false
+`
+    ),
+    "bitbucket-pipelines": snippet(
+      "Bitbucket Pipelines manual trigger step",
+      "yaml",
+      `
+pipelines:
+  default:
+    - step:
+        name: Agent preview
+        script:
+          - npm run agent:preview
+    - step:
+        name: Approve agent side effects
+        trigger: manual
+        script:
+          - npm run agent:review
 `
     ),
     circleci: snippet(

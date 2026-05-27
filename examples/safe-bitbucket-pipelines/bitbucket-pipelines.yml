@@ -1,0 +1,6 @@
+pipelines:
+  default:
+    - step:
+        name: Agent preview
+        script:
+          - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

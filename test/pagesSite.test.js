@@ -45,11 +45,13 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   assert.ok(registry.packs.some((pack) => pack.alias === "ci-pipeline-hardening"));
   assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation"));
   assert.ok(registry.packs.some((pack) => pack.alias === "mcp-tool-governance"));
+  assert.ok(ciPack.platforms.includes("bitbucket-pipelines"));
   assert.ok(ciPack.platforms.includes("buildkite"));
   assert.equal(communityPack.provenance.source, "community");
   assert.deepEqual(mcpPack.rules, ["AWI006"]);
   assert.equal(corpus.name, "agentic-workflow-guard-benchmark-corpus");
-  assert.equal(corpus.fixtureCount, 36);
+  assert.equal(corpus.fixtureCount, 38);
+  assert.ok(corpus.platforms.includes("Bitbucket Pipelines"));
   assert.ok(corpus.platforms.includes("Buildkite"));
   assert.ok(corpus.platforms.includes("Dify"));
   assert.ok(corpus.platforms.includes("Flowise"));

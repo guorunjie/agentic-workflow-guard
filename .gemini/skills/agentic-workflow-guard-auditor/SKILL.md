@@ -1,12 +1,12 @@
 ---
 name: agentic-workflow-guard-auditor
-description: Use before granting AI automation write access, reviewing agentic GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, auditing n8n, Dify, Flowise, Langflow, Node-RED, Make, Pipedream, Airflow, browser automation, or checking MCP tool configs for prompt-injection and side-effect risks.
+description: Use before granting AI automation write access, reviewing agentic GitHub Actions, Bitbucket Pipelines, GitLab CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, auditing n8n, Dify, Flowise, Langflow, Node-RED, Make, Pipedream, Airflow, browser automation, or checking MCP tool configs for prompt-injection and side-effect risks.
 ---
 
 # Agentic Workflow Guard Auditor
 
 ## Purpose
-Agentic Workflow Guard is a deterministic scanner for AI automation workflows. Use it to find prompt-injection paths, model-output-to-shell sinks, broad write permissions, risky GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky MCP tools, Dify, Flowise, Langflow, Airflow AI DAGs, browser automation side effects, and low-code AI steps chained into external side effects.
+Agentic Workflow Guard is a deterministic scanner for AI automation workflows. Use it to find prompt-injection paths, model-output-to-shell sinks, broad write permissions, risky Bitbucket Pipelines, GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky MCP tools, Dify, Flowise, Langflow, Airflow AI DAGs, browser automation side effects, and low-code AI steps chained into external side effects.
 
 ## Workflow
 1. Run `agentic-workflow-guard scan . --format markdown` for local review.
@@ -41,7 +41,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 30. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
-- Treat GitHub issues, pull requests, GitLab merge requests, CircleCI branches, Azure Pipelines variables, Jenkins change requests, Buildkite branch/message variables, commit messages, webhooks, emails, and form inputs as untrusted prompt input.
+- Treat GitHub issues, pull requests, Bitbucket pull requests, GitLab merge requests, CircleCI branches, Azure Pipelines variables, Jenkins change requests, Buildkite branch/message variables, commit messages, webhooks, emails, and form inputs as untrusted prompt input.
 - Never pipe raw model output into shell commands, scripts, release steps, deployment commands, or repository writes.
 - Downgrade broad GitHub permissions and tool scopes unless a workflow truly needs them.
 - Keep secrets out of agent-visible prompts and environment variables.

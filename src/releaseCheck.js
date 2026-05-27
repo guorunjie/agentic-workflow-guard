@@ -20,6 +20,7 @@ const requiredSchemas = [
 ];
 const requiredPlatforms = [
   "github-actions",
+  "bitbucket-pipelines",
   "gitlab-ci",
   "circleci",
   "azure-pipelines",

@@ -9,6 +9,7 @@ test("package metadata reflects the v0.20 marketplace and install readiness rele
   assert.match(pkg.description, /Semgrep-style scanner/i);
   assert.match(pkg.description, /marketplace action smoke tests/i);
   assert.match(pkg.description, /portable skills/i);
+  assert.ok(pkg.keywords.includes("bitbucket-pipelines"));
   assert.ok(pkg.keywords.includes("gitlab-ci"));
   assert.ok(pkg.keywords.includes("circleci"));
   assert.ok(pkg.keywords.includes("azure-pipelines"));
@@ -52,6 +53,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
   assert.match(readme, /actions\/upload-artifact@v4/);
+  assert.match(readme, /Bitbucket Pipelines/);
   assert.match(readme, /GitLab CI/);
   assert.match(readme, /CircleCI/);
   assert.match(readme, /Azure Pipelines/);
@@ -148,6 +150,7 @@ test("Pages workflow publishes generated docs and stable schema URLs", async () 
 test("repository ships examples for new workflow platform scanners", async () => {
   const files = [
     "examples/vulnerable-node-red/flows.json",
+    "examples/vulnerable-bitbucket-pipelines/bitbucket-pipelines.yml",
     "examples/vulnerable-gitlab-ci/.gitlab-ci.yml",
     "examples/vulnerable-circleci/.circleci/config.yml",
     "examples/vulnerable-azure-pipelines/azure-pipelines.yml",
@@ -169,6 +172,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "rules/community/agentic-workflow-guard-low-code-automation.json",
     "rules/community/agentic-workflow-guard-mcp-tool-governance.json",
     "examples/safe-node-red/flows.json",
+    "examples/safe-bitbucket-pipelines/bitbucket-pipelines.yml",
     "examples/safe-gitlab-ci/.gitlab-ci.yml",
     "examples/safe-circleci/.circleci/config.yml",
     "examples/safe-azure-pipelines/azure-pipelines.yml",

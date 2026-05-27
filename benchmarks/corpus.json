@@ -6,11 +6,12 @@
   "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "fixtureManifestVersion": 1,
-  "fixtureCount": 36,
+  "fixtureCount": 38,
   "platforms": [
     "Activepieces",
     "Airflow",
     "Azure Pipelines",
+    "Bitbucket Pipelines",
     "Browser automation",
     "Buildkite",
     "CircleCI",
@@ -59,6 +60,29 @@
       "platformId": "github-actions",
       "platform": "GitHub Actions",
       "path": "examples/safe-github-action",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-bitbucket-pipelines",
+      "kind": "vulnerable",
+      "platformId": "bitbucket-pipelines",
+      "platform": "Bitbucket Pipelines",
+      "path": "examples/vulnerable-bitbucket-pipelines",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-bitbucket-pipelines",
+      "kind": "safe",
+      "platformId": "bitbucket-pipelines",
+      "platform": "Bitbucket Pipelines",
+      "path": "examples/safe-bitbucket-pipelines",
       "expectedRules": [],
       "risk": "Expected to produce no findings."
     },

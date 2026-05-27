@@ -94,6 +94,26 @@ agent_patch:
   assert.match(updated, /variables:\n  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n  NODE_ENV: test/);
 });
 
+test("fix --apply adds Bitbucket Pipelines dry-run script marker", async () => {
+  const { root, filePath } = await projectFile(
+    "bitbucket-pipelines.yml",
+    `
+pipelines:
+  default:
+    - step:
+        name: Agent deploy
+        script:
+          - npx openai-agent --prompt "Review $BITBUCKET_BRANCH"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /script:\n          - export AGENTIC_WORKFLOW_GUARD_DRY_RUN="true"\n          - npx openai-agent/);
+  assert.match(updated, /BITBUCKET_BRANCH/);
+});
+
 test("fix --apply adds CircleCI job-level dry-run environment", async () => {
   const { root, filePath } = await projectFile(
     path.join(".circleci", "config.yml"),

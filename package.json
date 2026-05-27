@@ -33,6 +33,7 @@
     "automation",
     "workflow-automation",
     "github-actions",
+    "bitbucket-pipelines",
     "gitlab-ci",
     "circleci",
     "azure-pipelines",
