@@ -6,9 +6,11 @@ Use this checklist before publishing `agentic-workflow-guard` to npm.
 
 1. Confirm `package.json` version matches the GitHub release tag.
 2. Confirm `README.md`, `LICENSE`, `action.yml`, `rules`, `mcp`, `docs`, `examples`, `benchmarks`, and generated agent instruction files are included in `package.json#files`.
-3. Run the full verification suite:
+3. Preview the version and release-tag edits with `npm run release:prepare -- --version <version> --dry-run`; use `--apply` only when cutting the release branch or tag.
+4. Run the full verification suite:
 
 ```bash
+npm run release:prepare -- --version 1.0.0 --dry-run
 npm test
 node ./bin/agentic-workflow-guard.js benchmark
 node ./bin/agentic-workflow-guard.js benchmark --format json
@@ -21,6 +23,8 @@ node ./bin/agentic-workflow-guard.js schema benchmark-corpus
 node ./bin/agentic-workflow-guard.js schema benchmark-report
 npm run docs:build
 npm run smoke:package
+npm run release:sync:check
+npm run release:check -- --target 1.0.0 --require-npm-auth
 npm pack --dry-run
 ```
 

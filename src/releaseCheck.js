@@ -80,7 +80,7 @@ async function fileGate(root, file) {
 
 async function packageGate(root) {
   const pkg = await readJson(root, "package.json");
-  const requiredScripts = ["test", "docs:build", "smoke:package", "release:check", "release:sync", "release:sync:check", "benchmark:report", "benchmark:corpus", "mcp:resources"];
+  const requiredScripts = ["test", "docs:build", "smoke:package", "release:check", "release:prepare", "release:sync", "release:sync:check", "benchmark:report", "benchmark:corpus", "mcp:resources"];
   const missingScripts = requiredScripts.filter((script) => !pkg.scripts?.[script]);
   const requiredFiles = ["bin", "src", "rules", "schemas", "mcp", "examples", "benchmarks", "docs", "docs-site", "scripts", "action.yml", ".github/copilot-instructions.md"];
   const missingFiles = requiredFiles.filter((file) => !pkg.files?.includes(file));

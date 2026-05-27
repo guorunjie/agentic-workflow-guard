@@ -35,9 +35,10 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 24. Use `docs/demos.md` when explaining the fastest GitHub Actions, n8n, MCP, browser automation, and benchmark demos.
 25. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
 26. Use `npm run smoke:package` before releases to install the packed tarball and run the CLI through npx.
-27. Use `npm run release:sync:check` before releases to verify generated rule-pack, benchmark corpus, and MCP resource JSON files.
-28. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-29. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+27. Use `npm run release:prepare -- --version 1.0.0-rc.1 --dry-run` before releases to preview package version and release-tag changes.
+28. Use `npm run release:sync:check` before releases to verify generated rule-pack, benchmark corpus, and MCP resource JSON files.
+29. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+30. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, GitLab merge requests, CircleCI branches, Azure Pipelines variables, Jenkins change requests, commit messages, webhooks, emails, and form inputs as untrusted prompt input.
@@ -62,6 +63,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `agentic-workflow-guard benchmark corpus --format json`
 - `npm run smoke:package`
 - `npm run docs:build`
+- `npm run release:prepare -- --version 1.0.0-rc.1 --dry-run`
 - `npm run release:sync:check`
 - `agentic-workflow-guard mcp resources --format json`
 - `agentic-workflow-guard baseline create .`

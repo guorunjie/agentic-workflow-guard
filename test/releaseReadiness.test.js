@@ -32,6 +32,7 @@ test("package metadata reflects the v0.20 marketplace and install readiness rele
   assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
   assert.equal(pkg.scripts["smoke:package"], "node ./scripts/smoke-package.js");
   assert.equal(pkg.scripts["release:check"], "node ./bin/agentic-workflow-guard.js release check");
+  assert.equal(pkg.scripts["release:prepare"], "node ./scripts/prepare-release.js");
   assert.equal(pkg.scripts["release:sync"], "node ./scripts/sync-static.js");
   assert.equal(pkg.scripts["release:sync:check"], "node ./scripts/sync-static.js --check");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
@@ -74,6 +75,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /Demo Playbook/);
   assert.match(readme, /v1-readiness\.md/);
   assert.match(readme, /release check \[path\] --target 1\.0\.0/);
+  assert.match(readme, /npm run release:prepare -- --version 1\.0\.0-rc\.1 --dry-run/);
   assert.match(readme, /npm run release:sync:check/);
   assert.match(readme, /npm run release:check/);
   assert.match(readme, /npm run smoke:package/);
@@ -111,6 +113,7 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /profile: advisory/);
   assert.match(workflow, /awg-action-smoke\.json/);
   assert.match(workflow, /npm run release:sync:check/);
+  assert.match(workflow, /npm run release:prepare -- --version 1\.0\.0-rc\.1 --dry-run/);
   assert.match(workflow, /npm run release:check -- --format json/);
   assert.match(workflow, /npm run smoke:package/);
   assert.match(workflow, /npm pack --dry-run/);
@@ -168,6 +171,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs-site/index.html",
     "docs-site/marketplace.html",
     "scripts/build-pages.js",
+    "scripts/prepare-release.js",
     "scripts/smoke-package.js",
     "scripts/sync-static.js",
     "docs/npm-publish.md",

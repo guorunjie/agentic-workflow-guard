@@ -36,12 +36,13 @@ With npm access resolved, this is a 1-2 day release-candidate task and a 2-4 day
 
 1. Confirm the repository is clean and remote `main` has green `test` and `pages` workflows.
 2. Resolve npm authentication and run `npm publish --dry-run`.
-3. Bump package and distributed metadata to `1.0.0`.
-4. Update README, docs, schemas, MCP resources, benchmark corpus, agent skills, and GitHub Action examples from v0.20.0 to v1.0.0.
+3. Preview the version and release-tag edits with `npm run release:prepare -- --version 1.0.0 --dry-run`.
+4. Apply the release prep with `npm run release:prepare -- --version 1.0.0 --apply`, then run `npm run release:sync` and regenerate the Skillpack Forge outputs.
 5. Run the full local gate:
 
 ```bash
 npm test
+npm run release:prepare -- --version 1.0.0 --dry-run
 npm run smoke:package
 npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
