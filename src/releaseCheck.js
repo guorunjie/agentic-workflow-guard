@@ -217,7 +217,7 @@ async function agentMatrixGate(root) {
 async function actionGate(root, targetVersion) {
   const action = await readText(root, "action.yml");
   const readme = await readText(root, "README.md");
-  const requiredPatterns = [/branding:/, /color: blue/, /output:/, /profile:/, /baseline:/, /report-path:/, /GITHUB_STEP_SUMMARY/];
+  const requiredPatterns = [/branding:/, /color: blue/, /output:/, /profile:/, /baseline:/, /fix-format:/, /fix-output:/, /report-path:/, /fix-report-path:/, /GITHUB_STEP_SUMMARY/];
   const missing = requiredPatterns.filter((pattern) => !pattern.test(action)).map((pattern) => pattern.source);
   const readmeTag = `guorunjie/agentic-workflow-guard@v${targetVersion}`;
   const readmeHasTarget = readme.includes(readmeTag);
@@ -227,7 +227,7 @@ async function actionGate(root, targetVersion) {
     const remediation = "Keep action metadata Marketplace-ready and update README examples to the release tag before cutting that version.";
     return gate("github-action-marketplace", "GitHub Action Marketplace readiness", status, evidence, remediation);
   }
-  return pass("github-action-marketplace", "GitHub Action Marketplace readiness", [`README uses ${readmeTag}.`, "Action metadata includes output/profile/baseline/report-path and Step Summary support."]);
+  return pass("github-action-marketplace", "GitHub Action Marketplace readiness", [`README uses ${readmeTag}.`, "Action metadata includes output/profile/baseline/report-path, optional fix reports, and Step Summary support."]);
 }
 
 async function docsGate(root) {

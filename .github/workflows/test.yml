@@ -31,10 +31,14 @@ jobs:
           format: json
           profile: advisory
           output: awg-action-smoke.json
+          fix-format: json
+          fix-output: awg-action-fix.json
       - name: Verify local action output
         run: |
           test -s awg-action-smoke.json
+          test -s awg-action-fix.json
           node -e 'const fs = require("node:fs"); const report = JSON.parse(fs.readFileSync("awg-action-smoke.json", "utf8")); if (!report.findings.some((finding) => finding.ruleId === "AWI001")) process.exit(1);'
+          node -e 'const fs = require("node:fs"); const report = JSON.parse(fs.readFileSync("awg-action-fix.json", "utf8")); if (report.schemaVersion !== "1.0.0" || !report.recipes.some((recipe) => recipe.ruleId === "AWI001")) process.exit(1);'
 
   release-gates:
     runs-on: ubuntu-latest

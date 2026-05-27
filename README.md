@@ -306,13 +306,20 @@ jobs:
           format: sarif
           profile: balanced
           output: awg.sarif
+          fix-format: json
+          fix-output: awg-fix.json
         continue-on-error: true
       - uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: awg.sarif
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agentic-workflow-guard-fix-report
+          path: awg-fix.json
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.20.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.20.0`. The optional `fix-output` input writes a structured remediation artifact for PR bots, review comments, or follow-up agent loops.
 
 ## Examples
 

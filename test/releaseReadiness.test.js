@@ -50,6 +50,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
+  assert.match(readme, /actions\/upload-artifact@v4/);
   assert.match(readme, /GitLab CI/);
   assert.match(readme, /CircleCI/);
   assert.match(readme, /Azure Pipelines/);
@@ -63,6 +64,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /benchmark --format json/);
   assert.match(readme, /fix \. --format json/);
   assert.match(readme, /--output awg-fix\.json/);
+  assert.match(readme, /fix-output: awg-fix\.json/);
   assert.match(readme, /fix \. --apply/);
   assert.match(readme, /fix \. --patch/);
   assert.match(readme, /CI dry-run defaults/);
@@ -91,7 +93,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /\.awg\.yml/);
 });
 
-test("GitHub Action writes SARIF output files for Code Scanning upload", async () => {
+test("GitHub Action writes SARIF and optional fix report files for follow-up jobs", async () => {
   const action = await readFile("action.yml", "utf8");
 
   assert.match(action, /output:/);
@@ -102,7 +104,11 @@ test("GitHub Action writes SARIF output files for Code Scanning upload", async (
   assert.match(action, /awg\.sarif/);
   assert.match(action, /profile:/);
   assert.match(action, /baseline:/);
+  assert.match(action, /fix-format:/);
+  assert.match(action, /fix-output:/);
   assert.match(action, /report-path/);
+  assert.match(action, /fix-report-path/);
+  assert.match(action, /AWG_FIX_OUTPUT/);
   assert.match(action, /GITHUB_STEP_SUMMARY/);
 });
 
@@ -117,6 +123,9 @@ test("CI workflow uses current Node runtime actions", async () => {
   assert.match(workflow, /uses: \.\//);
   assert.match(workflow, /profile: advisory/);
   assert.match(workflow, /awg-action-smoke\.json/);
+  assert.match(workflow, /fix-format: json/);
+  assert.match(workflow, /fix-output: awg-action-fix\.json/);
+  assert.match(workflow, /awg-action-fix\.json/);
   assert.match(workflow, /npm run release:sync:check/);
   assert.match(workflow, /npm run release:prepare -- --version 1\.0\.0-rc\.1 --dry-run/);
   assert.match(workflow, /npm run release:check -- --format json/);

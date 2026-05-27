@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Agentic Workflow Guard GitHub Action</title>
-    <meta name="description" content="GitHub Action setup for Agentic Workflow Guard SARIF and Step Summary reports.">
+    <meta name="description" content="GitHub Action setup for Agentic Workflow Guard SARIF, fix artifacts, and Step Summary reports.">
     <link rel="stylesheet" href="assets/site.css">
   </head>
   <body>
@@ -21,7 +21,7 @@
       <section class="hero">
         <div class="eyebrow">GitHub Action Marketplace</div>
         <h1>Add AI workflow security scanning to pull requests.</h1>
-        <p class="lede">Use the release-tagged action to generate SARIF, upload findings to GitHub Code Scanning, and publish a human-readable Step Summary.</p>
+        <p class="lede">Use the release-tagged action to generate SARIF, upload findings to GitHub Code Scanning, write optional fix artifacts, and publish a human-readable Step Summary.</p>
       </section>
 
       <section class="band">
@@ -47,24 +47,31 @@ jobs:
           format: sarif
           profile: balanced
           output: awg.sarif
+          fix-format: json
+          fix-output: awg-fix.json
         continue-on-error: true
       - uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: awg.sarif</code></pre>
+          sarif_file: awg.sarif
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agentic-workflow-guard-fix-report
+          path: awg-fix.json</code></pre>
       </section>
 
       <section class="grid" aria-label="Marketplace checks">
         <article class="card">
           <h2>Inputs</h2>
-          <p>`path`, `format`, `output`, `profile`, and `baseline` let teams move from advisory scans to strict enforcement.</p>
+          <p>`path`, `format`, `output`, `profile`, `baseline`, `fix-format`, and `fix-output` let teams move from advisory scans to strict enforcement with reviewable remediation artifacts.</p>
         </article>
         <article class="card">
           <h2>Outputs</h2>
-          <p>`report-path` points to the generated report so follow-up jobs can upload or archive it.</p>
+          <p>`report-path` and `fix-report-path` point to generated artifacts so follow-up jobs can upload, archive, or comment with them.</p>
         </article>
         <article class="card">
           <h2>Artifacts</h2>
-          <p>Use SARIF for Code Scanning, JSON for dashboards, and Markdown for local reviews or issue comments.</p>
+          <p>Use SARIF for Code Scanning, JSON fix reports for PR bots, and Markdown for local reviews or issue comments.</p>
         </article>
       </section>
 

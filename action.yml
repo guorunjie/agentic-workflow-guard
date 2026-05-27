@@ -25,10 +25,21 @@ inputs:
     description: Optional .awg-baseline.json file for suppressing existing findings.
     required: false
     default: ""
+  fix-format:
+    description: "Optional fix report format: markdown or json."
+    required: false
+    default: json
+  fix-output:
+    description: Optional fix report output file for PR bots and follow-up jobs. Leave empty to skip fix report generation.
+    required: false
+    default: ""
 outputs:
   report-path:
     description: Path to the generated report file.
     value: ${{ steps.guard.outputs.report-path }}
+  fix-report-path:
+    description: Path to the generated fix report file, when fix-output is set.
+    value: ${{ steps.guard.outputs.fix-report-path }}
 runs:
   using: composite
   steps:
@@ -41,6 +52,8 @@ runs:
         AWG_OUTPUT: ${{ inputs.output }}
         AWG_PROFILE: ${{ inputs.profile }}
         AWG_BASELINE: ${{ inputs.baseline }}
+        AWG_FIX_FORMAT: ${{ inputs.fix-format }}
+        AWG_FIX_OUTPUT: ${{ inputs.fix-output }}
       run: |
         set +e
         args=(scan "$AWG_PATH" --format "$AWG_FORMAT" --profile "$AWG_PROFILE")
@@ -55,6 +68,17 @@ runs:
         if [ -n "$AWG_OUTPUT" ]; then
           echo "report-path=$AWG_OUTPUT" >> "$GITHUB_OUTPUT"
         fi
+        if [ -n "$AWG_FIX_OUTPUT" ]; then
+          fix_args=(fix "$AWG_PATH" --format "$AWG_FIX_FORMAT" --output "$AWG_FIX_OUTPUT")
+          node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" "${fix_args[@]}"
+          fix_status=$?
+          if [ "$fix_status" -ne 0 ] && [ "$status" -eq 0 ]; then
+            status="$fix_status"
+          fi
+          if [ "$fix_status" -eq 0 ]; then
+            echo "fix-report-path=$AWG_FIX_OUTPUT" >> "$GITHUB_OUTPUT"
+          fi
+        fi
         {
           echo "## Agentic Workflow Guard"
           echo
@@ -63,5 +87,11 @@ runs:
             summary_args+=(--baseline "$AWG_BASELINE")
           fi
           node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" "${summary_args[@]}"
+          if [ -n "$AWG_FIX_OUTPUT" ]; then
+            echo
+            echo "### Fix report"
+            echo
+            echo "Generated \`$AWG_FIX_FORMAT\` fix report at \`$AWG_FIX_OUTPUT\`."
+          fi
         } >> "$GITHUB_STEP_SUMMARY" || true
         exit "$status"
