@@ -20,7 +20,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.15.0
+      - uses: guorunjie/agentic-workflow-guard@v0.16.0
         with:
           path: .
           format: sarif
@@ -35,7 +35,7 @@ jobs:
 ## Marketplace Checklist
 
 - Keep `action.yml` description concrete and searchable.
-- Use a release tag such as `v0.15.0` in docs and examples.
+- Use a release tag such as `v0.16.0` in docs and examples.
 - Keep SARIF output as the default Action output path.
 - Include README examples for local CLI, GitHub Action, SARIF upload, `scan --output`, stable report schema, fix report schema, rule pack schema, baseline mode, policy profiles, inline suppressions, `fix --format json`, `fix --patch`, `fix --apply`, config, `rules verify`, `benchmark`, `mcp resources`, browser traces, and agent support.
 - Keep `npm test`, `npm pack --dry-run`, and Skillpack Forge doctor green before cutting a release tag.

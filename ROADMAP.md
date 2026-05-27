@@ -138,6 +138,13 @@ North star:
 - Expose the shared `ci-dry-run-env` recipe through structured JSON fix reports for agents, PR bots, and UIs.
 - Keep shell sinks, prompt boundaries, credential scopes, and approval gates as manual review items.
 
+## v0.16: Approval Snippet Recipes
+
+- Add `nextSteps` and `snippets` to structured fix recipes.
+- Render manual approval, review artifact, credential isolation, MCP scope, low-code policy, and browser allowlist snippets in `fix --format json`.
+- Show the same snippet guidance in Markdown fix plans so maintainers can copy the right control into PRs.
+- Keep snippets advisory and require human review before shell, credential, deployment, repository write, or browser side-effect changes.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

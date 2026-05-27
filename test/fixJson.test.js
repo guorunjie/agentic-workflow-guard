@@ -61,7 +61,10 @@ test("fix --format json emits recipe confidence and patch availability", async (
   assert.equal(dryRunRecipe.id, "ci-dry-run-env");
   assert.equal(dryRunRecipe.mode, "automatic");
   assert.equal(promptRecipe.mode, "manual");
+  assert.ok(promptRecipe.nextSteps.some((step) => /approval gate/i.test(step)));
+  assert.ok(promptRecipe.snippets.some((snippet) => snippet.label === "GitHub environment approval gate" && snippet.format === "yaml"));
   assert.equal(shellRecipe.mode, "manual");
+  assert.ok(shellRecipe.snippets.some((snippet) => /agent-output\.txt/.test(snippet.body)));
 });
 
 test("fix --apply --format json reports changed files after applying safe recipes", async () => {

@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the v0.15 platform-aware fix engine and marketplace release", async () => {
+test("package metadata reflects the v0.16 approval snippet recipe release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.15.0");
+  assert.equal(pkg.version, "0.16.0");
   assert.match(pkg.description, /Semgrep-style scanner/i);
   assert.match(pkg.description, /portable skills/i);
   assert.ok(pkg.keywords.includes("gitlab-ci"));
@@ -47,6 +47,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /fix \. --apply/);
   assert.match(readme, /fix \. --patch/);
   assert.match(readme, /CI dry-run defaults/);
+  assert.match(readme, /approval snippets/);
   assert.match(readme, /baseline create/);
   assert.match(readme, /agents install/);
   assert.match(readme, /rules verify/);

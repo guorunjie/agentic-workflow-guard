@@ -43,6 +43,8 @@ test("CLI schema fix emits the shipped fix report schema", async () => {
   assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/fix-report.schema.json");
   assert.equal(parsed.title, "Agentic Workflow Guard Fix Report");
   assert.ok(parsed.required.includes("recipes"));
+  assert.ok(parsed.properties.recipes.items.properties.nextSteps);
+  assert.ok(parsed.properties.recipes.items.properties.snippets);
 });
 
 test("scan --output writes the selected report format and prints a summary", async () => {

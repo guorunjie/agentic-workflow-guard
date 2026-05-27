@@ -79,6 +79,8 @@ test("CLI fix emits a safe patch plan without editing by default", async () => {
   const { stdout } = await execFileAsync("node", [bin, "fix", "examples/vulnerable-github-action", "--dry-run"]);
   assert.match(stdout, /Fix plan/);
   assert.match(stdout, /AWI001/);
+  assert.match(stdout, /Recipe: `gate-untrusted-ci-context`/);
+  assert.match(stdout, /Snippet: GitHub environment approval gate/);
 });
 
 test("CLI skillpack emits Skillpack Forge manifest", async () => {

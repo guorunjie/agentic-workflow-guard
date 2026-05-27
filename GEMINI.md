@@ -16,7 +16,7 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 10. Use `awg-ignore AWI001: reason` only for reviewed suppressions with an audit reason.
 11. Review `Suppressed findings` in JSON and Markdown reports before accepting exceptions.
 12. Use `agentic-workflow-guard fix . --patch` for reviewable GitHub permission and CI dry-run diffs.
-13. Use `agentic-workflow-guard fix . --format json` for agent loops, PR bots, and UIs that need recipe confidence and automatic/manual modes.
+13. Use `agentic-workflow-guard fix . --format json` for recipe confidence, automatic/manual modes, approval snippets, and next steps.
 14. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub permission downgrades and CI dry-run defaults.
 15. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
 16. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs; it checks schema metadata and checksum.

@@ -55,7 +55,24 @@
           "ruleId": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
           "file": { "type": "string", "minLength": 1 },
           "findingFile": { "type": "string", "minLength": 1 },
-          "remediation": { "type": "string", "minLength": 1 }
+          "remediation": { "type": "string", "minLength": 1 },
+          "nextSteps": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "snippets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "format", "body"],
+              "additionalProperties": false,
+              "properties": {
+                "label": { "type": "string", "minLength": 1 },
+                "format": { "type": "string", "enum": ["yaml", "json", "groovy", "shell", "text"] },
+                "body": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
         }
       }
     },

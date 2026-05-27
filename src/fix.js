@@ -103,8 +103,242 @@ function fixableFiles(findings) {
   return [...new Set(findings.filter((finding) => ["AWI003", "AWI008"].includes(finding.ruleId)).map((finding) => stripLineSuffix(finding.file)))];
 }
 
+function platformForFile(file) {
+  if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return "github-actions";
+  if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
+  if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
+  if (/^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) return "azure-pipelines";
+  if (/(^|\/)Jenkinsfile(\..*)?$/i.test(file)) return "jenkins";
+  if (/\.mcp\.json$/i.test(file)) return "mcp";
+  if (/browser-trace\.json$/i.test(file)) return "browser-automation";
+  return "automation";
+}
+
+function snippet(label, format, body) {
+  return { label, format, body: body.trim() };
+}
+
+function approvalSnippet(platform) {
+  const snippets = {
+    "github-actions": snippet(
+      "GitHub environment approval gate",
+      "yaml",
+      `
+environment: agent-review
+permissions:
+  contents: read
+`
+    ),
+    "gitlab-ci": snippet(
+      "GitLab manual approval gate",
+      "yaml",
+      `
+when: manual
+allow_failure: false
+`
+    ),
+    circleci: snippet(
+      "CircleCI approval job",
+      "yaml",
+      `
+workflows:
+  agent_review:
+    jobs:
+      - hold:
+          type: approval
+      - ai_review:
+          requires:
+            - hold
+`
+    ),
+    "azure-pipelines": snippet(
+      "Azure environment approval gate",
+      "yaml",
+      `
+environment: agent-review
+`
+    ),
+    jenkins: snippet(
+      "Jenkins input approval gate",
+      "groovy",
+      `
+input message: 'Approve agent side effects?', ok: 'Approve'
+`
+    )
+  };
+  return snippets[platform] ?? snippet(
+    "Manual approval gate",
+    "text",
+    "Add a required human approval step immediately before the agent can run write-capable tools or side-effect actions."
+  );
+}
+
+function guidanceForFinding(ruleId, platform) {
+  const approval = approvalSnippet(platform);
+  const guidance = {
+    AWI001: {
+      nextSteps: [
+        "Validate or summarize untrusted workflow input before it enters the prompt.",
+        "Add a manual approval gate before any agent-visible input can trigger write-capable tools."
+      ],
+      snippets: [approval]
+    },
+    AWI002: {
+      nextSteps: [
+        "Write model output to a review artifact instead of executing it directly.",
+        "Validate reviewed output against an allowlist before using it in shell, deploy, release, or repository write steps."
+      ],
+      snippets: [
+        snippet(
+          "Review artifact before shell execution",
+          "shell",
+          `
+printf '%s\\n' "$AGENT_OUTPUT" > agent-output.txt
+# Review agent-output.txt, then run only allowlisted commands.
+`
+        )
+      ]
+    },
+    AWI003: {
+      nextSteps: [
+        "Review the automatic permission downgrade patch.",
+        "Move any truly required write operation into a separate approved job."
+      ],
+      snippets: [
+        snippet(
+          "Read-only GitHub token baseline",
+          "yaml",
+          `
+permissions:
+  contents: read
+`
+        )
+      ]
+    },
+    AWI004: {
+      nextSteps: [
+        "Move untrusted pull request analysis to pull_request with read-only permissions.",
+        "Keep pull_request_target only for narrowly scoped trusted follow-up work after review."
+      ],
+      snippets: [
+        snippet(
+          "Read-only pull request workflow",
+          "yaml",
+          `
+on: pull_request
+permissions:
+  contents: read
+`
+        )
+      ]
+    },
+    AWI005: {
+      nextSteps: [
+        "Insert validation and approval nodes before HTTP, Code, Execute Command, or credential-bearing nodes.",
+        "Convert free-form model output into a structured allowlisted schema."
+      ],
+      snippets: [
+        snippet(
+          "Low-code approval contract",
+          "json",
+          `
+{
+  "approval": { "required": true, "before": "side_effect_node" },
+  "allowlist": { "actions": ["read", "comment", "draft"] }
+}
+`
+        )
+      ]
+    },
+    AWI006: {
+      nextSteps: [
+        "Narrow broad MCP tool roots, hosts, repositories, and command scopes.",
+        "Place write-capable tools behind approval or remove them from default agent contexts."
+      ],
+      snippets: [
+        snippet(
+          "Scoped MCP filesystem tool",
+          "json",
+          `
+{
+  "tools": {
+    "filesystem": { "roots": ["./"], "readOnly": true }
+  }
+}
+`
+        )
+      ]
+    },
+    AWI007: {
+      nextSteps: [
+        "Remove secrets and long-lived tokens from prompt-visible environment or context.",
+        "Use short-lived scoped credentials only in post-approval write steps."
+      ],
+      snippets: [
+        snippet(
+          "Secret isolation reminder",
+          "text",
+          "Keep secrets outside prompt construction; pass scoped credentials only to reviewed, non-agent write steps."
+        )
+      ]
+    },
+    AWI008: {
+      nextSteps: [
+        "Review the automatic dry-run marker patch.",
+        "Replace dry-run-only operation with approval gates and allowlists before enabling side effects."
+      ],
+      snippets: [approval]
+    },
+    AWI009: {
+      nextSteps: [
+        "Validate model output before API calls, notifications, database writes, deployment operators, or code execution.",
+        "Require approval for credential-bearing low-code, Zapier, Node-RED, Pipedream, Make, or Airflow actions."
+      ],
+      snippets: [
+        snippet(
+          "Automation side-effect policy",
+          "json",
+          `
+{
+  "modelOutput": { "schema": "structured", "freeFormTextAllowed": false },
+  "sideEffects": { "requiresApproval": true, "allowedActions": ["draft", "preview"] }
+}
+`
+        )
+      ]
+    },
+    AWI010: {
+      nextSteps: [
+        "Restrict browser automation to allowlisted domains and action names.",
+        "Require approval before submit, pay, upload, publish, delete, invite, merge, or deploy actions."
+      ],
+      snippets: [
+        snippet(
+          "Browser automation allowlist",
+          "json",
+          `
+{
+  "browser": {
+    "allowedDomains": ["example.com"],
+    "allowedActions": ["navigate", "read", "extract"],
+    "approvalRequiredFor": ["click", "fill", "submit", "upload", "delete"]
+  }
+}
+`
+        )
+      ]
+    }
+  };
+
+  return guidance[ruleId] ?? {
+    nextSteps: ["Review the finding manually and add an explicit control before write-capable agent activity."],
+    snippets: [approval]
+  };
+}
+
 function recipeForFinding(finding) {
   const file = stripLineSuffix(finding.file);
+  const platform = platformForFile(file);
   const recipes = {
     AWI001: {
       id: "gate-untrusted-ci-context",
@@ -179,7 +413,8 @@ function recipeForFinding(finding) {
     ruleId: finding.ruleId,
     file,
     findingFile: finding.file,
-    remediation: finding.remediation
+    remediation: finding.remediation,
+    ...guidanceForFinding(finding.ruleId, platform)
   };
 }
 
@@ -334,10 +569,24 @@ export async function renderFixPlan(root, options = {}) {
   }
 
   for (const finding of findings) {
+    const recipe = recipeForFinding(finding);
     lines.push(`## ${finding.ruleId}: ${finding.title}`);
     lines.push(`- File: \`${finding.file}\``);
     lines.push(`- Evidence: \`${finding.evidence}\``);
     lines.push(`- Suggested fix: ${finding.remediation}`);
+    lines.push(`- Recipe: \`${recipe.id}\` (${recipe.mode}, ${recipe.confidence} confidence)`);
+    if (recipe.nextSteps.length) {
+      lines.push("- Next steps:");
+      for (const step of recipe.nextSteps) {
+        lines.push(`  - ${step}`);
+      }
+    }
+    for (const item of recipe.snippets) {
+      lines.push(`- Snippet: ${item.label}`);
+      lines.push(`\`\`\`${item.format}`);
+      lines.push(item.body);
+      lines.push("```");
+    }
     lines.push("");
   }
   if (options.apply) {
