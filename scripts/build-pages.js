@@ -33,6 +33,7 @@ const jsonCopies = [
   "rules/community/agentic-workflow-guard-github-actions-hardening.json",
   "rules/community/agentic-workflow-guard-low-code-automation.json",
   "benchmarks/fixtures.json",
+  "benchmarks/corpus.json",
   "mcp/resources/agentic-workflow-guard.resources.json"
 ];
 

@@ -1,0 +1,334 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "agentic-workflow-guard-benchmark-corpus",
+  "version": "0.18.0",
+  "generatedBy": "agentic-workflow-guard@0.18.0",
+  "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
+  "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
+  "fixtureManifestVersion": 1,
+  "fixtureCount": 28,
+  "platforms": [
+    "Activepieces",
+    "Airflow",
+    "Azure Pipelines",
+    "Browser automation",
+    "CircleCI",
+    "GitHub Actions",
+    "GitLab CI",
+    "Jenkins",
+    "MCP",
+    "Make",
+    "Node-RED",
+    "Pipedream",
+    "Zapier",
+    "n8n"
+  ],
+  "ruleIds": [
+    "AWI001",
+    "AWI002",
+    "AWI003",
+    "AWI005",
+    "AWI006",
+    "AWI007",
+    "AWI008",
+    "AWI009",
+    "AWI010"
+  ],
+  "fixtures": [
+    {
+      "name": "vulnerable-github-action",
+      "kind": "vulnerable",
+      "platformId": "github-actions",
+      "platform": "GitHub Actions",
+      "path": "examples/vulnerable-github-action",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI003",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI003, AWI008."
+    },
+    {
+      "name": "safe-github-action",
+      "kind": "safe",
+      "platformId": "github-actions",
+      "platform": "GitHub Actions",
+      "path": "examples/safe-github-action",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-gitlab-ci",
+      "kind": "vulnerable",
+      "platformId": "gitlab-ci",
+      "platform": "GitLab CI",
+      "path": "examples/vulnerable-gitlab-ci",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-gitlab-ci",
+      "kind": "safe",
+      "platformId": "gitlab-ci",
+      "platform": "GitLab CI",
+      "path": "examples/safe-gitlab-ci",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-circleci",
+      "kind": "vulnerable",
+      "platformId": "circleci",
+      "platform": "CircleCI",
+      "path": "examples/vulnerable-circleci",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-circleci",
+      "kind": "safe",
+      "platformId": "circleci",
+      "platform": "CircleCI",
+      "path": "examples/safe-circleci",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-azure-pipelines",
+      "kind": "vulnerable",
+      "platformId": "azure-pipelines",
+      "platform": "Azure Pipelines",
+      "path": "examples/vulnerable-azure-pipelines",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-azure-pipelines",
+      "kind": "safe",
+      "platformId": "azure-pipelines",
+      "platform": "Azure Pipelines",
+      "path": "examples/safe-azure-pipelines",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-jenkins",
+      "kind": "vulnerable",
+      "platformId": "jenkins",
+      "platform": "Jenkins",
+      "path": "examples/vulnerable-jenkins",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-jenkins",
+      "kind": "safe",
+      "platformId": "jenkins",
+      "platform": "Jenkins",
+      "path": "examples/safe-jenkins",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-n8n",
+      "kind": "vulnerable",
+      "platformId": "n8n",
+      "platform": "n8n",
+      "path": "examples/vulnerable-n8n",
+      "expectedRules": [
+        "AWI005"
+      ],
+      "risk": "Expected to trigger AWI005."
+    },
+    {
+      "name": "safe-n8n",
+      "kind": "safe",
+      "platformId": "n8n",
+      "platform": "n8n",
+      "path": "examples/safe-n8n",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-mcp",
+      "kind": "vulnerable",
+      "platformId": "mcp",
+      "platform": "MCP",
+      "path": "examples/vulnerable-mcp",
+      "expectedRules": [
+        "AWI006"
+      ],
+      "risk": "Expected to trigger AWI006."
+    },
+    {
+      "name": "safe-mcp",
+      "kind": "safe",
+      "platformId": "mcp",
+      "platform": "MCP",
+      "path": "examples/safe-mcp",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-activepieces",
+      "kind": "vulnerable",
+      "platformId": "activepieces",
+      "platform": "Activepieces",
+      "path": "examples/vulnerable-activepieces",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-activepieces",
+      "kind": "safe",
+      "platformId": "activepieces",
+      "platform": "Activepieces",
+      "path": "examples/safe-activepieces",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-node-red",
+      "kind": "vulnerable",
+      "platformId": "node-red",
+      "platform": "Node-RED",
+      "path": "examples/vulnerable-node-red",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-node-red",
+      "kind": "safe",
+      "platformId": "node-red",
+      "platform": "Node-RED",
+      "path": "examples/safe-node-red",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-make",
+      "kind": "vulnerable",
+      "platformId": "make",
+      "platform": "Make",
+      "path": "examples/vulnerable-make",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-make",
+      "kind": "safe",
+      "platformId": "make",
+      "platform": "Make",
+      "path": "examples/safe-make",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-pipedream",
+      "kind": "vulnerable",
+      "platformId": "pipedream",
+      "platform": "Pipedream",
+      "path": "examples/vulnerable-pipedream",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-pipedream",
+      "kind": "safe",
+      "platformId": "pipedream",
+      "platform": "Pipedream",
+      "path": "examples/safe-pipedream",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-zapier",
+      "kind": "vulnerable",
+      "platformId": "zapier",
+      "platform": "Zapier",
+      "path": "examples/vulnerable-zapier",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-zapier",
+      "kind": "safe",
+      "platformId": "zapier",
+      "platform": "Zapier",
+      "path": "examples/safe-zapier",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-airflow",
+      "kind": "vulnerable",
+      "platformId": "airflow",
+      "platform": "Airflow",
+      "path": "examples/vulnerable-airflow",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-airflow",
+      "kind": "safe",
+      "platformId": "airflow",
+      "platform": "Airflow",
+      "path": "examples/safe-airflow",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-browser-trace",
+      "kind": "vulnerable",
+      "platformId": "browser-automation",
+      "platform": "Browser automation",
+      "path": "examples/vulnerable-browser-trace",
+      "expectedRules": [
+        "AWI010"
+      ],
+      "risk": "Expected to trigger AWI010."
+    },
+    {
+      "name": "safe-browser-trace",
+      "kind": "safe",
+      "platformId": "browser-automation",
+      "platform": "Browser automation",
+      "path": "examples/safe-browser-trace",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    }
+  ]
+}

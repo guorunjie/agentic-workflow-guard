@@ -22,6 +22,7 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   const marketplaceRules = JSON.parse(await readFile(path.join(outDir, "rules", "marketplace.json"), "utf8"));
   const registry = JSON.parse(await readFile(path.join(outDir, "rules", "registry.json"), "utf8"));
   const communityPack = JSON.parse(await readFile(path.join(outDir, "rules", "community", "agentic-workflow-guard-low-code-automation.json"), "utf8"));
+  const corpus = JSON.parse(await readFile(path.join(outDir, "benchmarks", "corpus.json"), "utf8"));
 
   await stat(path.join(outDir, "404.html"));
   assert.match(index, /Semgrep-style scanning for AI automation workflows/);
@@ -34,6 +35,8 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   assert.equal(marketplaceRules.schemaVersion, "1.0.0");
   assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation"));
   assert.equal(communityPack.provenance.source, "community");
+  assert.equal(corpus.name, "agentic-workflow-guard-benchmark-corpus");
+  assert.equal(corpus.fixtureCount, 28);
 });
 
 test("Pages workflow builds and deploys the generated static site", async () => {

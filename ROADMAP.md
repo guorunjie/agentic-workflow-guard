@@ -152,6 +152,13 @@ North star:
 - Ship static registry and community pack JSON through the npm package, GitHub Pages, MCP resources, and agent install bundles.
 - Document contribution expectations for future external packs and benchmark fixtures.
 
+## v0.18: Benchmark Corpus Distribution
+
+- Add `benchmark corpus` to emit portable benchmark metadata in Markdown or JSON.
+- Ship `benchmarks/corpus.json` through the npm package, GitHub Pages, MCP resources, and agent install bundles.
+- Include platform IDs, display names, safe/vulnerable fixture kind, expected rule IDs, and fixture paths for every supported platform.
+- Keep the corpus generated from `benchmarks/fixtures.json` so scanner snapshots and public benchmark metadata cannot drift.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
@@ -163,4 +170,4 @@ North star:
 - Documentation site.
 - Compatibility matrix across GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
 - Compatibility matrix across Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, and AGENTS.md-aware agents.
-- Public benchmark repo with vulnerable and safe workflow fixtures for every supported platform.
+- Public benchmark corpus with vulnerable and safe workflow fixtures for every supported platform, with room to split into a standalone benchmark repository after v1.0.

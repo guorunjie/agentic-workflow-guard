@@ -27,6 +27,7 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - Use agentic-workflow-guard rules registry --format json to inspect bundled and community rule-pack aliases and checksums
 - Use agentic-workflow-guard rules verify <file> before trusting external rule packs; it checks schema metadata and checksum
 - Use agentic-workflow-guard benchmark to verify fixture snapshots
+- Use agentic-workflow-guard benchmark corpus --format json to expose portable safe/vulnerable benchmark metadata
 - Use agentic-workflow-guard mcp resources --format json to expose rules, benchmarks, skill instructions, and remediation playbooks
 - Use npm run docs:build to verify the GitHub Pages artifact and stable schema URL aliases
 - Use agentic-workflow-guard agents install <target> to install agent context files into another project
@@ -40,6 +41,7 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - scan-strict: `node ./bin/agentic-workflow-guard.js scan . --profile strict`
 - scan-output: `node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif`
 - benchmark: `node ./bin/agentic-workflow-guard.js benchmark`
+- benchmark-corpus: `node ./bin/agentic-workflow-guard.js benchmark corpus --format json`
 - mcp-resources: `node ./bin/agentic-workflow-guard.js mcp resources --format json`
 - docs-build: `npm run docs:build`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`

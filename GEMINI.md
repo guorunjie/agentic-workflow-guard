@@ -22,9 +22,10 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 16. Use `agentic-workflow-guard rules registry --format json` to inspect bundled and community rule-pack aliases and checksums.
 17. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs; it checks schema metadata and checksum.
 18. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-19. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-20. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
-21. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
+19. Use `agentic-workflow-guard benchmark corpus --format json` to expose portable safe/vulnerable benchmark metadata.
+20. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+21. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
+22. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
 
 ## Safety Rules
 
@@ -45,6 +46,7 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 - `node ./bin/agentic-workflow-guard.js scan . --profile strict`
 - `node ./bin/agentic-workflow-guard.js scan . --format sarif`
 - `node ./bin/agentic-workflow-guard.js benchmark`
+- `node ./bin/agentic-workflow-guard.js benchmark corpus --format json`
 - `npm run docs:build`
 - `node ./bin/agentic-workflow-guard.js mcp resources --format json`
 - `node ./bin/agentic-workflow-guard.js baseline create .`

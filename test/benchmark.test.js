@@ -5,6 +5,8 @@ import path from "node:path";
 import { test } from "node:test";
 import { promisify } from "node:util";
 
+import { loadBenchmarkCorpus } from "../src/benchmark.js";
+
 const execFileAsync = promisify(execFile);
 const bin = path.resolve("bin/agentic-workflow-guard.js");
 
@@ -40,4 +42,26 @@ test("benchmark fixture manifest includes safe and vulnerable platform pairs", a
   assert.ok(names.includes("safe-jenkins"));
   assert.ok(names.includes("vulnerable-zapier"));
   assert.ok(names.includes("safe-zapier"));
+});
+
+test("benchmark corpus command emits portable fixture metadata", async () => {
+  const { stdout } = await execFileAsync("node", [bin, "benchmark", "corpus", "--format", "json"]);
+  const corpus = JSON.parse(stdout);
+  const vulnerableGithubAction = corpus.fixtures.find((fixture) => fixture.name === "vulnerable-github-action");
+
+  assert.equal(corpus.schemaVersion, "1.0.0");
+  assert.equal(corpus.version, "0.18.0");
+  assert.equal(corpus.fixtureCount, 28);
+  assert.ok(corpus.platforms.includes("GitHub Actions"));
+  assert.ok(corpus.platforms.includes("Azure Pipelines"));
+  assert.ok(corpus.platforms.includes("Browser automation"));
+  assert.deepEqual(vulnerableGithubAction.expectedRules, ["AWI001", "AWI002", "AWI003", "AWI008"]);
+  assert.equal(vulnerableGithubAction.platformId, "github-actions");
+  assert.equal(vulnerableGithubAction.kind, "vulnerable");
+});
+
+test("static benchmark corpus matches runtime corpus", async () => {
+  const staticCorpus = JSON.parse(await readFile("benchmarks/corpus.json", "utf8"));
+
+  assert.deepEqual(staticCorpus, await loadBenchmarkCorpus("."));
 });

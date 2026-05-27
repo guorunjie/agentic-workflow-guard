@@ -2,7 +2,7 @@ import path from "node:path";
 import { mkdir, writeFile } from "node:fs/promises";
 
 import { suppressBaseline, writeBaseline } from "./baseline.js";
-import { renderBenchmark, runBenchmark } from "./benchmark.js";
+import { loadBenchmarkCorpus, renderBenchmark, renderBenchmarkCorpus, runBenchmark } from "./benchmark.js";
 import { loadConfig, withPolicyProfile } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
@@ -47,7 +47,7 @@ Usage:
   agentic-workflow-guard rules [list|registry|search <query>|install <pack> [path]|verify <file>] [--format markdown|json]
   agentic-workflow-guard schema report|fix|rule-pack
   agentic-workflow-guard mcp resources [--format markdown|json]
-  agentic-workflow-guard benchmark [path]
+  agentic-workflow-guard benchmark [path]|corpus [path] [--format markdown|json]
   agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard agents install <target|all> [path]
   agentic-workflow-guard skillpack
@@ -177,6 +177,12 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
   }
 
   if (command === "benchmark") {
+    if (args[0] === "corpus") {
+      const root = path.resolve(firstPositional(args.slice(1)));
+      const format = argValue(args, "--format", "markdown");
+      output.write(renderBenchmarkCorpus(await loadBenchmarkCorpus(root), format));
+      return 0;
+    }
     const root = path.resolve(firstPositional(args));
     const results = await runBenchmark(root);
     output.write(renderBenchmark(results));

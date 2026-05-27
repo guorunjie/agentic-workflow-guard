@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
-  "version": "0.17.0",
-  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, community rule packs, safe fixes, and portable skills.",
+  "version": "0.18.0",
+  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, community rule packs, benchmark corpus, safe fixes, and portable skills.",
   "type": "module",
   "bin": {
     "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"
@@ -11,6 +11,7 @@
     "scan": "node ./bin/agentic-workflow-guard.js scan .",
     "scan:strict": "node ./bin/agentic-workflow-guard.js scan . --profile strict",
     "benchmark": "node ./bin/agentic-workflow-guard.js benchmark",
+    "benchmark:corpus": "node ./bin/agentic-workflow-guard.js benchmark corpus --format json",
     "mcp:resources": "node ./bin/agentic-workflow-guard.js mcp resources --format json",
     "schema:report": "node ./bin/agentic-workflow-guard.js schema report",
     "schema:fix": "node ./bin/agentic-workflow-guard.js schema fix",

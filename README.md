@@ -128,6 +128,12 @@ Verify the bundled benchmark fixtures:
 node ./bin/agentic-workflow-guard.js benchmark
 ```
 
+Export the public benchmark corpus metadata:
+
+```bash
+node ./bin/agentic-workflow-guard.js benchmark corpus --format json
+```
+
 Export the MCP resource pack:
 
 ```bash
@@ -194,6 +200,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
 | `schema rule-pack` | Emits the stable rule pack schema for marketplace metadata. |
 | `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
+| `benchmark corpus [path] --format markdown|json` | Emits portable metadata for the vulnerable/safe benchmark corpus. |
 | `mcp resources --format markdown|json` | Prints MCP-style resource descriptors for rules, benchmarks, skills, and remediation playbooks. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
 | `agents install <target> [path]` | Installs Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, AGENTS.md, or MCP resource files into a project. |
@@ -213,9 +220,9 @@ Agentic Workflow Guard now covers the mainstream agent context surfaces used by 
 | Gemini CLI | Supported | `GEMINI.md`, `.gemini/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | OpenClaw | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.openclaw/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | Hermes | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.hermes/skills/agentic-workflow-guard-auditor/SKILL.md` |
-| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `rules/marketplace.json`, `rules/registry.json`, `rules/community/*.json`, `benchmarks/fixtures.json`, `schemas/*.json`, `docs/playbooks/*.md` |
+| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `rules/marketplace.json`, `rules/registry.json`, `rules/community/*.json`, `benchmarks/fixtures.json`, `benchmarks/corpus.json`, `schemas/*.json`, `docs/playbooks/*.md` |
 
-Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory. The MCP resource pack uses stable `awg://` URIs so an MCP server or agent runtime can expose the core rules, benchmark fixtures, report schemas, auditor skill, and remediation playbooks as contextual resources.
+Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory. The MCP resource pack uses stable `awg://` URIs so an MCP server or agent runtime can expose the core rules, benchmark fixtures, benchmark corpus, report schemas, auditor skill, and remediation playbooks as contextual resources.
 
 ## Rule Catalog
 
@@ -276,7 +283,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.17.0
+      - uses: guorunjie/agentic-workflow-guard@v0.18.0
         with:
           path: .
           format: sarif
@@ -288,7 +295,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.17.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.18.0`.
 
 ## Examples
 
@@ -311,6 +318,7 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-browser-trace --fo
 node ./bin/agentic-workflow-guard.js scan examples/safe-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js fix examples/unsafe-ai-pr-bot --format json
 node ./bin/agentic-workflow-guard.js benchmark
+node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources
 ```
 
@@ -334,6 +342,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.15 | Platform-aware remediation engine | GitHub permissions plus GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
 | v0.16 | Approval snippet recipes | `fix --format json` and Markdown plans include next steps plus approval, artifact, scope, and allowlist snippets |
 | v0.17 | Community rule-pack registry | Installable `github-actions-hardening` and `low-code-automation` packs, registry JSON, docs, and MCP resources |
+| v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
@@ -343,6 +352,7 @@ See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage a
 ```bash
 npm test
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --format json
+node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 npm run docs:build
 npm pack --dry-run

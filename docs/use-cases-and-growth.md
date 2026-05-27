@@ -100,7 +100,7 @@ Priority directions:
    Evolve the local rule catalog and community registry into signed community rule packs with schema validation, lock files, checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
 
 4. **Benchmark as moat**
-   Publish vulnerable/safe fixtures as a reusable benchmark corpus. A public corpus can become the reference test set for agentic workflow security tools.
+   Grow the shipped `benchmark corpus` output and `benchmarks/corpus.json` into the reference test set for agentic workflow security tools.
 
 5. **Agent-native distribution**
    Keep Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md outputs generated and tested. Extend the MCP resource pack into marketplace-ready skill packages once those ecosystems stabilize.
@@ -114,7 +114,7 @@ The strongest star-growth path is to show one scary, easy-to-understand demo per
 
 - README headline: "Semgrep-style scanner for AI automation workflows."
 - First demo: one vulnerable GitHub Action producing SARIF, upload-sarif integration, and a `fix --apply` permission patch.
-- Distribution: GitHub Action, npm package, Skillpack Forge, AGENTS.md, Claude/Codex/Gemini/OpenClaw/Hermes skills, Cursor rules, Copilot instructions.
+- Distribution: GitHub Action, npm package, Skillpack Forge, public benchmark corpus, AGENTS.md, Claude/Codex/Gemini/OpenClaw/Hermes skills, Cursor rules, Copilot instructions.
 - Submit to lists: awesome-copilot, awesome-mcp-servers after MCP resources land, awesome-claude-skills after skill examples mature.
 - Content hooks:
   - "Your AI workflow has write access. Who reviewed the prompt boundary?"
@@ -126,5 +126,5 @@ The strongest star-growth path is to show one scary, easy-to-understand demo per
 Use this GitHub description:
 
 ```text
-Find dangerous AI automation workflows before agents get write access; covers GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP, and ships a portable skill pack for Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.
+Find dangerous AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, community rule packs, a benchmark corpus, and portable skills.
 ```

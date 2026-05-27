@@ -33,4 +33,6 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/vulnerable-browser-trace` | browser-use / browser traces | `AWI010` |
 | `examples/safe-browser-trace` | browser-use / browser traces | none |
 
-Run `agentic-workflow-guard benchmark` to compare every fixture against `benchmarks/fixtures.json`. The next benchmark step is publishing these fixtures as a standalone reference corpus for agentic workflow security scanning.
+Run `agentic-workflow-guard benchmark` to compare every fixture against `benchmarks/fixtures.json`.
+
+Run `agentic-workflow-guard benchmark corpus --format json` to export the portable benchmark corpus metadata. The same generated corpus is shipped as `benchmarks/corpus.json`, published through GitHub Pages, exposed as `awg://benchmarks/corpus` in the MCP resource pack, and copied by `agentic-workflow-guard agents install mcp-resources`.

@@ -20,6 +20,7 @@ const installTargets = {
     "rules/community/agentic-workflow-guard-github-actions-hardening.json",
     "rules/community/agentic-workflow-guard-low-code-automation.json",
     "benchmarks/fixtures.json",
+    "benchmarks/corpus.json",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
     "schemas/agentic-workflow-guard-rule-pack.schema.json",

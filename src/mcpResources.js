@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.17.0",
+  version: "0.18.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -33,6 +33,15 @@ export const mcpResourcePack = {
       mimeType: "application/json",
       path: "benchmarks/fixtures.json",
       annotations: { audience: ["assistant"], priority: 0.9 }
+    },
+    {
+      uri: "awg://benchmarks/corpus",
+      name: "benchmark-corpus",
+      title: "Agentic Workflow Guard Benchmark Corpus",
+      description: "Portable benchmark corpus metadata for vulnerable and safe fixtures across supported platforms.",
+      mimeType: "application/json",
+      path: "benchmarks/corpus.json",
+      annotations: { audience: ["assistant", "user"], priority: 0.95 }
     },
     {
       uri: "awg://schemas/report",

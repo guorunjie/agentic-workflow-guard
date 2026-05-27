@@ -6,7 +6,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 
 - [README](../README.md): quick start, command reference, agent compatibility, and GitHub Action usage.
 - [Policy Profiles and Suppressions](policy-profiles-and-suppressions.md): rollout profiles, inline suppression rules, and audit expectations.
-- [Benchmark Fixtures](benchmark-fixtures.md): vulnerable and safe fixture coverage.
+- [Benchmark Fixtures](benchmark-fixtures.md): vulnerable and safe fixture coverage plus the public `benchmarks/corpus.json` metadata.
 - [GitHub Action Marketplace Guide](github-action-marketplace.md): release-tagged Action usage and Marketplace checklist.
 - [Report Schema](../schemas/agentic-workflow-guard-report.schema.json): stable JSON schema for machine-readable scan reports.
 - [Fix Report Schema](../schemas/agentic-workflow-guard-fix-report.schema.json): stable JSON schema for structured remediation recipes, approval snippets, and next steps.
@@ -30,6 +30,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 ```bash
 npm test
 node ./bin/agentic-workflow-guard.js benchmark
+node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix

@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-low-code-automation",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
   "publisher": "guorunjie",
   "license": "MIT",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "compatibility": {
-    "cli": ">=0.17.0 <1.0.0",
+    "cli": ">=0.18.0 <1.0.0",
     "schema": "agentic-workflow-guard-rule-pack@1",
     "ruleIds": "AWI005,AWI009-AWI010"
   },
@@ -32,7 +32,7 @@
   "provenance": {
     "source": "community",
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
-    "releaseTag": "v0.17.0"
+    "releaseTag": "v0.18.0"
   },
-  "checksum": "sha256:6c6f0b13601cd38ba34ce101aac067dd636bbc2cf32cd39428bad4e74927023a"
+  "checksum": "sha256:a9580cfbe2975a5c5919ef42f8218dc94b396356cbba44293eb89c435965b0a9"
 }
