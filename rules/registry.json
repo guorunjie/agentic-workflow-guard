@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "1.0.0",
+  "name": "agentic-workflow-guard-rule-registry",
+  "version": "0.17.0",
+  "generatedBy": "agentic-workflow-guard@0.17.0",
+  "packs": [
+    {
+      "name": "agentic-workflow-guard-core-rules",
+      "alias": "core",
+      "version": "0.17.0",
+      "description": "Core static-analysis rules for AI automation workflow security.",
+      "source": "bundled",
+      "platforms": [
+        "github-actions",
+        "gitlab-ci",
+        "circleci",
+        "azure-pipelines",
+        "jenkins",
+        "n8n",
+        "mcp",
+        "activepieces",
+        "zapier",
+        "make",
+        "pipedream",
+        "node-red",
+        "airflow",
+        "browser-use",
+        "playwright",
+        "skyvern"
+      ],
+      "rules": [
+        "AWI001",
+        "AWI002",
+        "AWI003",
+        "AWI004",
+        "AWI005",
+        "AWI006",
+        "AWI007",
+        "AWI008",
+        "AWI009",
+        "AWI010"
+      ],
+      "checksum": "sha256:d8e2326873c42b8ebe3cee589701e638344dd0d5c0106a4c7b7887f25d855ac5",
+      "install": "agentic-workflow-guard rules install core .",
+      "path": "rules/marketplace.json"
+    },
+    {
+      "name": "agentic-workflow-guard-github-actions-hardening",
+      "alias": "github-actions-hardening",
+      "version": "0.17.0",
+      "description": "Focused GitHub Actions rule pack for prompt-injection, shell-sink, token, pull_request_target, and missing-control risks.",
+      "source": "community",
+      "platforms": [
+        "github-actions"
+      ],
+      "rules": [
+        "AWI001",
+        "AWI002",
+        "AWI003",
+        "AWI004",
+        "AWI007",
+        "AWI008"
+      ],
+      "checksum": "sha256:4b1895b36e77d2bc51cc70474a2ba4de6fb919376b77e191165da4a352bd31a2",
+      "install": "agentic-workflow-guard rules install github-actions-hardening .",
+      "path": "rules/community/agentic-workflow-guard-github-actions-hardening.json"
+    },
+    {
+      "name": "agentic-workflow-guard-low-code-automation",
+      "alias": "low-code-automation",
+      "version": "0.17.0",
+      "description": "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
+      "source": "community",
+      "platforms": [
+        "n8n",
+        "activepieces",
+        "zapier",
+        "make",
+        "pipedream",
+        "node-red",
+        "airflow",
+        "browser-use",
+        "playwright",
+        "skyvern"
+      ],
+      "rules": [
+        "AWI005",
+        "AWI009",
+        "AWI010"
+      ],
+      "checksum": "sha256:6c6f0b13601cd38ba34ce101aac067dd636bbc2cf32cd39428bad4e74927023a",
+      "install": "agentic-workflow-guard rules install low-code-automation .",
+      "path": "rules/community/agentic-workflow-guard-low-code-automation.json"
+    }
+  ]
+}

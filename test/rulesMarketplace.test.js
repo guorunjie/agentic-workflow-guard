@@ -59,3 +59,26 @@ test("rules install writes core rule pack metadata", async () => {
   assert.equal(parsed.name, "agentic-workflow-guard-core-rules");
   assert.ok(parsed.rules.includes("AWI009"));
 });
+
+test("rules registry lists installable community packs", async () => {
+  const { stdout } = await execFileAsync("node", [bin, "rules", "registry", "--format", "json"]);
+  const registry = JSON.parse(stdout);
+
+  assert.equal(registry.schemaVersion, "1.0.0");
+  assert.ok(registry.packs.some((pack) => pack.alias === "github-actions-hardening" && pack.source === "community"));
+  assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation" && /rules install low-code-automation/.test(pack.install)));
+});
+
+test("rules install writes community rule pack metadata and lock source", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-community-rules-"));
+
+  const { stdout } = await execFileAsync("node", [bin, "rules", "install", "github-actions-hardening", root]);
+  const installed = JSON.parse(await readFile(path.join(root, ".awg", "rules", "agentic-workflow-guard-github-actions-hardening.json"), "utf8"));
+  const lock = JSON.parse(await readFile(path.join(root, ".awg", "rules", "agentic-workflow-guard-rules.lock.json"), "utf8"));
+
+  assert.match(stdout, /Installed github-actions-hardening/);
+  assert.equal(installed.provenance.source, "community");
+  assert.deepEqual(installed.platforms, ["github-actions"]);
+  assert.equal(lock.packs[0].source, "community");
+  assert.equal(lock.packs[0].checksum, installed.checksum);
+});

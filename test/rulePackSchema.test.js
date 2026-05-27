@@ -6,7 +6,7 @@ import path from "node:path";
 import { test } from "node:test";
 import { promisify } from "node:util";
 
-import { coreRulePack, withChecksum } from "../src/rulesCatalog.js";
+import { availableRulePacks, coreRulePack, ruleRegistry, withChecksum } from "../src/rulesCatalog.js";
 
 const execFileAsync = promisify(execFile);
 const bin = path.resolve("bin/agentic-workflow-guard.js");
@@ -17,10 +17,12 @@ test("rules list exposes v1 marketplace metadata for the core rule pack", async 
   const pack = parsed.packs[0];
 
   assert.equal(pack.schemaVersion, "1.0.0");
-  assert.equal(pack.version, "0.16.0");
+  assert.equal(pack.version, "0.17.0");
+  assert.ok(parsed.packs.length >= 3);
+  assert.ok(parsed.packs.some((entry) => entry.provenance.source === "community"));
   assert.equal(pack.ruleCount, pack.rules.length);
-  assert.match(pack.compatibility.cli, /^>=0\.16\.0/);
-  assert.equal(pack.provenance.releaseTag, "v0.16.0");
+  assert.match(pack.compatibility.cli, /^>=0\.17\.0/);
+  assert.equal(pack.provenance.releaseTag, "v0.17.0");
   assert.match(pack.checksum, /^sha256:[a-f0-9]{64}$/);
 });
 
@@ -28,6 +30,19 @@ test("static marketplace file matches the runtime core rule pack", async () => {
   const staticPack = JSON.parse(await readFile("rules/marketplace.json", "utf8"));
 
   assert.deepEqual(staticPack, withChecksum(coreRulePack));
+});
+
+test("static community rule pack files match runtime packs", async () => {
+  for (const pack of availableRulePacks.filter((entry) => entry.provenance.source === "community")) {
+    const staticPack = JSON.parse(await readFile(`rules/community/${pack.name}.json`, "utf8"));
+    assert.deepEqual(staticPack, withChecksum(pack));
+  }
+});
+
+test("static rule registry matches runtime registry", async () => {
+  const staticRegistry = JSON.parse(await readFile("rules/registry.json", "utf8"));
+
+  assert.deepEqual(staticRegistry, ruleRegistry());
 });
 
 test("schema rule-pack emits the shipped rule pack schema", async () => {

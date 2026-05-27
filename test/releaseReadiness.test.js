@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the v0.16 approval snippet recipe release", async () => {
+test("package metadata reflects the v0.17 community rule-pack registry release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.16.0");
+  assert.equal(pkg.version, "0.17.0");
   assert.match(pkg.description, /Semgrep-style scanner/i);
   assert.match(pkg.description, /portable skills/i);
   assert.ok(pkg.keywords.includes("gitlab-ci"));
@@ -18,6 +18,7 @@ test("package metadata reflects the v0.16 approval snippet recipe release", asyn
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
   assert.ok(pkg.keywords.includes("browser-use"));
+  assert.ok(pkg.keywords.includes("rule-packs"));
   assert.equal(pkg.scripts.benchmark, "node ./bin/agentic-workflow-guard.js benchmark");
   assert.equal(pkg.scripts["mcp:resources"], "node ./bin/agentic-workflow-guard.js mcp resources --format json");
   assert.equal(pkg.scripts["schema:report"], "node ./bin/agentic-workflow-guard.js schema report");
@@ -50,6 +51,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /approval snippets/);
   assert.match(readme, /baseline create/);
   assert.match(readme, /agents install/);
+  assert.match(readme, /rules registry/);
+  assert.match(readme, /github-actions-hardening/);
   assert.match(readme, /rules verify/);
   assert.match(readme, /rule pack schema/);
   assert.match(readme, /benchmark/);
@@ -101,6 +104,9 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-airflow/agent_dag.py",
     "examples/vulnerable-browser-trace/browser-trace.json",
     "benchmarks/fixtures.json",
+    "rules/registry.json",
+    "rules/community/agentic-workflow-guard-github-actions-hardening.json",
+    "rules/community/agentic-workflow-guard-low-code-automation.json",
     "examples/safe-node-red/flows.json",
     "examples/safe-gitlab-ci/.gitlab-ci.yml",
     "examples/safe-circleci/.circleci/config.yml",
@@ -120,6 +126,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/playbooks/low-code.md",
     "docs/playbooks/browser-automation.md",
     "docs/policy-profiles-and-suppressions.md",
+    "docs/rule-marketplace.md",
     "docs/index.md",
     "docs-site/index.html",
     "docs-site/marketplace.html",

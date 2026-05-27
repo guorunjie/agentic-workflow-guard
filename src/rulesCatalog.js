@@ -4,10 +4,15 @@ import path from "node:path";
 
 import { rules } from "./rules/index.js";
 
-const packageVersion = "0.16.0";
+const packageVersion = "0.17.0";
 const rulePackSchemaVersion = "1.0.0";
 const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
 const coreRuleIds = Object.keys(rules);
+const repository = "https://github.com/guorunjie/agentic-workflow-guard";
+const rulePackCompatibility = {
+  cli: `>=${packageVersion} <1.0.0`,
+  schema: "agentic-workflow-guard-rule-pack@1"
+};
 
 export const coreRulePack = {
   schemaVersion: rulePackSchemaVersion,
@@ -16,10 +21,9 @@ export const coreRulePack = {
   description: "Core static-analysis rules for AI automation workflow security.",
   publisher: "guorunjie",
   license: "MIT",
-  homepage: "https://github.com/guorunjie/agentic-workflow-guard",
+  homepage: repository,
   compatibility: {
-    cli: `>=${packageVersion} <1.0.0`,
-    schema: "agentic-workflow-guard-rule-pack@1",
+    ...rulePackCompatibility,
     ruleIds: "AWI001-AWI010"
   },
   platforms: corePlatforms,
@@ -27,10 +31,57 @@ export const coreRulePack = {
   ruleCount: coreRuleIds.length,
   provenance: {
     source: "bundled",
-    repository: "https://github.com/guorunjie/agentic-workflow-guard",
+    repository,
     releaseTag: `v${packageVersion}`
   }
 };
+
+export const communityRulePacks = [
+  {
+    schemaVersion: rulePackSchemaVersion,
+    name: "agentic-workflow-guard-github-actions-hardening",
+    version: packageVersion,
+    description: "Focused GitHub Actions rule pack for prompt-injection, shell-sink, token, pull_request_target, and missing-control risks.",
+    publisher: "guorunjie",
+    license: "MIT",
+    homepage: repository,
+    compatibility: {
+      ...rulePackCompatibility,
+      ruleIds: "AWI001-AWI004,AWI007-AWI008"
+    },
+    platforms: ["github-actions"],
+    rules: ["AWI001", "AWI002", "AWI003", "AWI004", "AWI007", "AWI008"],
+    ruleCount: 6,
+    provenance: {
+      source: "community",
+      repository,
+      releaseTag: `v${packageVersion}`
+    }
+  },
+  {
+    schemaVersion: rulePackSchemaVersion,
+    name: "agentic-workflow-guard-low-code-automation",
+    version: packageVersion,
+    description: "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
+    publisher: "guorunjie",
+    license: "MIT",
+    homepage: repository,
+    compatibility: {
+      ...rulePackCompatibility,
+      ruleIds: "AWI005,AWI009-AWI010"
+    },
+    platforms: ["n8n", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"],
+    rules: ["AWI005", "AWI009", "AWI010"],
+    ruleCount: 3,
+    provenance: {
+      source: "community",
+      repository,
+      releaseTag: `v${packageVersion}`
+    }
+  }
+];
+
+export const availableRulePacks = [coreRulePack, ...communityRulePacks];
 
 function canonicalJson(value) {
   if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
@@ -62,7 +113,7 @@ function requireField(pack, field) {
 }
 
 export function validateRulePack(pack) {
-  for (const field of ["schemaVersion", "name", "version", "description", "publisher", "license", "compatibility", "platforms", "rules", "ruleCount", "provenance"]) {
+  for (const field of ["schemaVersion", "name", "version", "description", "publisher", "license", "compatibility", "platforms", "rules", "ruleCount", "provenance", "checksum"]) {
     requireField(pack, field);
   }
   if (pack.schemaVersion !== rulePackSchemaVersion) {
@@ -117,7 +168,7 @@ function renderRuleEntries(entries, title) {
 }
 
 export function renderRules(format = "markdown") {
-  if (format === "json") return `${JSON.stringify({ rules, packs: [withChecksum(coreRulePack)] }, null, 2)}\n`;
+  if (format === "json") return `${JSON.stringify({ rules, packs: availableRulePacks.map(withChecksum) }, null, 2)}\n`;
   return renderRuleEntries(Object.entries(rules));
 }
 
@@ -128,25 +179,79 @@ export function renderRuleSearch(query, format = "markdown") {
 }
 
 export function renderRulePacks(format = "markdown") {
-  const pack = withChecksum(coreRulePack);
-  if (format === "json") return `${JSON.stringify({ packs: [pack] }, null, 2)}\n`;
-  return `# Agentic Workflow Guard Rule Packs
+  const packs = availableRulePacks.map(withChecksum);
+  if (format === "json") return `${JSON.stringify({ packs }, null, 2)}\n`;
+  const lines = ["# Agentic Workflow Guard Rule Packs", ""];
+  for (const pack of packs) {
+    lines.push(`## ${aliasForPack(pack)}`);
+    lines.push(`- Name: ${pack.name}`);
+    lines.push(`- Version: ${pack.version}`);
+    lines.push(`- Source: ${pack.provenance.source}`);
+    lines.push(`- Checksum: ${pack.checksum}`);
+    lines.push(`- Platforms: ${pack.platforms.join(", ")}`);
+    lines.push(`- Rules: ${pack.rules.join(", ")}`);
+    lines.push("");
+  }
+  return `${lines.join("\n")}\n`;
+}
 
-## core
-- Name: ${pack.name}
-- Version: ${pack.version}
-- Checksum: ${pack.checksum}
-- Platforms: ${pack.platforms.join(", ")}
-- Rules: ${pack.rules.join(", ")}
-`;
+function aliasForPack(pack) {
+  if (pack.name === coreRulePack.name) return "core";
+  return pack.name.replace(/^agentic-workflow-guard-/, "");
+}
+
+function resolveRulePack(name = "core") {
+  const match = availableRulePacks.find((pack) => pack.name === name || aliasForPack(pack) === name);
+  if (!match) {
+    throw new Error(`Unknown rule pack: ${name}`);
+  }
+  return match;
+}
+
+export function ruleRegistry() {
+  const packs = availableRulePacks.map((pack) => {
+    const checksummed = withChecksum(pack);
+    return {
+      name: checksummed.name,
+      alias: aliasForPack(checksummed),
+      version: checksummed.version,
+      description: checksummed.description,
+      source: checksummed.provenance.source,
+      platforms: checksummed.platforms,
+      rules: checksummed.rules,
+      checksum: checksummed.checksum,
+      install: `agentic-workflow-guard rules install ${aliasForPack(checksummed)} .`,
+      path: aliasForPack(checksummed) === "core" ? "rules/marketplace.json" : `rules/community/${checksummed.name}.json`
+    };
+  });
+  return {
+    schemaVersion: "1.0.0",
+    name: "agentic-workflow-guard-rule-registry",
+    version: packageVersion,
+    generatedBy: `agentic-workflow-guard@${packageVersion}`,
+    packs
+  };
+}
+
+export function renderRuleRegistry(format = "markdown") {
+  const registry = ruleRegistry();
+  if (format === "json") return `${JSON.stringify(registry, null, 2)}\n`;
+  const lines = ["# Agentic Workflow Guard Rule Registry", ""];
+  for (const pack of registry.packs) {
+    lines.push(`## ${pack.alias}`);
+    lines.push(pack.description);
+    lines.push(`- Source: ${pack.source}`);
+    lines.push(`- Install: \`${pack.install}\``);
+    lines.push(`- Path: \`${pack.path}\``);
+    lines.push(`- Checksum: ${pack.checksum}`);
+    lines.push("");
+  }
+  return `${lines.join("\n")}\n`;
 }
 
 export async function installRulePack(root, name = "core") {
-  if (!["core", coreRulePack.name].includes(name)) {
-    throw new Error(`Unknown rule pack: ${name}`);
-  }
   const outputDir = path.join(root, ".awg", "rules");
-  const pack = withChecksum(coreRulePack);
+  const pack = withChecksum(resolveRulePack(name));
   const outputPath = path.join(outputDir, `${pack.name}.json`);
   const lockPath = path.join(outputDir, "agentic-workflow-guard-rules.lock.json");
   const lock = {

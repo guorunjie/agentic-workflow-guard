@@ -70,7 +70,7 @@ export const supportedAgents = [
     name: "MCP resource pack",
     status: "supported",
     integration: "Resource manifest",
-    outputs: ["mcp/resources/agentic-workflow-guard.resources.json", "rules/marketplace.json", "benchmarks/fixtures.json", "schemas/*.json", "docs/playbooks/*.md"],
+    outputs: ["mcp/resources/agentic-workflow-guard.resources.json", "rules/marketplace.json", "rules/registry.json", "rules/community/*.json", "benchmarks/fixtures.json", "schemas/*.json", "docs/playbooks/*.md"],
     loading: "Expose the manifest resources through an MCP server or copy the self-contained resource pack into an agent context bundle."
   }
 ];

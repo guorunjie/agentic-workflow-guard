@@ -31,5 +31,6 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`
+- rules-registry: `node ./bin/agentic-workflow-guard.js rules registry --format json`
 - agents: `node ./bin/agentic-workflow-guard.js agents`
 - install-agent: `node ./bin/agentic-workflow-guard.js agents install claude .`

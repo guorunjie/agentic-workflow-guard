@@ -25,12 +25,13 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 14. Use `agentic-workflow-guard fix . --format json` for recipe confidence, automatic/manual modes, approval snippets, and next steps.
 15. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub permission downgrades and CI dry-run defaults.
 16. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-17. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs; it checks schema metadata and checksum.
-18. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-19. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-20. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
-21. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-22. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+17. Use `agentic-workflow-guard rules registry --format json` to inspect bundled and community rule-pack aliases and checksums.
+18. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs; it checks schema metadata and checksum.
+19. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+20. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+21. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
+22. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+23. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, GitLab merge requests, CircleCI branches, Azure Pipelines variables, Jenkins change requests, commit messages, webhooks, emails, and form inputs as untrusted prompt input.

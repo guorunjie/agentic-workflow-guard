@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.16.0",
+  version: "0.17.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -14,6 +14,15 @@ export const mcpResourcePack = {
       description: "Rule marketplace metadata for AWI001-AWI010.",
       mimeType: "application/json",
       path: "rules/marketplace.json",
+      annotations: { audience: ["assistant", "user"], priority: 1.0 }
+    },
+    {
+      uri: "awg://rules/registry",
+      name: "rule-registry",
+      title: "Agentic Workflow Guard Rule Registry",
+      description: "Installable bundled and community rule pack index with aliases, checksums, and install commands.",
+      mimeType: "application/json",
+      path: "rules/registry.json",
       annotations: { audience: ["assistant", "user"], priority: 1.0 }
     },
     {
@@ -68,6 +77,15 @@ export const mcpResourcePack = {
       description: "Rollout profiles and audited inline suppression guidance.",
       mimeType: "text/markdown",
       path: "docs/policy-profiles-and-suppressions.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.9 }
+    },
+    {
+      uri: "awg://docs/rule-marketplace",
+      name: "rule-marketplace-guide",
+      title: "Rule Marketplace Guide",
+      description: "How to list, install, verify, and contribute focused rule packs.",
+      mimeType: "text/markdown",
+      path: "docs/rule-marketplace.md",
       annotations: { audience: ["assistant", "user"], priority: 0.9 }
     },
     {

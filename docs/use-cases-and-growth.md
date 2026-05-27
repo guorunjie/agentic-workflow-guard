@@ -73,7 +73,7 @@ Highest-impact improvements:
    Expand from current permission downgrades, platform-aware dry-run defaults, approval snippets, `fix --patch`, and `fix --format json` recipes into split write jobs, richer allowlists, and PR-ready patches.
 
 5. **Build the rule marketplace**
-   Grow the current `rules list/search/install` into external rule packs with a stable schema, lock files, signed metadata, checksums, and community contributions.
+   Grow the current `rules list/registry/search/install` into external rule packs with a stable schema, lock files, signed metadata, checksums, and community contributions.
 
 6. **Make adoption incremental**
    Use `baseline create` and `scan --baseline` so existing repositories can adopt the scanner without failing CI on known legacy findings.
@@ -97,7 +97,7 @@ Priority directions:
    Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval snippets, allowlists, split read/write jobs, permission minimization, platform-specific dry-run defaults, and PR-ready patches with confidence levels.
 
 3. **Trusted rule marketplace**
-   Evolve the local rule catalog into signed community rule packs with schema validation, lock files, checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
+   Evolve the local rule catalog and community registry into signed community rule packs with schema validation, lock files, checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
 
 4. **Benchmark as moat**
    Publish vulnerable/safe fixtures as a reusable benchmark corpus. A public corpus can become the reference test set for agentic workflow security tools.

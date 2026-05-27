@@ -134,6 +134,13 @@ Export the MCP resource pack:
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 ```
 
+Inspect and install focused rule packs:
+
+```bash
+node ./bin/agentic-workflow-guard.js rules registry --format json
+node ./bin/agentic-workflow-guard.js rules install github-actions-hardening .
+```
+
 Start from the sample config:
 
 ```bash
@@ -177,8 +184,11 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
 | `rules list` | Lists installable rule packs. |
+| `rules registry` | Prints the bundled and community rule-pack registry with aliases, checksums, and install commands. |
 | `rules search <query>` | Searches rules by platform, risk, or remediation text. |
 | `rules install core [path]` | Installs v1 core rule pack metadata and a lock file into `.awg/rules/`. |
+| `rules install github-actions-hardening [path]` | Installs a focused GitHub Actions community rule pack. |
+| `rules install low-code-automation [path]` | Installs a focused low-code and browser automation community rule pack. |
 | `rules verify <file>` | Verifies rule pack schema metadata and checksum before use. |
 | `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
 | `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
@@ -203,7 +213,7 @@ Agentic Workflow Guard now covers the mainstream agent context surfaces used by 
 | Gemini CLI | Supported | `GEMINI.md`, `.gemini/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | OpenClaw | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.openclaw/skills/agentic-workflow-guard-auditor/SKILL.md` |
 | Hermes | Supported | `skills/agentic-workflow-guard-auditor/SKILL.md`, `.hermes/skills/agentic-workflow-guard-auditor/SKILL.md` |
-| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `rules/marketplace.json`, `benchmarks/fixtures.json`, `schemas/*.json`, `docs/playbooks/*.md` |
+| MCP resource pack | Supported | `mcp/resources/agentic-workflow-guard.resources.json`, `rules/marketplace.json`, `rules/registry.json`, `rules/community/*.json`, `benchmarks/fixtures.json`, `schemas/*.json`, `docs/playbooks/*.md` |
 
 Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instruction files directly. OpenClaw and Hermes support is shipped as portable `SKILL.md` bundles so teams can use the shared `skills/` package, a namespaced project copy, or their runtime-specific skill install directory. The MCP resource pack uses stable `awg://` URIs so an MCP server or agent runtime can expose the core rules, benchmark fixtures, report schemas, auditor skill, and remediation playbooks as contextual resources.
 
@@ -266,7 +276,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.16.0
+      - uses: guorunjie/agentic-workflow-guard@v0.17.0
         with:
           path: .
           format: sarif
@@ -278,7 +288,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.16.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.17.0`.
 
 ## Examples
 
@@ -323,6 +333,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.14 | Azure Pipelines and Jenkins coverage | Service connection and credential evidence, vulnerable/safe pipeline fixtures |
 | v0.15 | Platform-aware remediation engine | GitHub permissions plus GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
 | v0.16 | Approval snippet recipes | `fix --format json` and Markdown plans include next steps plus approval, artifact, scope, and allowlist snippets |
+| v0.17 | Community rule-pack registry | Installable `github-actions-hardening` and `low-code-automation` packs, registry JSON, docs, and MCP resources |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

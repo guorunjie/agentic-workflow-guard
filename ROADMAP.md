@@ -145,6 +145,13 @@ North star:
 - Show the same snippet guidance in Markdown fix plans so maintainers can copy the right control into PRs.
 - Keep snippets advisory and require human review before shell, credential, deployment, repository write, or browser side-effect changes.
 
+## v0.17: Community Rule-Pack Registry
+
+- Add installable focused rule packs for GitHub Actions hardening and low-code/browser automation.
+- Add `rules registry` with aliases, checksums, install commands, platform lists, and source labels.
+- Ship static registry and community pack JSON through the npm package, GitHub Pages, MCP resources, and agent install bundles.
+- Document contribution expectations for future external packs and benchmark fixtures.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

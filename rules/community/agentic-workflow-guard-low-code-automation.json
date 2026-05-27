@@ -1,24 +1,18 @@
 {
   "schemaVersion": "1.0.0",
-  "name": "agentic-workflow-guard-core-rules",
+  "name": "agentic-workflow-guard-low-code-automation",
   "version": "0.17.0",
-  "description": "Core static-analysis rules for AI automation workflow security.",
+  "description": "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
   "publisher": "guorunjie",
   "license": "MIT",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "compatibility": {
     "cli": ">=0.17.0 <1.0.0",
     "schema": "agentic-workflow-guard-rule-pack@1",
-    "ruleIds": "AWI001-AWI010"
+    "ruleIds": "AWI005,AWI009-AWI010"
   },
   "platforms": [
-    "github-actions",
-    "gitlab-ci",
-    "circleci",
-    "azure-pipelines",
-    "jenkins",
     "n8n",
-    "mcp",
     "activepieces",
     "zapier",
     "make",
@@ -30,22 +24,15 @@
     "skyvern"
   ],
   "rules": [
-    "AWI001",
-    "AWI002",
-    "AWI003",
-    "AWI004",
     "AWI005",
-    "AWI006",
-    "AWI007",
-    "AWI008",
     "AWI009",
     "AWI010"
   ],
-  "ruleCount": 10,
+  "ruleCount": 3,
   "provenance": {
-    "source": "bundled",
+    "source": "community",
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
     "releaseTag": "v0.17.0"
   },
-  "checksum": "sha256:d8e2326873c42b8ebe3cee589701e638344dd0d5c0106a4c7b7887f25d855ac5"
+  "checksum": "sha256:6c6f0b13601cd38ba34ce101aac067dd636bbc2cf32cd39428bad4e74927023a"
 }

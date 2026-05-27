@@ -13,7 +13,7 @@ import { renderJson, summarize } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
 import { renderFixReportSchema, renderReportSchema, renderRulePackSchema } from "./schema.js";
-import { installRulePack, renderRulePacks, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
+import { installRulePack, renderRulePacks, renderRuleRegistry, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
 
@@ -44,7 +44,7 @@ Usage:
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json]
   agentic-workflow-guard explain <rule-id>
-  agentic-workflow-guard rules [list|search <query>|install core [path]|verify <file>] [--format markdown|json]
+  agentic-workflow-guard rules [list|registry|search <query>|install <pack> [path]|verify <file>] [--format markdown|json]
   agentic-workflow-guard schema report|fix|rule-pack
   agentic-workflow-guard mcp resources [--format markdown|json]
   agentic-workflow-guard benchmark [path]
@@ -125,6 +125,10 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
     const format = argValue(args, "--format", "markdown");
     if (subcommand === "list") {
       output.write(renderRulePacks(format));
+      return 0;
+    }
+    if (subcommand === "registry") {
+      output.write(renderRuleRegistry(format));
       return 0;
     }
     if (subcommand === "search") {

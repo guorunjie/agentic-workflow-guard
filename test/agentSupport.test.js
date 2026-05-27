@@ -22,6 +22,7 @@ test("agent support markdown describes output files", () => {
   assert.match(markdown, /\.openclaw\/skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /\.hermes\/skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /mcp\/resources\/agentic-workflow-guard\.resources\.json/);
+  assert.match(markdown, /rules\/registry\.json/);
   assert.match(markdown, /schemas\/\*\.json/);
   assert.match(markdown, /skills\/agentic-workflow-guard-auditor\/SKILL.md/);
   assert.match(markdown, /GEMINI.md/);

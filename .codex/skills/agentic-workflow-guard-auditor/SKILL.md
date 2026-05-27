@@ -24,6 +24,7 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - Use agentic-workflow-guard fix . --format json for recipe confidence, automatic/manual modes, approval snippets, and next steps
 - Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades and CI dry-run defaults
 - Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules
+- Use agentic-workflow-guard rules registry --format json to inspect bundled and community rule-pack aliases and checksums
 - Use agentic-workflow-guard rules verify <file> before trusting external rule packs; it checks schema metadata and checksum
 - Use agentic-workflow-guard benchmark to verify fixture snapshots
 - Use agentic-workflow-guard mcp resources --format json to expose rules, benchmarks, skill instructions, and remediation playbooks
@@ -49,6 +50,7 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`
+- rules-registry: `node ./bin/agentic-workflow-guard.js rules registry --format json`
 - agents: `node ./bin/agentic-workflow-guard.js agents`
 - install-agent: `node ./bin/agentic-workflow-guard.js agents install claude .`
 

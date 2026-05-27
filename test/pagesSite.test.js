@@ -20,6 +20,8 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   const rulePackSchema = JSON.parse(await readFile(path.join(outDir, "schemas", "rule-pack.schema.json"), "utf8"));
   const schemaIndex = JSON.parse(await readFile(path.join(outDir, "schemas", "index.json"), "utf8"));
   const marketplaceRules = JSON.parse(await readFile(path.join(outDir, "rules", "marketplace.json"), "utf8"));
+  const registry = JSON.parse(await readFile(path.join(outDir, "rules", "registry.json"), "utf8"));
+  const communityPack = JSON.parse(await readFile(path.join(outDir, "rules", "community", "agentic-workflow-guard-low-code-automation.json"), "utf8"));
 
   await stat(path.join(outDir, "404.html"));
   assert.match(index, /Semgrep-style scanning for AI automation workflows/);
@@ -30,6 +32,8 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   assert.equal(rulePackSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/rule-pack.schema.json");
   assert.ok(schemaIndex.schemas.some((schema) => schema.path === "schemas/rule-pack.schema.json"));
   assert.equal(marketplaceRules.schemaVersion, "1.0.0");
+  assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation"));
+  assert.equal(communityPack.provenance.source, "community");
 });
 
 test("Pages workflow builds and deploys the generated static site", async () => {
