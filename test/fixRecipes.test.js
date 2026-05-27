@@ -9,13 +9,17 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 const bin = path.resolve("bin/agentic-workflow-guard.js");
 
-async function workflowProject() {
+async function projectFile(file, content) {
   const root = await mkdtemp(path.join(tmpdir(), "awg-fix-recipes-"));
-  const workflowDir = path.join(root, ".github", "workflows");
-  const workflowPath = path.join(workflowDir, "agent.yml");
-  await mkdir(workflowDir, { recursive: true });
-  await writeFile(
-    workflowPath,
+  const filePath = path.join(root, file);
+  await mkdir(path.dirname(filePath), { recursive: true });
+  await writeFile(filePath, content);
+  return { root, filePath };
+}
+
+async function workflowProject() {
+  const { root, filePath } = await projectFile(
+    path.join(".github", "workflows", "agent.yml"),
     `
 name: unsafe agent
 on: issues
@@ -29,7 +33,7 @@ jobs:
           prompt: "Summarize \${{ github.event.issue.body }}"
 `
   );
-  return { root, workflowPath };
+  return { root, workflowPath: filePath };
 }
 
 test("fix --patch includes dry-run guard recipe for workflows without controls", async () => {
@@ -50,4 +54,126 @@ test("fix --apply applies dry-run guard recipe without removing prompt evidence"
 
   assert.match(updated, /AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"/);
   assert.match(updated, /github\.event\.issue\.body/);
+});
+
+test("fix --apply adds GitLab CI dry-run variables without removing prompt evidence", async () => {
+  const { root, filePath } = await projectFile(
+    ".gitlab-ci.yml",
+    `
+agent_patch:
+  image: node:24
+  script:
+    - npx openai-agent --prompt "Review $CI_MERGE_REQUEST_DESCRIPTION"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /^variables:\n  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"/);
+  assert.match(updated, /CI_MERGE_REQUEST_DESCRIPTION/);
+});
+
+test("fix --apply reuses an existing GitLab CI variables block", async () => {
+  const { root, filePath } = await projectFile(
+    ".gitlab-ci.yml",
+    `
+variables:
+  NODE_ENV: test
+
+agent_patch:
+  image: node:24
+  script:
+    - npx openai-agent --prompt "Review $CI_COMMIT_MESSAGE"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /variables:\n  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n  NODE_ENV: test/);
+});
+
+test("fix --apply adds CircleCI job-level dry-run environment", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".circleci", "config.yml"),
+    `
+version: 2.1
+jobs:
+  ai_review:
+    docker:
+      - image: cimg/node:24.0
+    steps:
+      - checkout
+      - run:
+          command: npx openai-agent --prompt "Review $CIRCLE_BRANCH"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /    environment:\n      AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n    steps:/);
+  assert.match(updated, /CIRCLE_BRANCH/);
+});
+
+test("fix --apply adds Azure Pipelines top-level dry-run variables", async () => {
+  const { root, filePath } = await projectFile(
+    "azure-pipelines.yml",
+    `
+jobs:
+  - job: ai_review
+    steps:
+      - script: npx openai-agent --prompt "Review $(System.PullRequest.SourceBranch)"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /^variables:\n  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"/);
+  assert.match(updated, /System\.PullRequest\.SourceBranch/);
+});
+
+test("fix --apply preserves Azure Pipelines list variables", async () => {
+  const { root, filePath } = await projectFile(
+    "azure-pipelines.yml",
+    `
+variables:
+- group: production-secrets
+jobs:
+  - job: ai_review
+    steps:
+      - script: npx openai-agent --prompt "Review $(System.PullRequest.SourceBranch)"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /variables:\n- name: AGENTIC_WORKFLOW_GUARD_DRY_RUN\n  value: "true"\n- group: production-secrets/);
+});
+
+test("fix --apply adds Jenkins declarative dry-run environment", async () => {
+  const { root, filePath } = await projectFile(
+    "Jenkinsfile",
+    `
+pipeline {
+  agent any
+  stages {
+    stage('agent review') {
+      steps {
+        sh "npx openai-agent --prompt 'Review \${env.CHANGE_TITLE}'"
+      }
+    }
+  }
+}
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /  agent any\n  environment \{\n    AGENTIC_WORKFLOW_GUARD_DRY_RUN = 'true'\n  \}/);
+  assert.match(updated, /env\.CHANGE_TITLE/);
 });

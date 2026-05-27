@@ -70,7 +70,7 @@ Highest-impact improvements:
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
 
 4. **Turn `fix` into a remediation engine**
-   Expand from current permission downgrades, `fix --patch`, and `fix --format json` recipes into dry-run defaults, approval gates, split write jobs, and richer PR-ready patches.
+   Expand from current permission downgrades, platform-aware dry-run defaults, `fix --patch`, and `fix --format json` recipes into approval gates, split write jobs, allowlists, and richer PR-ready patches.
 
 5. **Build the rule marketplace**
    Grow the current `rules list/search/install` into external rule packs with a stable schema, lock files, signed metadata, checksums, and community contributions.
@@ -94,7 +94,7 @@ Priority directions:
    Replace broad heuristics with native understanding of GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
 
 2. **Policy and fix engine**
-   Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval gates, dry-run defaults, allowlists, split read/write jobs, permission minimization, and PR-ready patches with confidence levels.
+   Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval gates, allowlists, split read/write jobs, permission minimization, platform-specific dry-run defaults, and PR-ready patches with confidence levels.
 
 3. **Trusted rule marketplace**
    Evolve the local rule catalog into signed community rule packs with schema validation, lock files, checksum verification, SemVer compatibility, provenance metadata, and review guidelines.

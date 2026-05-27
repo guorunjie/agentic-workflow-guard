@@ -39,9 +39,9 @@ Static security scanner for AI automation workflows across GitHub Actions, GitLa
 - Review Suppressed findings in JSON and Markdown reports before accepting exceptions
 - Prioritize high severity AWI001-AWI006 findings and review medium AWI007-AWI010 findings
 - Use agentic-workflow-guard explain AWI001 for rule-specific remediation
-- Use agentic-workflow-guard fix . --patch for a reviewable permission diff
+- Use agentic-workflow-guard fix . --patch for reviewable GitHub permission and CI dry-run diffs
 - Use agentic-workflow-guard fix . --format json for agent loops, PR bots, and UIs that need recipe confidence and automatic/manual modes
-- Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades
+- Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades and CI dry-run defaults
 - Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules
 - Use agentic-workflow-guard rules verify <file> before trusting external rule packs; it checks schema metadata and checksum
 - Use agentic-workflow-guard benchmark to verify fixture snapshots

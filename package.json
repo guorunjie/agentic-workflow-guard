@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
-  "version": "0.14.0",
-  "description": "Find dangerous AI automation workflows before agents get write access; covers GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP, and a portable skill pack.",
+  "version": "0.15.0",
+  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, rule packs, safe fixes, and portable skills.",
   "type": "module",
   "bin": {
     "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"

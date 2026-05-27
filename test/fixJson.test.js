@@ -52,11 +52,14 @@ test("fix --format json emits recipe confidence and patch availability", async (
   assert.ok(report.changes.some((change) => change.file === ".github/workflows/agent.yml"));
 
   const permissionRecipe = report.recipes.find((recipe) => recipe.ruleId === "AWI003");
+  const dryRunRecipe = report.recipes.find((recipe) => recipe.ruleId === "AWI008");
   const promptRecipe = report.recipes.find((recipe) => recipe.ruleId === "AWI001");
   const shellRecipe = report.recipes.find((recipe) => recipe.ruleId === "AWI002");
 
   assert.equal(permissionRecipe.mode, "automatic");
   assert.equal(permissionRecipe.confidence, "high");
+  assert.equal(dryRunRecipe.id, "ci-dry-run-env");
+  assert.equal(dryRunRecipe.mode, "automatic");
   assert.equal(promptRecipe.mode, "manual");
   assert.equal(shellRecipe.mode, "manual");
 });

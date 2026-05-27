@@ -109,7 +109,7 @@ Generate a reviewable patch without editing files:
 node ./bin/agentic-workflow-guard.js fix . --patch
 ```
 
-Apply low-risk permission fixes:
+Apply low-risk automatic fixes:
 
 ```bash
 node ./bin/agentic-workflow-guard.js fix . --apply
@@ -172,8 +172,8 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `baseline create [path]` | Writes `.awg-baseline.json` with stable finding fingerprints. |
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
 | `fix [path] --format json` | Emits structured fix recipes with confidence, automatic/manual mode, patch availability, and changed file counts. |
-| `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades without editing files. |
-| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades and leaves remaining findings for review. |
+| `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades and CI dry-run defaults without editing files. |
+| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades plus GitHub/GitLab/CircleCI/Azure/Jenkins dry-run markers, then leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
 | `rules list` | Lists installable rule packs. |
@@ -266,7 +266,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.14.0
+      - uses: guorunjie/agentic-workflow-guard@v0.15.0
         with:
           path: .
           format: sarif
@@ -278,7 +278,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.14.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.15.0`.
 
 ## Examples
 
@@ -321,6 +321,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.12 | Zapier benchmark coverage | Zapier-specific evidence, vulnerable/safe Zap fixtures, benchmark matrix |
 | v0.13 | GitLab CI and CircleCI coverage | CI agent scanner, token/context evidence, vulnerable/safe CI fixtures |
 | v0.14 | Azure Pipelines and Jenkins coverage | Service connection and credential evidence, vulnerable/safe pipeline fixtures |
+| v0.15 | Platform-aware remediation engine | GitHub permissions plus GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

@@ -131,6 +131,13 @@ North star:
 - Detect Azure variable groups, service connections, secure files, and Jenkins credential bindings near agent jobs.
 - Add vulnerable and safe Azure Pipelines and Jenkins fixtures to the benchmark matrix.
 
+## v0.15: Platform-Aware Remediation Engine
+
+- Extend `fix --patch` and `fix --apply` beyond GitHub permission downgrades.
+- Add dry-run environment defaults for GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent workflows.
+- Expose the shared `ci-dry-run-env` recipe through structured JSON fix reports for agents, PR bots, and UIs.
+- Keep shell sinks, prompt boundaries, credential scopes, and approval gates as manual review items.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

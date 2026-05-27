@@ -21,14 +21,82 @@ function applyPermissionFix(text) {
   return { text: updated, changed };
 }
 
-function applyDryRunGuard(text) {
-  if (/AGENTIC_WORKFLOW_GUARD_DRY_RUN/.test(text)) return { text, changed: false };
-  let changed = false;
-  const updated = text.replace(/^(\s*)steps:\s*$/m, (line, indent) => {
-    changed = true;
-    return `${indent}env:\n${indent}  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n${line}`;
+const dryRunVariable = "AGENTIC_WORKFLOW_GUARD_DRY_RUN";
+
+function insertIntoExistingBlock(text, blockStartIndex, line) {
+  const lineEnd = text.indexOf("\n", blockStartIndex);
+  if (lineEnd === -1) return `${text}\n${line}`;
+  return `${text.slice(0, lineEnd + 1)}${line}${text.slice(lineEnd + 1)}`;
+}
+
+function insertYamlVariableAtTopLevel(text) {
+  const variables = text.match(/^variables:\s*$/m);
+  if (!variables) {
+    return {
+      text: `variables:\n  ${dryRunVariable}: "true"\n\n${text}`,
+      changed: true
+    };
+  }
+
+  const afterVariables = text.slice(variables.index + variables[0].length);
+  const firstVariableLine = afterVariables.split(/\r?\n/).slice(1).find((line) => line.trim().length > 0);
+  const listVariable = firstVariableLine?.match(/^(\s*)-\s+/);
+  const mappingIndent = firstVariableLine && /^\s+\S/.test(firstVariableLine) ? firstVariableLine.match(/^(\s*)/)?.[1] : "  ";
+  const line = listVariable
+    ? `${listVariable[1]}- name: ${dryRunVariable}\n${listVariable[1]}  value: "true"\n`
+    : `${mappingIndent}${dryRunVariable}: "true"\n`;
+
+  return {
+    text: insertIntoExistingBlock(text, variables.index, line),
+    changed: true
+  };
+}
+
+function insertYamlDryRunBlockBeforeSteps(text, blockName) {
+  const steps = text.match(/^(\s*)steps:\s*$/m);
+  if (!steps) return { text, changed: false };
+
+  const indent = steps[1];
+  const beforeSteps = text.slice(0, steps.index);
+  const existingBlockPattern = new RegExp(`^${indent}${blockName}:\\s*$`, "m");
+  const existingBlock = beforeSteps.match(existingBlockPattern);
+  if (existingBlock) {
+    return {
+      text: insertIntoExistingBlock(text, existingBlock.index, `${indent}  ${dryRunVariable}: "true"\n`),
+      changed: true
+    };
+  }
+
+  const updated = text.replace(/^(\s*)steps:\s*$/m, (line, stepIndent) => {
+    return `${stepIndent}${blockName}:\n${stepIndent}  ${dryRunVariable}: "true"\n${line}`;
   });
-  return { text: updated, changed };
+  return { text: updated, changed: updated !== text };
+}
+
+function applyJenkinsDryRunGuard(text) {
+  const existingEnvironment = text.match(/^(\s*)environment\s*\{\s*$/m);
+  if (existingEnvironment) {
+    return {
+      text: insertIntoExistingBlock(text, existingEnvironment.index, `${existingEnvironment[1]}  ${dryRunVariable} = 'true'\n`),
+      changed: true
+    };
+  }
+
+  const updated = text.replace(/^(\s*)agent\s+any\s*$/m, (line, indent) => {
+    return `${line}\n${indent}environment {\n${indent}  ${dryRunVariable} = 'true'\n${indent}}`;
+  });
+  return { text: updated, changed: updated !== text };
+}
+
+function applyDryRunGuard(text, file) {
+  if (/AGENTIC_WORKFLOW_GUARD_DRY_RUN/.test(text)) return { text, changed: false };
+  if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
+  if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
+  if (/^\.gitlab-ci\.ya?ml$/i.test(file) || /^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) {
+    return insertYamlVariableAtTopLevel(text);
+  }
+  if (/(^|\/)Jenkinsfile(\..*)?$/i.test(file)) return applyJenkinsDryRunGuard(text);
+  return { text, changed: false };
 }
 
 function fixableFiles(findings) {
@@ -81,7 +149,7 @@ function recipeForFinding(finding) {
       title: "Keep secrets out of prompt-visible agent context"
     },
     AWI008: {
-      id: "github-dry-run-env",
+      id: "ci-dry-run-env",
       mode: "automatic",
       confidence: "medium",
       title: "Add an explicit dry-run safety marker to the workflow"
@@ -127,7 +195,7 @@ function applyRecipes(original, file, findings) {
   }
 
   if (fileFindings.some((finding) => finding.ruleId === "AWI008")) {
-    const result = applyDryRunGuard(text);
+    const result = applyDryRunGuard(text, file);
     text = result.text;
     changed ||= result.changed;
   }
@@ -257,7 +325,7 @@ export async function renderFixPlan(root, options = {}) {
       lines.push("No safe automatic fixes were available.");
       lines.push("");
     } else {
-      lines.push("Updated GitHub Actions permissions in:");
+      lines.push("Applied low-risk automatic fixes in:");
       for (const file of changedFiles) {
         lines.push(`- \`${file}\``);
       }
@@ -273,9 +341,9 @@ export async function renderFixPlan(root, options = {}) {
     lines.push("");
   }
   if (options.apply) {
-    lines.push("Applied only low-risk permission downgrades. Review remaining findings before merging.");
+    lines.push("Applied only low-risk automatic fixes. Review remaining findings before merging.");
   } else {
-    lines.push("Dry-run only: review this plan before editing workflows. Use --apply for low-risk permission downgrades.");
+    lines.push("Dry-run only: review this plan before editing workflows. Use --apply for low-risk automatic fixes.");
   }
   return `${lines.join("\n")}\n`;
 }

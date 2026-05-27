@@ -24,8 +24,12 @@ agentic-workflow-guard explain AWI001
 agentic-workflow-guard explain AWI002
 agentic-workflow-guard explain AWI007
 agentic-workflow-guard explain AWI008
+agentic-workflow-guard fix . --patch
+agentic-workflow-guard fix . --format json
 ```
 
 ## Review Notes
 
 CI jobs often inherit useful environment context. Treat those values as capabilities: if an agent can see a token, context, service connection, variable group, or credential binding, assume prompt injection can steer how it is used unless the job is read-only, dry-run, or approval-gated.
+
+`fix --patch` and `fix --apply` can add low-risk dry-run defaults for GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs. Review shell sinks, prompt boundaries, credential exposure, and approval gates manually before merging.
