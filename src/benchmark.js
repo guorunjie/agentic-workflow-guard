@@ -3,8 +3,9 @@ import path from "node:path";
 import { scanProject } from "./scan.js";
 import { readJson } from "./utils/files.js";
 
-const packageVersion = "0.18.0";
+const packageVersion = "0.19.0";
 const corpusSchemaVersion = "1.0.0";
+const reportSchemaVersion = "1.0.0";
 
 const fixturePlatforms = [
   ["github-action", "github-actions", "GitHub Actions"],
@@ -31,6 +32,13 @@ function sameRules(actual, expected) {
   return JSON.stringify(actual) === JSON.stringify([...expected].sort());
 }
 
+function ruleDiff(actual, expected) {
+  return {
+    missingRules: expected.filter((ruleId) => !actual.includes(ruleId)),
+    unexpectedRules: actual.filter((ruleId) => !expected.includes(ruleId))
+  };
+}
+
 export async function runBenchmark(root = ".") {
   const manifest = await readJson(root, "benchmarks/fixtures.json");
   const results = [];
@@ -38,23 +46,21 @@ export async function runBenchmark(root = ".") {
   for (const fixture of manifest.fixtures) {
     const findings = await scanProject(path.join(root, fixture.path));
     const actualRules = sortedUnique(findings.map((finding) => finding.ruleId));
+    const expectedRules = sortedUnique(fixture.expectedRules);
+    const diff = ruleDiff(actualRules, expectedRules);
     results.push({
-      ...fixture,
+      name: fixture.name,
+      kind: fixtureKind(fixture),
+      ...platformMetadataForFixture(fixture),
+      path: fixture.path,
+      expectedRules,
       actualRules,
-      passed: sameRules(actualRules, fixture.expectedRules)
+      ...diff,
+      passed: sameRules(actualRules, expectedRules)
     });
   }
 
   return results;
-}
-
-export function renderBenchmark(results) {
-  const failed = results.filter((result) => !result.passed);
-  const lines = [failed.length ? "# Benchmark failed" : "# Benchmark passed", ""];
-  for (const result of results) {
-    lines.push(`- ${result.passed ? "PASS" : "FAIL"} ${result.name}: expected [${result.expectedRules.join(", ")}], got [${result.actualRules.join(", ")}]`);
-  }
-  return `${lines.join("\n")}\n`;
 }
 
 function platformMetadataForFixture(fixture) {
@@ -109,6 +115,50 @@ export async function loadBenchmarkCorpus(root = ".") {
 
 export async function benchmarkCorpus(root = ".") {
   return loadBenchmarkCorpus(root);
+}
+
+export function buildBenchmarkReport(results) {
+  const passed = results.filter((result) => result.passed).length;
+  const failed = results.length - passed;
+  const passRate = results.length ? Number(((passed / results.length) * 100).toFixed(2)) : 100;
+
+  return {
+    schemaVersion: reportSchemaVersion,
+    name: "agentic-workflow-guard-benchmark-report",
+    version: packageVersion,
+    generatedBy: `agentic-workflow-guard@${packageVersion}`,
+    summary: {
+      fixtureCount: results.length,
+      passed,
+      failed,
+      passRate
+    },
+    platforms: sortedUnique(results.map((result) => result.platform)),
+    ruleIds: sortedUnique(results.flatMap((result) => [...result.expectedRules, ...result.actualRules])),
+    results
+  };
+}
+
+export function renderBenchmarkReport(report, format = "markdown") {
+  if (format === "json") return `${JSON.stringify(report, null, 2)}\n`;
+
+  const failed = report.results.filter((result) => !result.passed);
+  const lines = [
+    failed.length ? "# Benchmark failed" : "# Benchmark passed",
+    "",
+    `- Score: ${report.summary.passed}/${report.summary.fixtureCount} (${report.summary.passRate}%)`,
+    `- Failed: ${report.summary.failed}`,
+    ""
+  ];
+  for (const result of report.results) {
+    const diff = result.passed ? "" : ` missing [${result.missingRules.join(", ")}], unexpected [${result.unexpectedRules.join(", ")}]`;
+    lines.push(`- ${result.passed ? "PASS" : "FAIL"} ${result.name}: expected [${result.expectedRules.join(", ")}], got [${result.actualRules.join(", ")}]${diff}`);
+  }
+  return `${lines.join("\n")}\n`;
+}
+
+export function renderBenchmark(results, format = "markdown") {
+  return renderBenchmarkReport(buildBenchmarkReport(results), format);
 }
 
 export function renderBenchmarkCorpus(corpus, format = "markdown") {

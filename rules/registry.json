@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-rule-registry",
-  "version": "0.18.0",
-  "generatedBy": "agentic-workflow-guard@0.18.0",
+  "version": "0.19.0",
+  "generatedBy": "agentic-workflow-guard@0.19.0",
   "packs": [
     {
       "name": "agentic-workflow-guard-core-rules",
       "alias": "core",
-      "version": "0.18.0",
+      "version": "0.19.0",
       "description": "Core static-analysis rules for AI automation workflow security.",
       "source": "bundled",
       "platforms": [
@@ -40,14 +40,14 @@
         "AWI009",
         "AWI010"
       ],
-      "checksum": "sha256:e364ff62cad7795eeba254f3d2290134ef2739cd734b9793cc7541ca4011e2d1",
+      "checksum": "sha256:941ef8342af6fa0cbf1bccc829a88d2e5935d3e39d905ed49efdb1ab0197f848",
       "install": "agentic-workflow-guard rules install core .",
       "path": "rules/marketplace.json"
     },
     {
       "name": "agentic-workflow-guard-github-actions-hardening",
       "alias": "github-actions-hardening",
-      "version": "0.18.0",
+      "version": "0.19.0",
       "description": "Focused GitHub Actions rule pack for prompt-injection, shell-sink, token, pull_request_target, and missing-control risks.",
       "source": "community",
       "platforms": [
@@ -61,14 +61,14 @@
         "AWI007",
         "AWI008"
       ],
-      "checksum": "sha256:70730c0ac7db72d89d532f969c727b599ec37da0722edb8cb1b077b78be7a4db",
+      "checksum": "sha256:1e9c35480e5c16a1c60a91289dfaed5aca12611d3444c45b9013ec45a0549c38",
       "install": "agentic-workflow-guard rules install github-actions-hardening .",
       "path": "rules/community/agentic-workflow-guard-github-actions-hardening.json"
     },
     {
       "name": "agentic-workflow-guard-low-code-automation",
       "alias": "low-code-automation",
-      "version": "0.18.0",
+      "version": "0.19.0",
       "description": "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
       "source": "community",
       "platforms": [
@@ -88,7 +88,7 @@
         "AWI009",
         "AWI010"
       ],
-      "checksum": "sha256:a9580cfbe2975a5c5919ef42f8218dc94b396356cbba44293eb89c435965b0a9",
+      "checksum": "sha256:b562c85d77ed3fa2929d6ac46b624576abbb3d6b44c8f9c9424c4b43c0fde8d6",
       "install": "agentic-workflow-guard rules install low-code-automation .",
       "path": "rules/community/agentic-workflow-guard-low-code-automation.json"
     }

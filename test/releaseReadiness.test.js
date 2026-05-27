@@ -2,12 +2,13 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the v0.18 benchmark corpus release", async () => {
+test("package metadata reflects the v0.19 benchmark schema and scoring release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.18.0");
+  assert.equal(pkg.version, "0.19.0");
   assert.match(pkg.description, /Semgrep-style scanner/i);
-  assert.match(pkg.description, /benchmark corpus/i);
+  assert.match(pkg.description, /benchmark corpus schemas/i);
+  assert.match(pkg.description, /scoring reports/i);
   assert.match(pkg.description, /portable skills/i);
   assert.ok(pkg.keywords.includes("gitlab-ci"));
   assert.ok(pkg.keywords.includes("circleci"));
@@ -21,11 +22,14 @@ test("package metadata reflects the v0.18 benchmark corpus release", async () =>
   assert.ok(pkg.keywords.includes("browser-use"));
   assert.ok(pkg.keywords.includes("rule-packs"));
   assert.equal(pkg.scripts.benchmark, "node ./bin/agentic-workflow-guard.js benchmark");
+  assert.equal(pkg.scripts["benchmark:report"], "node ./bin/agentic-workflow-guard.js benchmark --format json");
   assert.equal(pkg.scripts["benchmark:corpus"], "node ./bin/agentic-workflow-guard.js benchmark corpus --format json");
   assert.equal(pkg.scripts["mcp:resources"], "node ./bin/agentic-workflow-guard.js mcp resources --format json");
   assert.equal(pkg.scripts["schema:report"], "node ./bin/agentic-workflow-guard.js schema report");
   assert.equal(pkg.scripts["schema:fix"], "node ./bin/agentic-workflow-guard.js schema fix");
   assert.equal(pkg.scripts["schema:rule-pack"], "node ./bin/agentic-workflow-guard.js schema rule-pack");
+  assert.equal(pkg.scripts["schema:benchmark-corpus"], "node ./bin/agentic-workflow-guard.js schema benchmark-corpus");
+  assert.equal(pkg.scripts["schema:benchmark-report"], "node ./bin/agentic-workflow-guard.js schema benchmark-report");
   assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
   assert.ok(pkg.files.includes("mcp"));
@@ -46,6 +50,9 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /schema report/);
   assert.match(readme, /schema fix/);
   assert.match(readme, /schema rule-pack/);
+  assert.match(readme, /schema benchmark-corpus/);
+  assert.match(readme, /schema benchmark-report/);
+  assert.match(readme, /benchmark --format json/);
   assert.match(readme, /fix \. --format json/);
   assert.match(readme, /fix \. --apply/);
   assert.match(readme, /fix \. --patch/);
@@ -140,6 +147,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
     "schemas/agentic-workflow-guard-rule-pack.schema.json",
+    "schemas/agentic-workflow-guard-benchmark-corpus.schema.json",
+    "schemas/agentic-workflow-guard-benchmark-report.schema.json",
     ".awg.example.yml"
   ];
 

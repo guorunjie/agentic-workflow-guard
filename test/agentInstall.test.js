@@ -37,6 +37,8 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   const manifest = await readFile(path.join(root, "mcp", "resources", "agentic-workflow-guard.resources.json"), "utf8");
   const fixSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-fix-report.schema.json"), "utf8");
   const rulePackSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-rule-pack.schema.json"), "utf8");
+  const corpusSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-benchmark-corpus.schema.json"), "utf8");
+  const benchmarkReportSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-benchmark-report.schema.json"), "utf8");
   const rules = await readFile(path.join(root, "rules", "marketplace.json"), "utf8");
   const registry = await readFile(path.join(root, "rules", "registry.json"), "utf8");
   const corpus = await readFile(path.join(root, "benchmarks", "corpus.json"), "utf8");
@@ -49,6 +51,8 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(manifest, /awg:\/\/rules\/core/);
   assert.match(fixSchema, /Agentic Workflow Guard Fix Report/);
   assert.match(rulePackSchema, /Agentic Workflow Guard Rule Pack/);
+  assert.match(corpusSchema, /Agentic Workflow Guard Benchmark Corpus/);
+  assert.match(benchmarkReportSchema, /Agentic Workflow Guard Benchmark Report/);
   assert.match(rules, /agentic-workflow-guard-core-rules/);
   assert.match(registry, /github-actions-hardening/);
   assert.match(corpus, /agentic-workflow-guard-benchmark-corpus/);

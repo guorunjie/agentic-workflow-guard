@@ -88,6 +88,8 @@ Print stable JSON schemas:
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
 node ./bin/agentic-workflow-guard.js schema rule-pack
+node ./bin/agentic-workflow-guard.js schema benchmark-corpus
+node ./bin/agentic-workflow-guard.js schema benchmark-report
 ```
 
 Explain a rule:
@@ -126,6 +128,7 @@ Verify the bundled benchmark fixtures:
 
 ```bash
 node ./bin/agentic-workflow-guard.js benchmark
+node ./bin/agentic-workflow-guard.js benchmark --format json
 ```
 
 Export the public benchmark corpus metadata:
@@ -199,7 +202,9 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
 | `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
 | `schema rule-pack` | Emits the stable rule pack schema for marketplace metadata. |
-| `benchmark [path]` | Runs safe/vulnerable fixture snapshots and checks expected rule IDs. |
+| `schema benchmark-corpus` | Emits the stable benchmark corpus metadata schema. |
+| `schema benchmark-report` | Emits the stable benchmark scoring report schema. |
+| `benchmark [path] --format markdown|json` | Runs safe/vulnerable fixture snapshots and emits a scored benchmark report. |
 | `benchmark corpus [path] --format markdown|json` | Emits portable metadata for the vulnerable/safe benchmark corpus. |
 | `mcp resources --format markdown|json` | Prints MCP-style resource descriptors for rules, benchmarks, skills, and remediation playbooks. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
@@ -283,7 +288,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.18.0
+      - uses: guorunjie/agentic-workflow-guard@v0.19.0
         with:
           path: .
           format: sarif
@@ -295,7 +300,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.18.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.19.0`.
 
 ## Examples
 
@@ -318,6 +323,7 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-browser-trace --fo
 node ./bin/agentic-workflow-guard.js scan examples/safe-browser-trace --format markdown
 node ./bin/agentic-workflow-guard.js fix examples/unsafe-ai-pr-bot --format json
 node ./bin/agentic-workflow-guard.js benchmark
+node ./bin/agentic-workflow-guard.js benchmark --format json
 node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources
 ```
@@ -343,6 +349,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.16 | Approval snippet recipes | `fix --format json` and Markdown plans include next steps plus approval, artifact, scope, and allowlist snippets |
 | v0.17 | Community rule-pack registry | Installable `github-actions-hardening` and `low-code-automation` packs, registry JSON, docs, and MCP resources |
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
+| v0.19 | Benchmark schemas and scoring | `benchmark --format json`, pass-rate scoring, corpus/report schemas, Pages and MCP schema distribution |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
@@ -352,6 +359,7 @@ See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage a
 ```bash
 npm test
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --format json
+node ./bin/agentic-workflow-guard.js benchmark --format json
 node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 npm run docs:build

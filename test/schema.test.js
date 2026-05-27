@@ -47,6 +47,28 @@ test("CLI schema fix emits the shipped fix report schema", async () => {
   assert.ok(parsed.properties.recipes.items.properties.snippets);
 });
 
+test("CLI schema benchmark-corpus emits the shipped benchmark corpus schema", async () => {
+  const schema = JSON.parse(await readFile("schemas/agentic-workflow-guard-benchmark-corpus.schema.json", "utf8"));
+  const { stdout } = await execFileAsync("node", [bin, "schema", "benchmark-corpus"]);
+  const parsed = JSON.parse(stdout);
+
+  assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-corpus.schema.json");
+  assert.equal(parsed.title, "Agentic Workflow Guard Benchmark Corpus");
+  assert.ok(parsed.required.includes("fixtures"));
+  assert.ok(parsed.properties.fixtures.items.$ref);
+});
+
+test("CLI schema benchmark-report emits the shipped benchmark report schema", async () => {
+  const schema = JSON.parse(await readFile("schemas/agentic-workflow-guard-benchmark-report.schema.json", "utf8"));
+  const { stdout } = await execFileAsync("node", [bin, "schema", "benchmark-report"]);
+  const parsed = JSON.parse(stdout);
+
+  assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-report.schema.json");
+  assert.equal(parsed.title, "Agentic Workflow Guard Benchmark Report");
+  assert.ok(parsed.required.includes("summary"));
+  assert.ok(parsed.properties.results.items.$ref);
+});
+
 test("scan --output writes the selected report format and prints a summary", async () => {
   const output = path.join((await import("node:os")).tmpdir(), `awg-report-${Date.now()}.json`);
   const { stdout } = await execFileAsync("node", [bin, "scan", "examples/safe-github-action", "--format", "json", "--output", output]);

@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
-  "version": "0.18.0",
-  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, community rule packs, benchmark corpus, safe fixes, and portable skills.",
+  "version": "0.19.0",
+  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, community rule packs, benchmark corpus schemas, scoring reports, safe fixes, and portable skills.",
   "type": "module",
   "bin": {
     "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"
@@ -11,11 +11,14 @@
     "scan": "node ./bin/agentic-workflow-guard.js scan .",
     "scan:strict": "node ./bin/agentic-workflow-guard.js scan . --profile strict",
     "benchmark": "node ./bin/agentic-workflow-guard.js benchmark",
+    "benchmark:report": "node ./bin/agentic-workflow-guard.js benchmark --format json",
     "benchmark:corpus": "node ./bin/agentic-workflow-guard.js benchmark corpus --format json",
     "mcp:resources": "node ./bin/agentic-workflow-guard.js mcp resources --format json",
     "schema:report": "node ./bin/agentic-workflow-guard.js schema report",
     "schema:fix": "node ./bin/agentic-workflow-guard.js schema fix",
     "schema:rule-pack": "node ./bin/agentic-workflow-guard.js schema rule-pack",
+    "schema:benchmark-corpus": "node ./bin/agentic-workflow-guard.js schema benchmark-corpus",
+    "schema:benchmark-report": "node ./bin/agentic-workflow-guard.js schema benchmark-report",
     "docs:build": "node ./scripts/build-pages.js",
     "agents": "node ./bin/agentic-workflow-guard.js agents",
     "marketplace": "node ./bin/agentic-workflow-guard.js rules --format markdown"
@@ -49,6 +52,8 @@
     "hermes-agent",
     "prompt-injection",
     "rule-packs",
+    "benchmark",
+    "json-schema",
     "sarif",
     "developer-tools"
   ],

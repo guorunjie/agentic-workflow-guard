@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-corpus.schema.json",
+  "title": "Agentic Workflow Guard Benchmark Corpus",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "name",
+    "version",
+    "generatedBy",
+    "description",
+    "homepage",
+    "fixtureManifestVersion",
+    "fixtureCount",
+    "platforms",
+    "ruleIds",
+    "fixtures"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "name": {
+      "const": "agentic-workflow-guard-benchmark-corpus"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "generatedBy": {
+      "type": "string",
+      "pattern": "^agentic-workflow-guard@[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri"
+    },
+    "fixtureManifestVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "fixtureCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "ruleIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+      "uniqueItems": true
+    },
+    "fixtures": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/fixture" }
+    }
+  },
+  "$defs": {
+    "fixture": {
+      "type": "object",
+      "required": [
+        "name",
+        "kind",
+        "platformId",
+        "platform",
+        "path",
+        "expectedRules",
+        "risk"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "enum": ["safe", "vulnerable"] },
+        "platformId": { "type": "string", "minLength": 1 },
+        "platform": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "expectedRules": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+          "uniqueItems": true
+        },
+        "risk": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

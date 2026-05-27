@@ -100,7 +100,7 @@ Priority directions:
    Evolve the local rule catalog and community registry into signed community rule packs with schema validation, lock files, checksum verification, SemVer compatibility, provenance metadata, and review guidelines.
 
 4. **Benchmark as moat**
-   Grow the shipped `benchmark corpus` output and `benchmarks/corpus.json` into the reference test set for agentic workflow security tools.
+   Grow the shipped `benchmark corpus` output, `benchmark --format json` scoring report, and `benchmarks/corpus.json` into the reference test set for agentic workflow security tools.
 
 5. **Agent-native distribution**
    Keep Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md outputs generated and tested. Extend the MCP resource pack into marketplace-ready skill packages once those ecosystems stabilize.

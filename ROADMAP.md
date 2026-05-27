@@ -159,11 +159,19 @@ North star:
 - Include platform IDs, display names, safe/vulnerable fixture kind, expected rule IDs, and fixture paths for every supported platform.
 - Keep the corpus generated from `benchmarks/fixtures.json` so scanner snapshots and public benchmark metadata cannot drift.
 
+## v0.19: Benchmark Schemas and Scoring
+
+- Add `benchmark --format json` for machine-readable benchmark scoring reports.
+- Include fixture count, passed, failed, pass rate, platform list, rule list, and per-fixture missing/unexpected rule diffs.
+- Add stable JSON Schemas for `benchmark corpus` and benchmark report outputs.
+- Publish benchmark schemas through npm package files, GitHub Pages schema aliases, MCP resources, and agent install bundles.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.
 - Stable fix recipe schema.
 - Stable rule pack schema.
+- Stable benchmark corpus and report schemas.
 - Stable rule IDs and severity policy.
 - GitHub Marketplace release.
 - npm release.

@@ -24,6 +24,8 @@ const installTargets = {
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
     "schemas/agentic-workflow-guard-rule-pack.schema.json",
+    "schemas/agentic-workflow-guard-benchmark-corpus.schema.json",
+    "schemas/agentic-workflow-guard-benchmark-report.schema.json",
     "skills/agentic-workflow-guard-auditor/SKILL.md",
     "docs/policy-profiles-and-suppressions.md",
     "docs/rule-marketplace.md",

@@ -15,3 +15,11 @@ export async function renderFixReportSchema() {
 export async function renderRulePackSchema() {
   return readFile(path.join(packageRoot, "schemas", "agentic-workflow-guard-rule-pack.schema.json"), "utf8");
 }
+
+export async function renderBenchmarkCorpusSchema() {
+  return readFile(path.join(packageRoot, "schemas", "agentic-workflow-guard-benchmark-corpus.schema.json"), "utf8");
+}
+
+export async function renderBenchmarkReportSchema() {
+  return readFile(path.join(packageRoot, "schemas", "agentic-workflow-guard-benchmark-report.schema.json"), "utf8");
+}

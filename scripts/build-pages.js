@@ -24,6 +24,18 @@ const schemaAliases = [
     source: "schemas/agentic-workflow-guard-rule-pack.schema.json",
     path: "schemas/rule-pack.schema.json",
     url: "https://guorunjie.github.io/agentic-workflow-guard/schemas/rule-pack.schema.json"
+  },
+  {
+    name: "benchmark corpus",
+    source: "schemas/agentic-workflow-guard-benchmark-corpus.schema.json",
+    path: "schemas/benchmark-corpus.schema.json",
+    url: "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-corpus.schema.json"
+  },
+  {
+    name: "benchmark report",
+    source: "schemas/agentic-workflow-guard-benchmark-report.schema.json",
+    path: "schemas/benchmark-report.schema.json",
+    url: "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-report.schema.json"
   }
 ];
 

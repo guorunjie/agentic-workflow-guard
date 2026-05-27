@@ -18,6 +18,8 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   const reportSchema = JSON.parse(await readFile(path.join(outDir, "schemas", "report.schema.json"), "utf8"));
   const fixSchema = JSON.parse(await readFile(path.join(outDir, "schemas", "fix-report.schema.json"), "utf8"));
   const rulePackSchema = JSON.parse(await readFile(path.join(outDir, "schemas", "rule-pack.schema.json"), "utf8"));
+  const corpusSchema = JSON.parse(await readFile(path.join(outDir, "schemas", "benchmark-corpus.schema.json"), "utf8"));
+  const benchmarkReportSchema = JSON.parse(await readFile(path.join(outDir, "schemas", "benchmark-report.schema.json"), "utf8"));
   const schemaIndex = JSON.parse(await readFile(path.join(outDir, "schemas", "index.json"), "utf8"));
   const marketplaceRules = JSON.parse(await readFile(path.join(outDir, "rules", "marketplace.json"), "utf8"));
   const registry = JSON.parse(await readFile(path.join(outDir, "rules", "registry.json"), "utf8"));
@@ -31,7 +33,10 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   assert.equal(reportSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/report.schema.json");
   assert.equal(fixSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/fix-report.schema.json");
   assert.equal(rulePackSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/rule-pack.schema.json");
+  assert.equal(corpusSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-corpus.schema.json");
+  assert.equal(benchmarkReportSchema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-report.schema.json");
   assert.ok(schemaIndex.schemas.some((schema) => schema.path === "schemas/rule-pack.schema.json"));
+  assert.ok(schemaIndex.schemas.some((schema) => schema.path === "schemas/benchmark-report.schema.json"));
   assert.equal(marketplaceRules.schemaVersion, "1.0.0");
   assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation"));
   assert.equal(communityPack.provenance.source, "community");

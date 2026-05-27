@@ -54,6 +54,7 @@
         <h2>Quick start</h2>
         <pre><code>npx agentic-workflow-guard scan . --format sarif --output awg.sarif
 npx agentic-workflow-guard fix . --format json
+npx agentic-workflow-guard benchmark --format json
 npx agentic-workflow-guard benchmark corpus --format json
 npx agentic-workflow-guard rules verify .awg/rules/agentic-workflow-guard-core-rules.json</code></pre>
       </section>
@@ -64,6 +65,8 @@ npx agentic-workflow-guard rules verify .awg/rules/agentic-workflow-guard-core-r
           <li><a href="schemas/report.schema.json">schemas/report.schema.json</a> for scan JSON reports</li>
           <li><a href="schemas/fix-report.schema.json">schemas/fix-report.schema.json</a> for structured fix reports</li>
           <li><a href="schemas/rule-pack.schema.json">schemas/rule-pack.schema.json</a> for marketplace rule packs</li>
+          <li><a href="schemas/benchmark-corpus.schema.json">schemas/benchmark-corpus.schema.json</a> for benchmark corpus metadata</li>
+          <li><a href="schemas/benchmark-report.schema.json">schemas/benchmark-report.schema.json</a> for scored benchmark reports</li>
           <li><a href="rules/registry.json">rules/registry.json</a> for installable bundled and community rule packs</li>
           <li><a href="benchmarks/corpus.json">benchmarks/corpus.json</a> for the safe/vulnerable workflow benchmark corpus</li>
         </ul>

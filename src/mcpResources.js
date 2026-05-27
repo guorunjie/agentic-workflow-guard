@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.18.0",
+  version: "0.19.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -68,6 +68,24 @@ export const mcpResourcePack = {
       description: "Stable JSON Schema for marketplace rule pack metadata.",
       mimeType: "application/schema+json",
       path: "schemas/agentic-workflow-guard-rule-pack.schema.json",
+      annotations: { audience: ["assistant", "user"], priority: 0.95 }
+    },
+    {
+      uri: "awg://schemas/benchmark-corpus",
+      name: "benchmark-corpus-schema",
+      title: "Agentic Workflow Guard Benchmark Corpus Schema",
+      description: "Stable JSON Schema for benchmark corpus metadata.",
+      mimeType: "application/schema+json",
+      path: "schemas/agentic-workflow-guard-benchmark-corpus.schema.json",
+      annotations: { audience: ["assistant", "user"], priority: 0.95 }
+    },
+    {
+      uri: "awg://schemas/benchmark-report",
+      name: "benchmark-report-schema",
+      title: "Agentic Workflow Guard Benchmark Report Schema",
+      description: "Stable JSON Schema for benchmark scoring reports.",
+      mimeType: "application/schema+json",
+      path: "schemas/agentic-workflow-guard-benchmark-report.schema.json",
       annotations: { audience: ["assistant", "user"], priority: 0.95 }
     },
     {

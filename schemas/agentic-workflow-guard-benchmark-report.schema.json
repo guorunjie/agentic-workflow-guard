@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guorunjie.github.io/agentic-workflow-guard/schemas/benchmark-report.schema.json",
+  "title": "Agentic Workflow Guard Benchmark Report",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "name",
+    "version",
+    "generatedBy",
+    "summary",
+    "platforms",
+    "ruleIds",
+    "results"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "name": {
+      "const": "agentic-workflow-guard-benchmark-report"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "generatedBy": {
+      "type": "string",
+      "pattern": "^agentic-workflow-guard@[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "summary": {
+      "type": "object",
+      "required": ["fixtureCount", "passed", "failed", "passRate"],
+      "additionalProperties": false,
+      "properties": {
+        "fixtureCount": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 },
+        "failed": { "type": "integer", "minimum": 0 },
+        "passRate": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "ruleIds": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+      "uniqueItems": true
+    },
+    "results": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/result" }
+    }
+  },
+  "$defs": {
+    "result": {
+      "type": "object",
+      "required": [
+        "name",
+        "kind",
+        "platformId",
+        "platform",
+        "path",
+        "expectedRules",
+        "actualRules",
+        "missingRules",
+        "unexpectedRules",
+        "passed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "enum": ["safe", "vulnerable"] },
+        "platformId": { "type": "string", "minLength": 1 },
+        "platform": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "expectedRules": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+          "uniqueItems": true
+        },
+        "actualRules": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+          "uniqueItems": true
+        },
+        "missingRules": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+          "uniqueItems": true
+        },
+        "unexpectedRules": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^AWI[0-9]{3}$" },
+          "uniqueItems": true
+        },
+        "passed": { "type": "boolean" }
+      }
+    }
+  }
+}

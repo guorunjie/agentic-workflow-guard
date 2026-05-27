@@ -10,22 +10,24 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 4. Use `agentic-workflow-guard schema report` when integrating machine-readable JSON reports.
 5. Use `agentic-workflow-guard schema fix` when integrating structured fix recipe reports.
 6. Use `agentic-workflow-guard schema rule-pack` when integrating trusted marketplace metadata.
-7. Use `agentic-workflow-guard scan . --profile strict` for write-capable or sensitive automation repositories.
-8. Use `agentic-workflow-guard explain <rule-id>` before proposing a remediation.
-9. Use `agentic-workflow-guard baseline create .` and `scan . --baseline .awg-baseline.json` when adopting in an existing repository.
-10. Use `awg-ignore AWI001: reason` only for reviewed suppressions with an audit reason.
-11. Review `Suppressed findings` in JSON and Markdown reports before accepting exceptions.
-12. Use `agentic-workflow-guard fix . --patch` for reviewable GitHub permission and CI dry-run diffs.
-13. Use `agentic-workflow-guard fix . --format json` for recipe confidence, automatic/manual modes, approval snippets, and next steps.
-14. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub permission downgrades and CI dry-run defaults.
-15. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-16. Use `agentic-workflow-guard rules registry --format json` to inspect bundled and community rule-pack aliases and checksums.
-17. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs; it checks schema metadata and checksum.
-18. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-19. Use `agentic-workflow-guard benchmark corpus --format json` to expose portable safe/vulnerable benchmark metadata.
-20. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-21. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
-22. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
+7. Use `agentic-workflow-guard schema benchmark-corpus` and `schema benchmark-report` when integrating benchmark metadata.
+8. Use `agentic-workflow-guard scan . --profile strict` for write-capable or sensitive automation repositories.
+9. Use `agentic-workflow-guard explain <rule-id>` before proposing a remediation.
+10. Use `agentic-workflow-guard baseline create .` and `scan . --baseline .awg-baseline.json` when adopting in an existing repository.
+11. Use `awg-ignore AWI001: reason` only for reviewed suppressions with an audit reason.
+12. Review `Suppressed findings` in JSON and Markdown reports before accepting exceptions.
+13. Use `agentic-workflow-guard fix . --patch` for reviewable GitHub permission and CI dry-run diffs.
+14. Use `agentic-workflow-guard fix . --format json` for recipe confidence, automatic/manual modes, approval snippets, and next steps.
+15. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub permission downgrades and CI dry-run defaults.
+16. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
+17. Use `agentic-workflow-guard rules registry --format json` to inspect bundled and community rule-pack aliases and checksums.
+18. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs; it checks schema metadata and checksum.
+19. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+20. Use `agentic-workflow-guard benchmark --format json` for scored benchmark reports with missing and unexpected rules.
+21. Use `agentic-workflow-guard benchmark corpus --format json` to expose portable safe/vulnerable benchmark metadata.
+22. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+23. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
+24. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
 
 ## Safety Rules
 
@@ -43,9 +45,12 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 - `node ./bin/agentic-workflow-guard.js schema report`
 - `node ./bin/agentic-workflow-guard.js schema fix`
 - `node ./bin/agentic-workflow-guard.js schema rule-pack`
+- `node ./bin/agentic-workflow-guard.js schema benchmark-corpus`
+- `node ./bin/agentic-workflow-guard.js schema benchmark-report`
 - `node ./bin/agentic-workflow-guard.js scan . --profile strict`
 - `node ./bin/agentic-workflow-guard.js scan . --format sarif`
 - `node ./bin/agentic-workflow-guard.js benchmark`
+- `node ./bin/agentic-workflow-guard.js benchmark --format json`
 - `node ./bin/agentic-workflow-guard.js benchmark corpus --format json`
 - `npm run docs:build`
 - `node ./bin/agentic-workflow-guard.js mcp resources --format json`

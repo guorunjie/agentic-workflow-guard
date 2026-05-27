@@ -2,7 +2,7 @@ import path from "node:path";
 import { mkdir, writeFile } from "node:fs/promises";
 
 import { suppressBaseline, writeBaseline } from "./baseline.js";
-import { loadBenchmarkCorpus, renderBenchmark, renderBenchmarkCorpus, runBenchmark } from "./benchmark.js";
+import { buildBenchmarkReport, loadBenchmarkCorpus, renderBenchmarkReport, renderBenchmarkCorpus, runBenchmark } from "./benchmark.js";
 import { loadConfig, withPolicyProfile } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
@@ -12,7 +12,7 @@ import { renderMcpResources } from "./mcpResources.js";
 import { renderJson, summarize } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
-import { renderFixReportSchema, renderReportSchema, renderRulePackSchema } from "./schema.js";
+import { renderBenchmarkCorpusSchema, renderBenchmarkReportSchema, renderFixReportSchema, renderReportSchema, renderRulePackSchema } from "./schema.js";
 import { installRulePack, renderRulePacks, renderRuleRegistry, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
@@ -45,7 +45,7 @@ Usage:
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|registry|search <query>|install <pack> [path]|verify <file>] [--format markdown|json]
-  agentic-workflow-guard schema report|fix|rule-pack
+  agentic-workflow-guard schema report|fix|rule-pack|benchmark-corpus|benchmark-report
   agentic-workflow-guard mcp resources [--format markdown|json]
   agentic-workflow-guard benchmark [path]|corpus [path] [--format markdown|json]
   agentic-workflow-guard agents [--format markdown|json]
@@ -170,7 +170,15 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       output.write(await renderRulePackSchema());
       return 0;
     }
-    if (!["report", "fix", "rule-pack"].includes(subcommand)) {
+    if (subcommand === "benchmark-corpus") {
+      output.write(await renderBenchmarkCorpusSchema());
+      return 0;
+    }
+    if (subcommand === "benchmark-report") {
+      output.write(await renderBenchmarkReportSchema());
+      return 0;
+    }
+    if (!["report", "fix", "rule-pack", "benchmark-corpus", "benchmark-report"].includes(subcommand)) {
       error.write(`Unknown schema command: ${subcommand}\n`);
       return 1;
     }
@@ -184,8 +192,9 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       return 0;
     }
     const root = path.resolve(firstPositional(args));
+    const format = argValue(args, "--format", "markdown");
     const results = await runBenchmark(root);
-    output.write(renderBenchmark(results));
+    output.write(renderBenchmarkReport(buildBenchmarkReport(results), format));
     return results.some((result) => !result.passed) ? 1 : 0;
   }
 

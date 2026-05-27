@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { rules } from "./rules/index.js";
 
-const packageVersion = "0.18.0";
+const packageVersion = "0.19.0";
 const rulePackSchemaVersion = "1.0.0";
 const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
 const coreRuleIds = Object.keys(rules);
