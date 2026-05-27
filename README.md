@@ -1,6 +1,8 @@
 # Agentic Workflow Guard
 
-Find prompt-injection paths, overpowered tools, unsafe GitHub Actions, risky n8n flows, and MCP permission leaks before your AI automation runs.
+Semgrep-style security scanner for AI automation workflows.
+
+Find prompt-injection paths, overpowered tools, unsafe GitHub Actions, risky n8n flows, low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
@@ -26,7 +28,20 @@ High-star automation projects show the pattern:
 - [browser-use](https://github.com/browser-use/browser-use), [Skyvern](https://github.com/Skyvern-AI/skyvern), and [Playwright MCP](https://github.com/microsoft/playwright-mcp) prove browser/tool automation for agents is sticky.
 - [Anthropic Skills](https://github.com/anthropics/skills), [AGENTS.md](https://github.com/agentsmd/agents.md), and [awesome-copilot](https://github.com/github/awesome-copilot) show that agent instructions and skills are becoming a distribution layer.
 
-The crowded side is building more automation. The open wedge is guarding automation before it runs.
+The crowded side is building more automation. The open wedge is guarding automation before it runs. Agentic Workflow Guard is built for that gap: a local, CI-friendly, no-LLM scanner that gives security teams and maintainers concrete findings before an agent gets write access.
+
+## Use Cases
+
+Agentic Workflow Guard is useful when automation touches external input, credentials, or write-capable tools.
+
+| Scenario | What it protects |
+| --- | --- |
+| AI-powered GitHub Actions | Prevents issue, PR, comment, or discussion text from steering an agent into privileged workflow actions. |
+| n8n operations workflows | Detects Webhook or email triggers flowing through AI nodes into HTTP, Code, Execute Command, or credential-bearing nodes. |
+| MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
+| Low-code AI automation | Finds Activepieces/Zapier/Make/Pipedream-style flows where AI output is chained into API calls or code execution. |
+| CI and code scanning | Emits SARIF so workflow risks can be tracked like code vulnerabilities. |
+| Agent skill reviews | Generates a Skillpack Forge manifest and agent instructions so Codex, Claude, Cursor, and Copilot can audit workflows consistently. |
 
 ## Quick Start
 
@@ -130,6 +145,8 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.4 | Rule marketplace and community rule packs | `rules install`, external rule metadata |
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/AGENTS generated and tested |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
+
+See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
 
 ## Development
 

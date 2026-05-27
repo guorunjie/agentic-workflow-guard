@@ -2,6 +2,10 @@
 
 Agentic Workflow Guard should evolve from a lightweight scanner into a complete automation safety skill that covers mainstream platforms.
 
+North star:
+
+> Become the default security scanner people install before giving AI automation write access.
+
 ## v0.1: Launchable Scanner
 
 - GitHub Actions scanner for prompt injection, shell sinks, write permissions, `pull_request_target`, secret exposure, and missing controls.
@@ -22,6 +26,7 @@ Agentic Workflow Guard should evolve from a lightweight scanner into a complete 
 - Pipedream workflow scanner.
 - Node-RED flow scanner.
 - Airflow DAG heuristic scanner for LLM-to-operator side effects.
+- Browser automation trace scanner for Playwright, browser-use, Skyvern, and similar agent browser stacks.
 
 ## v0.3: Guided Fixes
 
@@ -51,6 +56,7 @@ Agentic Workflow Guard should evolve from a lightweight scanner into a complete 
   - MCP resource pack
 - Add examples showing AI agents using the scanner to review workflows safely.
 - Add platform-specific remediation playbooks.
+- Publish reusable skill packs for GitHub Actions, n8n, MCP, low-code automation, and browser automation.
 
 ## v1.0: Stable Automation Safety Layer
 
@@ -60,3 +66,4 @@ Agentic Workflow Guard should evolve from a lightweight scanner into a complete 
 - npm release.
 - Documentation site.
 - Compatibility matrix across GitHub Actions, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
+- Public benchmark repo with vulnerable and safe workflow fixtures for every supported platform.

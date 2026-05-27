@@ -1,5 +1,5 @@
 name: Agentic Workflow Guard
-description: Scan AI automation workflows for prompt-injection paths, risky tools, and overpowered permissions.
+description: Semgrep-style scanner for AI automation workflows, prompt-injection paths, risky tools, and overpowered permissions.
 branding:
   icon: shield
   color: purple

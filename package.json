@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
   "version": "0.1.0",
-  "description": "Static security scanner for AI automation workflows: GitHub Actions, n8n, MCP configs, prompt-injection paths, and risky agent tools.",
+  "description": "Semgrep-style security scanner for AI automation workflows: GitHub Actions, n8n, MCP configs, prompt-injection paths, and risky agent tools.",
   "type": "module",
   "bin": {
     "agentic-workflow-guard": "./bin/agentic-workflow-guard.js"
