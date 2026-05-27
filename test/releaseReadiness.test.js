@@ -2,20 +2,24 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.2 platform release", async () => {
+test("package metadata reflects the expanded v0.3 production release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.2.0");
+  assert.equal(pkg.version, "0.3.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
+  assert.ok(pkg.keywords.includes("browser-use"));
 });
 
-test("README documents marketplace SARIF upload, config, and fix apply", async () => {
+test("README documents marketplace SARIF upload, config, baseline, patch, and install helpers", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
   assert.match(readme, /fix \. --apply/);
+  assert.match(readme, /fix \. --patch/);
+  assert.match(readme, /baseline create/);
+  assert.match(readme, /agents install/);
   assert.match(readme, /\.awg\.yml/);
 });
 
@@ -40,6 +44,13 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-make/scenario.blueprint.json",
     "examples/vulnerable-pipedream/workflow.json",
     "examples/vulnerable-airflow/agent_dag.py",
+    "examples/vulnerable-browser-trace/browser-trace.json",
+    "examples/safe-node-red/flows.json",
+    "examples/safe-make/scenario.blueprint.json",
+    "examples/safe-pipedream/workflow.json",
+    "examples/safe-airflow/agent_dag.py",
+    "examples/safe-browser-trace/browser-trace.json",
+    "examples/unsafe-ai-pr-bot/.github/workflows/pr-bot.yml",
     ".awg.example.yml"
   ];
 

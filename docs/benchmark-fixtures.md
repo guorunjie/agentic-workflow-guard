@@ -1,6 +1,6 @@
 # Benchmark Fixtures
 
-The repository now includes vulnerable fixtures for the current scanner surface:
+The repository includes vulnerable and safe fixtures for the current scanner surface:
 
 | Fixture | Platform | Expected rule |
 | --- | --- | --- |
@@ -12,5 +12,6 @@ The repository now includes vulnerable fixtures for the current scanner surface:
 | `examples/vulnerable-make` | Make | `AWI009` |
 | `examples/vulnerable-pipedream` | Pipedream | `AWI009` |
 | `examples/vulnerable-airflow` | Airflow | `AWI009` |
+| `examples/vulnerable-browser-trace` | browser-use / browser traces | `AWI010` |
 
-The next benchmark step is adding paired safe fixtures for every platform plus snapshot tests for expected findings. That turns the repository into a reference dataset for agentic workflow security scanning.
+Safe paired fixtures currently cover GitHub Actions, Node-RED, Make, Pipedream, Airflow, and browser traces. The next benchmark step is adding safe n8n, MCP, and Activepieces fixtures plus snapshot tests for expected findings. That turns the repository into a reference dataset for agentic workflow security scanning.

@@ -18,6 +18,21 @@ test("CLI scan exits 1 for vulnerable example with JSON findings", async () => {
   );
 });
 
+test("CLI scan shows the unsafe AI PR bot attack path in SARIF", async () => {
+  await assert.rejects(
+    execFileAsync("node", [bin, "scan", "examples/unsafe-ai-pr-bot", "--format", "sarif"]),
+    (error) => {
+      const parsed = JSON.parse(error.stdout);
+      const ids = parsed.runs[0].results.map((result) => result.ruleId);
+      assert.ok(ids.includes("AWI001"));
+      assert.ok(ids.includes("AWI002"));
+      assert.ok(ids.includes("AWI003"));
+      assert.ok(ids.includes("AWI004"));
+      return error.code === 1;
+    }
+  );
+});
+
 test("CLI scan exits 0 for safe example", async () => {
   const { stdout } = await execFileAsync("node", [bin, "scan", "examples/safe-github-action", "--format", "markdown"]);
   assert.match(stdout, /No high-risk findings/);

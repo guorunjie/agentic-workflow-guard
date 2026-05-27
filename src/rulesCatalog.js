@@ -5,9 +5,9 @@ import { rules } from "./rules/index.js";
 
 export const coreRulePack = {
   name: "agentic-workflow-guard-core-rules",
-  version: "0.2.0",
+  version: "0.3.0",
   description: "Core static-analysis rules for AI automation workflow security.",
-  platforms: ["github-actions", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow"],
+  platforms: ["github-actions", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"],
   rules: Object.keys(rules)
 };
 

@@ -1,0 +1,19 @@
+{
+  "name": "make ai preview scenario",
+  "flow": [
+    {
+      "id": 1,
+      "module": "openai-gpt-3:createCompletion",
+      "mapper": {
+        "prompt": "Summarize incoming text for human review"
+      }
+    },
+    {
+      "id": 2,
+      "module": "tools:ComposeAString",
+      "mapper": {
+        "text": "dry-run preview only"
+      }
+    }
+  ]
+}

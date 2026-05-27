@@ -1,0 +1,14 @@
+{
+  "name": "pipedream ai preview workflow",
+  "steps": {
+    "generate": {
+      "type": "openai",
+      "app": "openai",
+      "name": "Generate summary"
+    },
+    "preview": {
+      "type": "transform",
+      "name": "Return preview only"
+    }
+  }
+}

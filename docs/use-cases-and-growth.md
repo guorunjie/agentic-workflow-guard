@@ -48,6 +48,7 @@ Agentic Workflow Guard detects:
 - AI or LLM steps in the same flow as HTTP, code, GitHub, Slack, Notion, database, or credential-bearing actions.
 - Node-RED, Make, and Pipedream exports that combine AI modules with side-effect steps.
 - Airflow DAGs that combine LLM calls with Bash, HTTP, Docker, Kubernetes, or Python side-effect operators.
+- Browser automation traces where AI decisions reach clicks, forms, submissions, uploads, approvals, or payment-like actions.
 
 ### 5. Agent Skill and Repository Audits
 
@@ -66,16 +67,19 @@ Highest-impact improvements:
 3. **Ship trusted examples**  
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
 
-4. **Turn `fix` into a patch generator**  
-   Expand from current permission downgrades into dry-run defaults, approval gates, split write jobs, and PR-ready patches.
+4. **Turn `fix` into a patch generator**
+   Expand from current permission downgrades and `fix --patch` into dry-run defaults, approval gates, split write jobs, and richer PR-ready patches.
 
-5. **Build the rule marketplace**  
+5. **Build the rule marketplace**
    Grow the current `rules list/search/install` into external rule packs, signed metadata, checksums, and community contributions.
 
-6. **Publish as a complete skill**  
+6. **Make adoption incremental**
+   Use `baseline create` and `scan --baseline` so existing repositories can adopt the scanner without failing CI on known legacy findings.
+
+7. **Publish as a complete skill**
    Maintain generated AGENTS.md, Claude Skill, Codex Skill, Gemini context/skill files, Cursor rule, Copilot instructions, OpenClaw/Hermes SKILL.md bundles, and eventually MCP resources.
 
-7. **Create a benchmark dataset**  
+8. **Create a benchmark dataset**
    A public `agentic-workflow-vuln-fixtures` collection can become the reference dataset for this risk category.
 
 ## Star Growth Playbook

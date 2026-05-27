@@ -9,8 +9,8 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 const bin = path.resolve("bin/agentic-workflow-guard.js");
 
-test("fix --apply downgrades write permissions in GitHub Actions workflows", async () => {
-  const root = await mkdtemp(path.join(tmpdir(), "awg-fix-"));
+test("fix --patch emits a reviewable diff without editing files", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-patch-"));
   const workflowDir = path.join(root, ".github", "workflows");
   const workflowPath = path.join(workflowDir, "agent.yml");
   await mkdir(workflowDir, { recursive: true });
@@ -23,26 +23,21 @@ jobs:
   patch:
     permissions:
       contents: write
-      pull-requests: write
       id-token: write
     steps:
       - uses: actions/ai-inference@v1
-        id: agent
         with:
           prompt: "Fix \${{ github.event.issue.body }}"
-      - run: bash -c "\${{ steps.agent.outputs.result }}"
 `
   );
-  const original = await readFile(workflowPath, "utf8");
 
-  const { stdout } = await execFileAsync("node", [bin, "fix", root, "--apply"]);
-  const updated = await readFile(workflowPath, "utf8");
+  const before = await readFile(workflowPath, "utf8");
+  const { stdout } = await execFileAsync("node", [bin, "fix", root, "--patch"]);
+  const after = await readFile(workflowPath, "utf8");
 
-  assert.match(stdout, /Applied fixes/);
-  assert.match(updated, /contents: read/);
-  assert.match(updated, /pull-requests: read/);
-  assert.match(updated, /id-token: none/);
-  assert.match(updated, /prompt: "Fix \$\{\{ github\.event\.issue\.body \}\}"/);
-  assert.match(updated, /run: bash -c "\$\{\{ steps\.agent\.outputs\.result \}\}"/);
-  assert.notEqual(updated, original);
+  assert.equal(after, before);
+  assert.match(stdout, /diff --git/);
+  assert.match(stdout, /-      contents: write/);
+  assert.match(stdout, /\+      contents: read/);
+  assert.match(stdout, /\+      id-token: none/);
 });

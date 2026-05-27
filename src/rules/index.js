@@ -52,6 +52,12 @@ export const rules = {
     title: "Workflow automation chains AI into side effects",
     risk: "Automation platforms such as Activepieces, Zapier, Make, Pipedream, Node-RED, or Airflow can route model output into API calls, shell commands, deployment operators, or code nodes.",
     remediation: "Validate model output before side effects and require approvals for credential-bearing actions in low-code flows, Node-RED flows, Pipedream workflows, Make scenarios, and Airflow DAGs."
+  },
+  AWI010: {
+    severity: "medium",
+    title: "Browser automation trace chains AI into side effects",
+    risk: "Browser agents such as browser-use, Skyvern, Playwright, or Puppeteer can turn model decisions into clicks, form fills, uploads, payments, approvals, or destructive web actions.",
+    remediation: "Require allowlists, dry-run previews, human approval, and domain/action scopes before AI-driven browser automation performs side effects."
   }
 };
 

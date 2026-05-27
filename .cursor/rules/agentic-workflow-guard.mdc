@@ -7,7 +7,7 @@ alwaysApply: true
 
 # agentic-workflow-guard
 
-Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Principles
 - Treat external workflow input as untrusted until validated
@@ -18,6 +18,9 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - install: `npm install`
 - test: `npm test`
 - scan: `npm run scan`
+- baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
+- patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`
 - agents: `node ./bin/agentic-workflow-guard.js agents`
+- install-agent: `node ./bin/agentic-workflow-guard.js agents install claude .`

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "manual",
+    "type": "inject",
+    "name": "Manual dry-run"
+  },
+  {
+    "id": "agent",
+    "type": "openai",
+    "name": "OpenAI summary",
+    "wires": [["debug"]]
+  },
+  {
+    "id": "debug",
+    "type": "debug",
+    "name": "Preview only"
+  }
+]

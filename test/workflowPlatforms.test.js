@@ -59,6 +59,23 @@ test("detects Pipedream workflows that chain AI output into actions", async () =
   assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Pipedream/i.test(finding.evidence)));
 });
 
+test("detects Activepieces flows that chain AI output into side effects", async () => {
+  const root = await writeFixture(
+    "activepieces-flow.json",
+    JSON.stringify({
+      trigger: { type: "WEBHOOK" },
+      steps: [
+        { name: "summarize", pieceName: "@activepieces/piece-openai", actionName: "ask_chatgpt" },
+        { name: "write_pr", pieceName: "@activepieces/piece-github", actionName: "create_pull_request", credential: "repo-write-token" }
+      ]
+    })
+  );
+
+  const findings = await scanProject(root);
+
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Activepieces/i.test(finding.evidence)));
+});
+
 test("detects Airflow DAGs that combine LLM calls and side-effect operators", async () => {
   const root = await writeFixture(
     "agent_dag.py",

@@ -1,9 +1,11 @@
 import path from "node:path";
 
+import { suppressBaseline, writeBaseline } from "./baseline.js";
 import { loadConfig } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
 import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
+import { agentInstallTargets, installAgent } from "./agentsInstall.js";
 import { renderJson } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
@@ -25,11 +27,13 @@ function help() {
   return `Agentic Workflow Guard
 
 Usage:
-  agentic-workflow-guard scan [path] [--format json|markdown|sarif]
-  agentic-workflow-guard fix [path] [--dry-run|--apply]
+  agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--baseline .awg-baseline.json]
+  agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
+  agentic-workflow-guard fix [path] [--dry-run|--apply|--patch]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|search <query>|install core [path]] [--format markdown|json]
   agentic-workflow-guard agents [--format markdown|json]
+  agentic-workflow-guard agents install <target|all> [path]
   agentic-workflow-guard skillpack
 `;
 }
@@ -51,14 +55,26 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
     const root = path.resolve(firstPositional(args));
     const format = argValue(args, "--format", "markdown");
     const config = await loadConfig(root);
-    const findings = await scanProject(root, config);
+    const findings = await suppressBaseline(await scanProject(root, config), argValue(args, "--baseline"));
     output.write(renderFindings(findings, format));
     return hasHighFindings(findings, config) ? 1 : 0;
   }
 
+  if (command === "baseline") {
+    const subcommand = args[0];
+    if (subcommand !== "create") {
+      error.write(`Unknown baseline command: ${subcommand ?? ""}\n\n${help()}`);
+      return 1;
+    }
+    const root = path.resolve(args[1] && !args[1].startsWith("--") ? args[1] : ".");
+    const outputPath = await writeBaseline(root, await scanProject(root), argValue(args, "--output", ".awg-baseline.json"));
+    output.write(`Wrote baseline to ${outputPath}\n`);
+    return 0;
+  }
+
   if (command === "fix") {
     const root = path.resolve(firstPositional(args));
-    output.write(await renderFixPlan(root, { apply: args.includes("--apply") }));
+    output.write(await renderFixPlan(root, { apply: args.includes("--apply"), patch: args.includes("--patch") }));
     return 0;
   }
 
@@ -90,6 +106,18 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
   }
 
   if (command === "agents") {
+    if (args[0] === "install") {
+      const target = args[1];
+      if (!target) {
+        error.write(`Missing agent target. Supported targets: ${agentInstallTargets().join(", ")}, all\n`);
+        return 1;
+      }
+      const root = path.resolve(args[2] ?? ".");
+      const installed = await installAgent(target, root);
+      output.write(`Installed ${target} agent files into ${root}\n`);
+      for (const file of installed) output.write(`- ${file}\n`);
+      return 0;
+    }
     const format = argValue(args, "--format", "markdown");
     output.write(format === "json" ? renderAgentSupportJson() : renderAgentSupportMarkdown());
     return 0;

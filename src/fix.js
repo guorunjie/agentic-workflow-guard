@@ -37,8 +37,54 @@ async function applyFixes(root, findings) {
   return changedFiles;
 }
 
+async function buildFixChanges(root, findings) {
+  const files = [...new Set(findings.filter((finding) => finding.ruleId === "AWI003").map((finding) => stripLineSuffix(finding.file)))];
+  const changes = [];
+
+  for (const file of files) {
+    const absolute = path.join(root, file);
+    const original = await readFile(absolute, "utf8");
+    const result = applyPermissionFix(original);
+    if (result.changed) {
+      changes.push({ file, original, updated: result.text });
+    }
+  }
+
+  return changes;
+}
+
+function renderPatch(changes) {
+  if (!changes.length) return "# Patch preview\n\nNo safe automatic patches were available.\n";
+  const lines = ["# Patch preview", ""];
+  for (const change of changes) {
+    lines.push(`diff --git a/${change.file} b/${change.file}`);
+    lines.push(`--- a/${change.file}`);
+    lines.push(`+++ b/${change.file}`);
+    lines.push("@@");
+    const originalLines = change.original.split(/\r?\n/);
+    const updatedLines = change.updated.split(/\r?\n/);
+    const max = Math.max(originalLines.length, updatedLines.length);
+    for (let index = 0; index < max; index += 1) {
+      const before = originalLines[index];
+      const after = updatedLines[index];
+      if (before === after) {
+        if (before !== undefined) lines.push(` ${before}`);
+      } else {
+        if (before !== undefined) lines.push(`-${before}`);
+        if (after !== undefined) lines.push(`+${after}`);
+      }
+    }
+    lines.push("");
+  }
+  return `${lines.join("\n")}\n`;
+}
+
 export async function renderFixPlan(root, options = {}) {
   const findings = await scanProject(root);
+  if (options.patch) {
+    return renderPatch(await buildFixChanges(root, findings));
+  }
+
   const lines = ["# Fix plan", ""];
   if (!findings.length) {
     lines.push("No findings to fix.");

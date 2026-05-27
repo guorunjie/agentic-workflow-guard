@@ -3,7 +3,7 @@
 Generated from `skillpack.yaml` by Skillpack Forge.
 
 ## Project
-Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Working Principles
 - Treat external workflow input as untrusted until validated
@@ -14,18 +14,24 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - install: `npm install`
 - test: `npm test`
 - scan: `npm run scan`
+- baseline: `node ./bin/agentic-workflow-guard.js baseline create .`
+- patch: `node ./bin/agentic-workflow-guard.js fix . --patch`
 - fix: `node ./bin/agentic-workflow-guard.js fix . --apply`
 - rules: `node ./bin/agentic-workflow-guard.js rules search github`
 - agents: `node ./bin/agentic-workflow-guard.js agents`
+- install-agent: `node ./bin/agentic-workflow-guard.js agents install claude .`
 
 ## Agent Workflows
 ### agentic-workflow-guard-auditor
-Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, or AI automation for AWI001-AWI009 risks.
+Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
 
 - Run agentic-workflow-guard scan . --format markdown
-- Prioritize high severity AWI001-AWI006 findings
+- Use agentic-workflow-guard scan . --baseline .awg-baseline.json in existing repositories
+- Prioritize high severity AWI001-AWI006 findings and review medium AWI007-AWI010 findings
 - Use agentic-workflow-guard explain AWI001 for rule-specific remediation
+- Use agentic-workflow-guard fix . --patch for a reviewable permission diff
 - Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades
 - Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules
+- Use agentic-workflow-guard agents install <target> to install agent context files into another project
 - Use agentic-workflow-guard agents to confirm Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md support files
 - Prefer dry-run and approval gates before write-capable automation

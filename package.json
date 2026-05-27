@@ -1,6 +1,6 @@
 {
   "name": "agentic-workflow-guard",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Security scanner and portable skill pack for AI automation workflows across GitHub Actions, n8n, MCP, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and Copilot.",
   "type": "module",
   "bin": {
@@ -18,8 +18,13 @@
     "workflow-automation",
     "github-actions",
     "n8n",
+    "activepieces",
     "node-red",
     "airflow",
+    "browser-use",
+    "playwright",
+    "skyvern",
+    "low-code",
     "mcp",
     "ai-agents",
     "agent-skills",

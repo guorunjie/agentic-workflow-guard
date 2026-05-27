@@ -1,6 +1,6 @@
 {
   "name": "agentic-workflow-guard-core-rules",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Core static-analysis rules for AI automation workflow security.",
   "platforms": [
     "github-actions",
@@ -11,7 +11,10 @@
     "make",
     "pipedream",
     "node-red",
-    "airflow"
+    "airflow",
+    "browser-use",
+    "playwright",
+    "skyvern"
   ],
   "rules": [
     "AWI001",
@@ -22,6 +25,7 @@
     "AWI006",
     "AWI007",
     "AWI008",
-    "AWI009"
+    "AWI009",
+    "AWI010"
   ]
 }

@@ -1,0 +1,40 @@
+import { cp, mkdir } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+const installTargets = {
+  "agents-md": ["AGENTS.md"],
+  claude: [".claude/skills/agentic-workflow-guard-auditor/SKILL.md"],
+  codex: [".codex/skills/agentic-workflow-guard-auditor/SKILL.md"],
+  cursor: [".cursor/rules/agentic-workflow-guard.mdc"],
+  copilot: [".github/copilot-instructions.md"],
+  gemini: ["GEMINI.md", ".gemini/skills/agentic-workflow-guard-auditor/SKILL.md"],
+  openclaw: ["skills/agentic-workflow-guard-auditor/SKILL.md", ".openclaw/skills/agentic-workflow-guard-auditor/SKILL.md"],
+  hermes: ["skills/agentic-workflow-guard-auditor/SKILL.md", ".hermes/skills/agentic-workflow-guard-auditor/SKILL.md"]
+};
+
+export function agentInstallTargets() {
+  return Object.keys(installTargets);
+}
+
+async function copyFileToProject(relative, root) {
+  const source = path.join(packageRoot, relative);
+  const target = path.join(root, relative);
+  await mkdir(path.dirname(target), { recursive: true });
+  await cp(source, target);
+  return relative;
+}
+
+export async function installAgent(target, root) {
+  const files = target === "all" ? [...new Set(Object.values(installTargets).flat())] : installTargets[target];
+  if (!files) {
+    throw new Error(`Unknown agent target: ${target}`);
+  }
+  const installed = [];
+  for (const file of files) {
+    installed.push(await copyFileToProject(file, root));
+  }
+  return installed;
+}

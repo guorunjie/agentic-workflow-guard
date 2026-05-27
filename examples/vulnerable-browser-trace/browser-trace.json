@@ -1,0 +1,18 @@
+{
+  "tool": "browser-use",
+  "steps": [
+    {
+      "type": "llm",
+      "prompt": "Choose which invoice to pay"
+    },
+    {
+      "type": "fill",
+      "selector": "#amount",
+      "value": "1000"
+    },
+    {
+      "type": "click",
+      "selector": "#submit-payment"
+    }
+  ]
+}

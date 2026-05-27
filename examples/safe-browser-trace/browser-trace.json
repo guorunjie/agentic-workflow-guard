@@ -1,0 +1,13 @@
+{
+  "tool": "playwright",
+  "steps": [
+    {
+      "type": "navigate",
+      "url": "https://example.test/status"
+    },
+    {
+      "type": "screenshot",
+      "path": "status.png"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { filterFindings, loadConfig, reachesSeverityThreshold } from "./config.js";
+import { scanBrowserTraces } from "./scanners/browserTrace.js";
 import { scanGitHubActions } from "./scanners/githubActions.js";
 import { scanLowCodeWorkflows } from "./scanners/lowCode.js";
 import { scanMcpConfigs } from "./scanners/mcp.js";
@@ -20,6 +21,7 @@ export async function scanProject(root, providedConfig) {
     scanGitHubActions(root),
     scanN8nWorkflows(root),
     scanMcpConfigs(root),
+    scanBrowserTraces(root),
     scanLowCodeWorkflows(root)
   ]);
   return filterFindings(dedupe(groups.flat()), config).sort((a, b) => a.ruleId.localeCompare(b.ruleId) || a.file.localeCompare(b.file));

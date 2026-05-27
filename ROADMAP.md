@@ -26,7 +26,7 @@ North star:
 - Pipedream workflow scanner. Shipped heuristic coverage in v0.2.
 - Node-RED flow scanner. Shipped heuristic coverage in v0.2.
 - Airflow DAG heuristic scanner for LLM-to-operator side effects. Shipped in v0.2.
-- Browser automation trace scanner for Playwright, browser-use, Skyvern, and similar agent browser stacks.
+- Browser automation trace scanner for Playwright, browser-use, Skyvern, and similar agent browser stacks. Shipped heuristic coverage in v0.3.
 
 ## v0.3: Guided Fixes
 
@@ -35,7 +35,9 @@ North star:
   - add comments and guard blocks around prompt ingestion;
   - add dry-run defaults;
   - generate approval-job snippets.
-- Patch output mode for PR bots.
+- Patch output mode for PR bots. Shipped `fix --patch` in v0.3.
+- Baseline mode for existing findings. Shipped `baseline create` and `scan --baseline` in v0.3.
+- Agent install helpers for project-local instruction files. Shipped `agents install` in v0.3.
 - Rule-specific fix confidence levels.
 
 ## v0.4: Rule Marketplace
@@ -64,7 +66,7 @@ North star:
 
 ## v0.6: Agent Runtime Integrations
 
-- Add install helpers for Claude, Gemini, OpenClaw, Hermes, Codex, Cursor, and Copilot instruction paths.
+- Add install helpers for Claude, Gemini, OpenClaw, Hermes, Codex, Cursor, and Copilot instruction paths. Shipped initial `agents install` in v0.3.
 - Add smoke tests that verify every generated agent instruction file mentions the current rule catalog and CLI commands.
 - Add docs for using the scanner inside agent review loops, PR bots, and local coding-agent sessions.
 - Add versioned skill package metadata for future marketplace distribution.

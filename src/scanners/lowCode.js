@@ -18,6 +18,9 @@ function flatten(value) {
 }
 
 function platformEvidence(file, json, text) {
+  if (/activepieces/i.test(file) || /activepieces|@activepieces|pieceName|actionName/i.test(text)) {
+    return "Activepieces flow chains AI steps into side-effect actions";
+  }
   if (Array.isArray(json) && json.some((node) => typeof node?.type === "string" && /http request|openai|agent|function/i.test(node.type))) {
     return "Node-RED flow chains AI nodes into side-effect nodes";
   }
@@ -27,9 +30,6 @@ function platformEvidence(file, json, text) {
   if (/pipedream/i.test(file) || (json.steps && typeof json.steps === "object" && /slack|github|http|notion|database/i.test(text))) {
     return "Pipedream workflow chains AI output into side-effect actions";
   }
-  if (/activepieces/i.test(text)) {
-    return "Activepieces flow chains AI steps into side-effect actions";
-  }
   if (/zapier|zap/i.test(text)) {
     return "Zapier workflow chains AI steps into side-effect actions";
   }
@@ -38,6 +38,13 @@ function platformEvidence(file, json, text) {
 
 function isAirflowDag(relative, text) {
   return /\.py$/i.test(relative) && /airflow|DAG\(/.test(text);
+}
+
+function stripPythonComments(text) {
+  return text
+    .split(/\r?\n/)
+    .filter((line) => !/^\s*#/.test(line))
+    .join("\n");
 }
 
 function airflowHasAiAndSideEffect(text) {
@@ -51,7 +58,8 @@ export async function scanLowCodeWorkflows(root) {
   for (const file of files) {
     if (/\.py$/i.test(file)) {
       const text = await readText(root, file);
-      if (isAirflowDag(file, text) && airflowHasAiAndSideEffect(text)) {
+      const code = stripPythonComments(text);
+      if (isAirflowDag(file, code) && airflowHasAiAndSideEffect(code)) {
         findings.push(makeFinding("AWI009", file, "Airflow DAG combines LLM calls with side-effect operators"));
       }
       continue;
