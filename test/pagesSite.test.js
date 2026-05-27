@@ -39,7 +39,7 @@ test("Pages workflow builds and deploys the generated static site", async () => 
   assert.equal(pkg.scripts["docs:build"], "node ./scripts/build-pages.js");
   assert.match(workflow, /npm run docs:build/);
   assert.match(workflow, /actions\/upload-pages-artifact@v5/);
-  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(workflow, /actions\/deploy-pages@v5/);
   assert.match(workflow, /pages: write/);
   assert.match(workflow, /id-token: write/);
 });

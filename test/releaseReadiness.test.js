@@ -70,7 +70,7 @@ test("Pages workflow publishes generated docs and stable schema URLs", async () 
 
   assert.match(workflow, /npm run docs:build/);
   assert.match(workflow, /actions\/upload-pages-artifact@v5/);
-  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(workflow, /actions\/deploy-pages@v5/);
   assert.match(workflow, /site-dist/);
 });
 
