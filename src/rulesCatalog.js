@@ -6,7 +6,7 @@ import { rules } from "./rules/index.js";
 import { packageVersion, packageVersionRange, semverPattern } from "./version.js";
 
 const rulePackSchemaVersion = "1.0.0";
-const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "n8n", "mcp", "activepieces", "dify", "flowise", "langflow", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
+const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "buildkite", "n8n", "mcp", "activepieces", "dify", "flowise", "langflow", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
 const coreRuleIds = Object.keys(rules);
 const repository = "https://github.com/guorunjie/agentic-workflow-guard";
 const rulePackCompatibility = {
@@ -52,6 +52,27 @@ export const communityRulePacks = [
     platforms: ["github-actions"],
     rules: ["AWI001", "AWI002", "AWI003", "AWI004", "AWI007", "AWI008"],
     ruleCount: 6,
+    provenance: {
+      source: "community",
+      repository,
+      releaseTag: `v${packageVersion}`
+    }
+  },
+  {
+    schemaVersion: rulePackSchemaVersion,
+    name: "agentic-workflow-guard-ci-pipeline-hardening",
+    version: packageVersion,
+    description: "Focused CI pipeline rule pack for GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
+    publisher: "guorunjie",
+    license: "MIT",
+    homepage: repository,
+    compatibility: {
+      ...rulePackCompatibility,
+      ruleIds: "AWI001-AWI002,AWI007-AWI008"
+    },
+    platforms: ["gitlab-ci", "circleci", "azure-pipelines", "jenkins", "buildkite"],
+    rules: ["AWI001", "AWI002", "AWI007", "AWI008"],
+    ruleCount: 4,
     provenance: {
       source: "community",
       repository,

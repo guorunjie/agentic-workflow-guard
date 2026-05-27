@@ -53,7 +53,7 @@ function insertYamlVariableAtTopLevel(text) {
 }
 
 function insertYamlDryRunBlockBeforeSteps(text, blockName) {
-  const steps = text.match(/^(\s*)steps:\s*$/m);
+  const steps = text.match(/^([ \t]*)steps:\s*$/m);
   if (!steps) return { text, changed: false };
 
   const indent = steps[1];
@@ -67,7 +67,7 @@ function insertYamlDryRunBlockBeforeSteps(text, blockName) {
     };
   }
 
-  const updated = text.replace(/^(\s*)steps:\s*$/m, (line, stepIndent) => {
+  const updated = text.replace(/^([ \t]*)steps:\s*$/m, (line, stepIndent) => {
     return `${stepIndent}${blockName}:\n${stepIndent}  ${dryRunVariable}: "true"\n${line}`;
   });
   return { text: updated, changed: updated !== text };
@@ -92,6 +92,7 @@ function applyDryRunGuard(text, file) {
   if (/AGENTIC_WORKFLOW_GUARD_DRY_RUN/.test(text)) return { text, changed: false };
   if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
+  if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^\.gitlab-ci\.ya?ml$/i.test(file) || /^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) {
     return insertYamlVariableAtTopLevel(text);
   }
@@ -216,6 +217,7 @@ function platformForFile(file) {
   if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return "github-actions";
   if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
+  if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return "buildkite";
   if (/^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) return "azure-pipelines";
   if (/(^|\/)Jenkinsfile(\..*)?$/i.test(file)) return "jenkins";
   if (mcpConfigFile(file)) return "mcp";
@@ -272,6 +274,16 @@ environment: agent-review
       "groovy",
       `
 input message: 'Approve agent side effects?', ok: 'Approve'
+`
+    ),
+    buildkite: snippet(
+      "Buildkite block step approval gate",
+      "yaml",
+      `
+steps:
+  - block: "Approve agent side effects?"
+  - label: ":robot: agent job"
+    command: "npm run agent:review"
 `
     )
   };

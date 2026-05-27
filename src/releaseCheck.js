@@ -24,6 +24,7 @@ const requiredPlatforms = [
   "circleci",
   "azure-pipelines",
   "jenkins",
+  "buildkite",
   "n8n",
   "activepieces",
   "dify",

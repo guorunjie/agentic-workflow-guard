@@ -16,6 +16,7 @@
         "circleci",
         "azure-pipelines",
         "jenkins",
+        "buildkite",
         "n8n",
         "mcp",
         "activepieces",
@@ -43,7 +44,7 @@
         "AWI009",
         "AWI010"
       ],
-      "checksum": "sha256:32d335de90b8e49bfede03ec70b0514a28018dd6334522f68dbe14a46cb7f88f",
+      "checksum": "sha256:ac119394c20420811433d68970c1edb89765796a8206367c7bfcf38da222b759",
       "install": "agentic-workflow-guard rules install core .",
       "path": "rules/marketplace.json"
     },
@@ -67,6 +68,29 @@
       "checksum": "sha256:e5fa378a8cd09c623652a4971f5e725e80766e617b60b350d7e305cdc44b95ad",
       "install": "agentic-workflow-guard rules install github-actions-hardening .",
       "path": "rules/community/agentic-workflow-guard-github-actions-hardening.json"
+    },
+    {
+      "name": "agentic-workflow-guard-ci-pipeline-hardening",
+      "alias": "ci-pipeline-hardening",
+      "version": "0.20.0",
+      "description": "Focused CI pipeline rule pack for GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
+      "source": "community",
+      "platforms": [
+        "gitlab-ci",
+        "circleci",
+        "azure-pipelines",
+        "jenkins",
+        "buildkite"
+      ],
+      "rules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "checksum": "sha256:900b9d2a51a3038720340a38af3b1f000cfb01a9927d7221033f6f1f65747bae",
+      "install": "agentic-workflow-guard rules install ci-pipeline-hardening .",
+      "path": "rules/community/agentic-workflow-guard-ci-pipeline-hardening.json"
     },
     {
       "name": "agentic-workflow-guard-low-code-automation",

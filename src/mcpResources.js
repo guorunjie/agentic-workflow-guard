@@ -166,7 +166,7 @@ export const mcpResourcePack = {
       uri: "awg://playbooks/ci-pipelines",
       name: "ci-pipelines-playbook",
       title: "CI Pipeline Remediation Playbook",
-      description: "How to reduce prompt injection, shell sink, token, context, service connection, and credential risks in GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs.",
+      description: "How to reduce prompt injection, shell sink, token, context, service connection, and credential risks in GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
       mimeType: "text/markdown",
       path: "docs/playbooks/ci-pipelines.md",
       annotations: { audience: ["assistant", "user"], priority: 0.8 }

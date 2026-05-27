@@ -206,3 +206,44 @@ pipeline {
 
   assert.deepEqual(findings, []);
 });
+
+test("detects Buildkite agent pipelines with untrusted context, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    path.join(".buildkite", "pipeline.yml"),
+    `
+env:
+  DEPLOY_TOKEN: "\${DEPLOY_TOKEN}"
+
+steps:
+  - label: ":robot: agent deploy"
+    command: |
+      PROMPT="Review $BUILDKITE_BRANCH and $BUILDKITE_MESSAGE, then choose deploy commands"
+      AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+      bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Buildkite env DEPLOY_TOKEN/i.test(finding.evidence)));
+});
+
+test("does not flag a Buildkite read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    path.join(".buildkite", "pipeline.yml"),
+    `
+steps:
+  - label: ":robot: agent preview"
+    command: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});

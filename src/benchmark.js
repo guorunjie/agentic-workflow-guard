@@ -13,6 +13,7 @@ const fixturePlatforms = [
   ["circleci", "circleci", "CircleCI"],
   ["azure-pipelines", "azure-pipelines", "Azure Pipelines"],
   ["jenkins", "jenkins", "Jenkins"],
+  ["buildkite", "buildkite", "Buildkite"],
   ["n8n", "n8n", "n8n"],
   ["mcp", "mcp", "MCP"],
   ["activepieces", "activepieces", "Activepieces"],

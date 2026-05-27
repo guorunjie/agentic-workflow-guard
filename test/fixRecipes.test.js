@@ -178,6 +178,43 @@ pipeline {
   assert.match(updated, /env\.CHANGE_TITLE/);
 });
 
+test("fix --apply adds Buildkite top-level dry-run env", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".buildkite", "pipeline.yml"),
+    `
+steps:
+  - label: ":robot: agent deploy"
+    command: npx openai-agent --prompt "Review $BUILDKITE_BRANCH"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /^\s*env:\n  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\nsteps:/);
+  assert.match(updated, /BUILDKITE_BRANCH/);
+});
+
+test("fix --apply reuses an existing Buildkite env block", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".buildkite", "pipeline.yml"),
+    `
+env:
+  NODE_ENV: test
+
+steps:
+  - label: ":robot: agent deploy"
+    command: npx openai-agent --prompt "Review $BUILDKITE_MESSAGE"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /env:\n  AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n  NODE_ENV: test/);
+  assert.equal((updated.match(/^env:/gm) ?? []).length, 1);
+});
+
 test("fix --patch scopes broad MCP filesystem servers to read-only repository access", async () => {
   const { root, filePath } = await projectFile(
     path.join(".cursor", "mcp.json"),

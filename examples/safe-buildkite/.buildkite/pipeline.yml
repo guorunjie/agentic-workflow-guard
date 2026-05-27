@@ -1,0 +1,3 @@
+steps:
+  - label: ":robot: agent preview"
+    command: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

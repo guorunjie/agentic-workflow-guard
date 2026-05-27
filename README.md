@@ -2,7 +2,7 @@
 
 Find dangerous AI automation workflows before agents get write access.
 
-Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
+Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
 Four-command demo:
 
@@ -21,10 +21,10 @@ Start with [Demo Playbook](docs/demos.md) when you want a quick story for the ri
 
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
-- untrusted GitHub issue, GitLab merge request, CircleCI branch, Azure Pipelines pull request, Jenkins change request, or commit text entering an agent prompt;
+- untrusted GitHub issue, GitLab merge request, CircleCI branch, Azure Pipelines pull request, Jenkins change request, Buildkite branch or commit message, or commit text entering an agent prompt;
 - model output flowing into shell commands;
 - AI jobs with write permissions;
-- GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs that execute model output or expose CI tokens, secrets, credentials, contexts, service connections, or variable groups;
+- GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs that execute model output or expose CI tokens, secrets, credentials, contexts, service connections, or variable groups;
 - n8n webhook or email triggers flowing through AI nodes into HTTP, code, or command nodes;
 - broad MCP filesystem, shell, browser, or GitHub tools;
 - low-code automation flows that chain AI steps into side effects;
@@ -49,7 +49,7 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | Scenario | What it protects |
 | --- | --- |
 | AI-powered GitHub Actions | Prevents issue, PR, comment, or discussion text from steering an agent into privileged workflow actions. |
-| Agent jobs in GitLab CI, CircleCI, Azure Pipelines, and Jenkins | Catches merge request text, branch names, commit messages, CI tokens, CircleCI contexts, Azure service connections, Jenkins credentials, and variable groups reaching agent prompts or shell sinks. |
+| Agent jobs in GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite | Catches merge request text, branch names, commit messages, CI tokens, CircleCI contexts, Azure service connections, Jenkins credentials, Buildkite env secrets, and variable groups reaching agent prompts or shell sinks. |
 | n8n operations workflows | Detects Webhook or email triggers flowing through AI nodes into HTTP, Code, Execute Command, or credential-bearing nodes. |
 | MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
 | Low-code AI automation | Finds Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, and Node-RED flows where AI output is chained into API calls, tools, requests, or code execution. |
@@ -151,6 +151,7 @@ Inspect and install focused rule packs:
 ```bash
 node ./bin/agentic-workflow-guard.js rules registry --format json
 node ./bin/agentic-workflow-guard.js rules install github-actions-hardening .
+node ./bin/agentic-workflow-guard.js rules install ci-pipeline-hardening .
 node ./bin/agentic-workflow-guard.js rules install mcp-tool-governance .
 ```
 
@@ -194,7 +195,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `fix [path] --format json` | Emits structured fix recipes with confidence, automatic/manual mode, patch availability, approval snippets, next steps, and changed file counts. |
 | `fix [path] --output awg-fix.json` | Writes the selected fix plan, JSON recipe report, or patch preview to a file for PR bots and agent loops. |
 | `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades, MCP filesystem read-only scoping, and CI dry-run defaults without editing files. |
-| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades, MCP filesystem root narrowing/read-only settings, and GitHub/GitLab/CircleCI/Azure/Jenkins dry-run markers, then leaves remaining findings for review. |
+| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades, MCP filesystem root narrowing/read-only settings, and GitHub/GitLab/CircleCI/Azure/Jenkins/Buildkite dry-run markers, then leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
 | `rules list` | Lists installable rule packs. |
@@ -202,6 +203,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules search <query>` | Searches rules by platform, risk, or remediation text. |
 | `rules install core [path]` | Installs v1 core rule pack metadata and a lock file into `.awg/rules/`. |
 | `rules install github-actions-hardening [path]` | Installs a focused GitHub Actions community rule pack. |
+| `rules install ci-pipeline-hardening [path]` | Installs a focused GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite community rule pack. |
 | `rules install low-code-automation [path]` | Installs a focused low-code and browser automation community rule pack. |
 | `rules install mcp-tool-governance [path]` | Installs a focused MCP tool governance community rule pack. |
 | `rules verify <file>` | Verifies rule pack schema metadata and checksum before use. |
@@ -330,6 +332,7 @@ node ./bin/agentic-workflow-guard.js scan examples/safe-github-action --format m
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-gitlab-ci --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-circleci --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-azure-pipelines --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-buildkite --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-jenkins --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-n8n --format sarif
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-mcp --format markdown
@@ -369,10 +372,11 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.14 | Azure Pipelines and Jenkins coverage | Service connection and credential evidence, vulnerable/safe pipeline fixtures |
 | v0.15 | Platform-aware remediation engine | GitHub permissions, MCP filesystem read-only scoping, and GitHub/GitLab/CircleCI/Azure/Jenkins dry-run defaults in `fix --patch`, `fix --apply`, and JSON recipes |
 | v0.16 | Approval snippet recipes | `fix --format json` and Markdown plans include next steps plus approval, artifact, scope, and allowlist snippets |
-| v0.17 | Community rule-pack registry | Installable `github-actions-hardening`, `low-code-automation`, and `mcp-tool-governance` packs, registry JSON, docs, and MCP resources |
+| v0.17 | Community rule-pack registry | Installable `github-actions-hardening`, `ci-pipeline-hardening`, `low-code-automation`, and `mcp-tool-governance` packs, registry JSON, docs, and MCP resources |
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
 | v0.19 | Benchmark schemas and scoring | `benchmark --format json`, pass-rate scoring, corpus/report schemas, Pages and MCP schema distribution |
 | v0.20 | Marketplace and install readiness | Action self-smoke workflow, Marketplace metadata polish, package smoke script, demo playbook |
+| v0.21 | Buildkite and CI rule-pack expansion | Buildkite scanner, dry-run fix, safe/vulnerable fixtures, benchmark corpus, and `ci-pipeline-hardening` rule pack |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage, [docs/v1-readiness.md](docs/v1-readiness.md) for the remaining 1.0 release gates, and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

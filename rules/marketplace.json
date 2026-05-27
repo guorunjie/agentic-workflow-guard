@@ -17,6 +17,7 @@
     "circleci",
     "azure-pipelines",
     "jenkins",
+    "buildkite",
     "n8n",
     "mcp",
     "activepieces",
@@ -50,5 +51,5 @@
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
     "releaseTag": "v0.20.0"
   },
-  "checksum": "sha256:32d335de90b8e49bfede03ec70b0514a28018dd6334522f68dbe14a46cb7f88f"
+  "checksum": "sha256:ac119394c20420811433d68970c1edb89765796a8206367c7bfcf38da222b759"
 }

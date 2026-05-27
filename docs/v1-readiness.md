@@ -23,7 +23,7 @@ With npm access resolved, this is a 1-2 day release-candidate task and a 2-4 day
 | npm release | `npm whoami`, `npm pack --dry-run`, `npm run smoke:package`, and `npm publish --dry-run` pass before publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
 | CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
-| Platform matrix | Vulnerable and safe examples exist for GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, MCP, and browser automation. |
+| Platform matrix | Vulnerable and safe examples exist for GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, MCP, and browser automation. |
 | Agent matrix | Generated instructions are present and tested for AGENTS.md, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and GitHub Copilot. |
 
 ## Current Blockers

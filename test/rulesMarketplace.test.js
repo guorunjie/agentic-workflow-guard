@@ -34,11 +34,14 @@ test("rules search finds CI platform coverage", async () => {
 test("rules search finds Azure Pipelines and Jenkins coverage", async () => {
   const azure = await execFileAsync("node", [bin, "rules", "search", "azure"]);
   const jenkins = await execFileAsync("node", [bin, "rules", "search", "jenkins"]);
+  const buildkite = await execFileAsync("node", [bin, "rules", "search", "buildkite"]);
 
   assert.match(azure.stdout, /AWI001/);
   assert.match(azure.stdout, /Azure Pipelines/i);
   assert.match(jenkins.stdout, /AWI001/);
   assert.match(jenkins.stdout, /Jenkins/i);
+  assert.match(buildkite.stdout, /AWI001/);
+  assert.match(buildkite.stdout, /Buildkite/i);
 });
 
 test("rules search finds Zapier low-code coverage", async () => {
@@ -76,6 +79,7 @@ test("rules registry lists installable community packs", async () => {
 
   assert.equal(registry.schemaVersion, "1.0.0");
   assert.ok(registry.packs.some((pack) => pack.alias === "github-actions-hardening" && pack.source === "community"));
+  assert.ok(registry.packs.some((pack) => pack.alias === "ci-pipeline-hardening" && pack.platforms.includes("buildkite")));
   assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation" && /rules install low-code-automation/.test(pack.install)));
   assert.ok(registry.packs.some((pack) => pack.alias === "mcp-tool-governance" && pack.rules.includes("AWI006")));
 });
@@ -92,6 +96,18 @@ test("rules install writes community rule pack metadata and lock source", async 
   assert.deepEqual(installed.platforms, ["github-actions"]);
   assert.equal(lock.packs[0].source, "community");
   assert.equal(lock.packs[0].checksum, installed.checksum);
+});
+
+test("rules install writes CI pipeline hardening community pack metadata", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "awg-ci-rules-"));
+
+  const { stdout } = await execFileAsync("node", [bin, "rules", "install", "ci-pipeline-hardening", root]);
+  const installed = JSON.parse(await readFile(path.join(root, ".awg", "rules", "agentic-workflow-guard-ci-pipeline-hardening.json"), "utf8"));
+
+  assert.match(stdout, /Installed ci-pipeline-hardening/);
+  assert.equal(installed.provenance.source, "community");
+  assert.ok(installed.platforms.includes("buildkite"));
+  assert.deepEqual(installed.rules, ["AWI001", "AWI002", "AWI007", "AWI008"]);
 });
 
 test("rules install writes MCP tool governance community pack metadata", async () => {

@@ -1,0 +1,9 @@
+env:
+  DEPLOY_TOKEN: "${DEPLOY_TOKEN}"
+
+steps:
+  - label: ":robot: agent deploy"
+    command: |
+      PROMPT="Review $BUILDKITE_BRANCH and $BUILDKITE_MESSAGE, then choose deploy commands"
+      AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+      bash -lc "$AGENT_OUTPUT"

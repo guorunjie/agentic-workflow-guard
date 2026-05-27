@@ -13,6 +13,7 @@ test("package metadata reflects the v0.20 marketplace and install readiness rele
   assert.ok(pkg.keywords.includes("circleci"));
   assert.ok(pkg.keywords.includes("azure-pipelines"));
   assert.ok(pkg.keywords.includes("jenkins"));
+  assert.ok(pkg.keywords.includes("buildkite"));
   assert.ok(pkg.keywords.includes("dify"));
   assert.ok(pkg.keywords.includes("flowise"));
   assert.ok(pkg.keywords.includes("langflow"));
@@ -55,6 +56,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /CircleCI/);
   assert.match(readme, /Azure Pipelines/);
   assert.match(readme, /Jenkins/);
+  assert.match(readme, /Buildkite/);
   assert.match(readme, /--output awg\.sarif/);
   assert.match(readme, /schema report/);
   assert.match(readme, /schema fix/);
@@ -73,6 +75,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /agents install/);
   assert.match(readme, /rules registry/);
   assert.match(readme, /github-actions-hardening/);
+  assert.match(readme, /ci-pipeline-hardening/);
   assert.match(readme, /mcp-tool-governance/);
   assert.match(readme, /rules verify/);
   assert.match(readme, /rule pack schema/);
@@ -149,6 +152,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-circleci/.circleci/config.yml",
     "examples/vulnerable-azure-pipelines/azure-pipelines.yml",
     "examples/vulnerable-jenkins/Jenkinsfile",
+    "examples/vulnerable-buildkite/.buildkite/pipeline.yml",
     "examples/vulnerable-dify/app.yml",
     "examples/vulnerable-flowise/chatflow.json",
     "examples/vulnerable-langflow/flow.json",
@@ -161,6 +165,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "benchmarks/corpus.json",
     "rules/registry.json",
     "rules/community/agentic-workflow-guard-github-actions-hardening.json",
+    "rules/community/agentic-workflow-guard-ci-pipeline-hardening.json",
     "rules/community/agentic-workflow-guard-low-code-automation.json",
     "rules/community/agentic-workflow-guard-mcp-tool-governance.json",
     "examples/safe-node-red/flows.json",
@@ -168,6 +173,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/safe-circleci/.circleci/config.yml",
     "examples/safe-azure-pipelines/azure-pipelines.yml",
     "examples/safe-jenkins/Jenkinsfile",
+    "examples/safe-buildkite/.buildkite/pipeline.yml",
     "examples/safe-dify/app.yml",
     "examples/safe-flowise/chatflow.json",
     "examples/safe-langflow/flow.json",

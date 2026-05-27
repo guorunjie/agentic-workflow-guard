@@ -46,4 +46,4 @@ The likely high-star wedge is:
 
 > "Semgrep for AI automation workflows."
 
-The current version covers GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n exports, MCP configs, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, browser automation traces, fix recipes, and installable rule-pack registry metadata. The roadmap expands native parsing precision and community pack distribution.
+The current version covers GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n exports, MCP configs, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, browser automation traces, fix recipes, and installable rule-pack registry metadata. The roadmap expands native parsing precision and community pack distribution.
