@@ -16,7 +16,7 @@ function location(finding) {
   };
 }
 
-export function renderSarif(findings) {
+export function renderSarif(findings, metadata = {}) {
   const usedRules = [...new Set(findings.map((finding) => finding.ruleId))];
   return `${JSON.stringify(
     {
@@ -36,6 +36,9 @@ export function renderSarif(findings) {
                 help: { text: rules[id].remediation }
               }))
             }
+          },
+          properties: {
+            suppressions: metadata.suppressions ?? []
           },
           results: findings.map((finding) => ({
             ruleId: finding.ruleId,

@@ -12,7 +12,7 @@ import { renderJson } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
 import { installRulePack, renderRulePacks, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
-import { scanProject, hasHighFindings } from "./scan.js";
+import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
 
 function argValue(args, name, fallback) {
@@ -42,10 +42,10 @@ Usage:
 `;
 }
 
-function renderFindings(findings, format) {
-  if (format === "json") return renderJson(findings);
-  if (format === "sarif") return renderSarif(findings);
-  return renderMarkdown(findings);
+function renderFindings(findings, format, metadata = {}) {
+  if (format === "json") return renderJson(findings, metadata);
+  if (format === "sarif") return renderSarif(findings, metadata);
+  return renderMarkdown(findings, metadata);
 }
 
 export async function run(argv = process.argv.slice(2), output = process.stdout, error = process.stderr) {
@@ -65,8 +65,9 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       error.write(`${profileError.message}\n`);
       return 1;
     }
-    const findings = await suppressBaseline(await scanProject(root, config), argValue(args, "--baseline"));
-    output.write(renderFindings(findings, format));
+    const result = await scanProjectWithMetadata(root, config);
+    const findings = await suppressBaseline(result.findings, argValue(args, "--baseline"));
+    output.write(renderFindings(findings, format, { suppressions: result.suppressions }));
     return hasHighFindings(findings, config) ? 1 : 0;
   }
 

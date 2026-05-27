@@ -9,6 +9,7 @@ export function summarize(findings) {
   );
 }
 
-export function renderJson(findings) {
-  return `${JSON.stringify({ summary: summarize(findings), findings }, null, 2)}\n`;
+export function renderJson(findings, metadata = {}) {
+  const suppressions = metadata.suppressions ?? [];
+  return `${JSON.stringify({ summary: { ...summarize(findings), suppressed: suppressions.length }, findings, suppressions }, null, 2)}\n`;
 }

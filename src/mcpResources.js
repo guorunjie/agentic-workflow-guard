@@ -1,6 +1,6 @@
 export const mcpResourcePack = {
   name: "agentic-workflow-guard-mcp-resources",
-  version: "0.6.0",
+  version: "0.7.0",
   protocolRevision: "2025-06-18",
   description: "MCP-style resource descriptors for Agentic Workflow Guard rules, benchmarks, skills, and remediation playbooks.",
   capabilities: {
@@ -42,6 +42,24 @@ export const mcpResourcePack = {
       mimeType: "text/markdown",
       path: "docs/policy-profiles-and-suppressions.md",
       annotations: { audience: ["assistant", "user"], priority: 0.9 }
+    },
+    {
+      uri: "awg://docs/index",
+      name: "docs-index",
+      title: "Agentic Workflow Guard Docs Index",
+      description: "Entry point for documentation, playbooks, policies, and release readiness.",
+      mimeType: "text/markdown",
+      path: "docs/index.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.8 }
+    },
+    {
+      uri: "awg://release/npm-publish",
+      name: "npm-publish-checklist",
+      title: "NPM Publish Checklist",
+      description: "Package verification and npm publication checklist.",
+      mimeType: "text/markdown",
+      path: "docs/npm-publish.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.7 }
     },
     {
       uri: "awg://playbooks/github-actions",

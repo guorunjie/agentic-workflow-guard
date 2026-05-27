@@ -229,6 +229,8 @@ prompt: "Summarize ${{ github.event.issue.body }}"
 
 Suppression comments without a reason are ignored. See [Policy Profiles and Suppressions](docs/policy-profiles-and-suppressions.md) for rollout guidance.
 
+JSON and Markdown reports include a `Suppressed findings` audit trail so reviewed exceptions remain visible in CI logs and security reviews.
+
 ## GitHub Action
 
 Use this repository as a GitHub Action and upload SARIF to GitHub Code Scanning:
@@ -246,7 +248,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: guorunjie/agentic-workflow-guard@v0.6.0
+      - uses: guorunjie/agentic-workflow-guard@v0.7.0
         with:
           path: .
           format: sarif
@@ -256,7 +258,7 @@ jobs:
           sarif_file: awg.sarif
 ```
 
-For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.6.0`.
+For GitHub Marketplace, use a release tag, for example `guorunjie/agentic-workflow-guard@v0.7.0`.
 
 ## Examples
 

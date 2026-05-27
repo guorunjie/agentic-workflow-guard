@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-test("package metadata reflects the expanded v0.6 enterprise adoption release", async () => {
+test("package metadata reflects the expanded v0.7 auditability release", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
-  assert.equal(pkg.version, "0.6.0");
+  assert.equal(pkg.version, "0.7.0");
   assert.match(pkg.description, /portable skill pack/i);
   assert.ok(pkg.keywords.includes("node-red"));
   assert.ok(pkg.keywords.includes("airflow"));
@@ -16,7 +16,7 @@ test("package metadata reflects the expanded v0.6 enterprise adoption release", 
   assert.ok(pkg.files.includes("mcp"));
 });
 
-test("README documents marketplace SARIF upload, config, baseline, patch, profiles, suppressions, benchmark, MCP resources, and install helpers", async () => {
+test("README documents marketplace SARIF upload, config, baseline, patch, profiles, suppression reports, benchmark, MCP resources, and install helpers", async () => {
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
@@ -29,6 +29,7 @@ test("README documents marketplace SARIF upload, config, baseline, patch, profil
   assert.match(readme, /mcp resources/);
   assert.match(readme, /--profile strict/);
   assert.match(readme, /awg-ignore AWI001/);
+  assert.match(readme, /Suppressed findings/);
   assert.match(readme, /\.awg\.yml/);
 });
 
@@ -68,6 +69,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/playbooks/low-code.md",
     "docs/playbooks/browser-automation.md",
     "docs/policy-profiles-and-suppressions.md",
+    "docs/index.md",
+    "docs/npm-publish.md",
     ".awg.example.yml"
   ];
 

@@ -1,9 +1,29 @@
 import { summarize } from "./json.js";
 
-export function renderMarkdown(findings) {
+function renderSuppressionSection(suppressions) {
+  if (!suppressions.length) return [];
+  const lines = ["## Suppressed findings", ""];
+  for (const suppression of suppressions) {
+    lines.push(`- ${suppression.ruleId} in \`${suppression.file}\` suppressed at \`${suppression.suppressionFile}\`: ${suppression.reason}`);
+  }
+  lines.push("");
+  return lines;
+}
+
+export function renderMarkdown(findings, metadata = {}) {
   const summary = summarize(findings);
+  const suppressions = metadata.suppressions ?? [];
   if (!findings.length) {
-    return `# Agentic Workflow Guard Report\n\nNo high-risk findings.\n\nSummary: ${summary.total} total, ${summary.medium} medium, ${summary.low} low.\n`;
+    const lines = [
+      "# Agentic Workflow Guard Report",
+      "",
+      "No high-risk findings.",
+      "",
+      `Summary: ${summary.total} total, ${summary.medium} medium, ${summary.low} low, ${suppressions.length} suppressed.`,
+      "",
+      ...renderSuppressionSection(suppressions)
+    ];
+    return `${lines.join("\n").trimEnd()}\n`;
   }
 
   const lines = ["# Agentic Workflow Guard Report", ""];
@@ -11,7 +31,7 @@ export function renderMarkdown(findings) {
     lines.push("No high-risk findings.");
     lines.push("");
   }
-  lines.push(`Summary: ${summary.total} total, ${summary.high} high, ${summary.medium} medium, ${summary.low} low.`);
+  lines.push(`Summary: ${summary.total} total, ${summary.high} high, ${summary.medium} medium, ${summary.low} low, ${suppressions.length} suppressed.`);
   lines.push("");
   for (const finding of findings) {
     lines.push(`## ${finding.ruleId}: ${finding.title}`);
@@ -21,5 +41,6 @@ export function renderMarkdown(findings) {
     lines.push(`- Remediation: ${finding.remediation}`);
     lines.push("");
   }
+  lines.push(...renderSuppressionSection(suppressions));
   return `${lines.join("\n")}\n`;
 }

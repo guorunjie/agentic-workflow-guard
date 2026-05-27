@@ -14,16 +14,17 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 3. Use `agentic-workflow-guard scan . --profile strict` in write-capable or sensitive automation repositories.
 4. Use `agentic-workflow-guard scan . --baseline .awg-baseline.json` in existing repositories.
 5. Use `awg-ignore AWI001: reason` only for reviewed suppressions with an audit reason.
-6. Prioritize high severity AWI001-AWI006 findings before medium AWI007-AWI010 controls.
-7. Use `agentic-workflow-guard explain <rule-id>` for rule-specific risk and remediation.
-8. Use `agentic-workflow-guard fix . --patch` for a reviewable permission diff.
-9. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
-10. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-11. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
-12. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-13. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-14. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-15. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+6. Review `Suppressed findings` in JSON and Markdown reports before accepting exceptions.
+7. Prioritize high severity AWI001-AWI006 findings before medium AWI007-AWI010 controls.
+8. Use `agentic-workflow-guard explain <rule-id>` for rule-specific risk and remediation.
+9. Use `agentic-workflow-guard fix . --patch` for a reviewable permission diff.
+10. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
+11. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
+12. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
+13. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+14. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+15. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+16. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, comments, webhooks, emails, and form inputs as untrusted prompt input.

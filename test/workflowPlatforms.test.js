@@ -24,7 +24,7 @@ test("detects Node-RED flow exports that chain AI into side effects", async () =
 
   const findings = await scanProject(root);
 
-  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Node-RED/i.test(finding.evidence)));
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Node-RED.*OpenAI Agent.*POST CRM/i.test(finding.evidence)));
 });
 
 test("detects Make scenario exports that chain AI into HTTP modules", async () => {
@@ -40,7 +40,7 @@ test("detects Make scenario exports that chain AI into HTTP modules", async () =
 
   const findings = await scanProject(root);
 
-  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Make/i.test(finding.evidence)));
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Make.*openai-gpt-3:createCompletion.*http:ActionSendData/i.test(finding.evidence)));
 });
 
 test("detects Pipedream workflows that chain AI output into actions", async () => {
@@ -56,7 +56,7 @@ test("detects Pipedream workflows that chain AI output into actions", async () =
 
   const findings = await scanProject(root);
 
-  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Pipedream/i.test(finding.evidence)));
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Pipedream.*generate.*send/i.test(finding.evidence)));
 });
 
 test("detects Activepieces flows that chain AI output into side effects", async () => {
@@ -73,7 +73,7 @@ test("detects Activepieces flows that chain AI output into side effects", async 
 
   const findings = await scanProject(root);
 
-  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Activepieces/i.test(finding.evidence)));
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Activepieces.*summarize.*write_pr/i.test(finding.evidence)));
 });
 
 test("detects Airflow DAGs that combine LLM calls and side-effect operators", async () => {

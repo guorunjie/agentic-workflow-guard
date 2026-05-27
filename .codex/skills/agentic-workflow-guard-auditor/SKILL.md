@@ -13,6 +13,7 @@ Static security scanner for AI automation workflows across GitHub Actions, n8n, 
 - Use agentic-workflow-guard scan . --profile strict in write-capable or sensitive automation repositories
 - Use agentic-workflow-guard scan . --baseline .awg-baseline.json in existing repositories
 - Use awg-ignore AWI001: reason only for reviewed suppressions with an audit reason
+- Review Suppressed findings in JSON and Markdown reports before accepting exceptions
 - Prioritize high severity AWI001-AWI006 findings and review medium AWI007-AWI010 findings
 - Use agentic-workflow-guard explain AWI001 for rule-specific remediation
 - Use agentic-workflow-guard fix . --patch for a reviewable permission diff

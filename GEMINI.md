@@ -10,13 +10,14 @@ Agentic Workflow Guard is a deterministic security scanner for AI automation wor
 4. Use `agentic-workflow-guard explain <rule-id>` before proposing a remediation.
 5. Use `agentic-workflow-guard baseline create .` and `scan . --baseline .awg-baseline.json` when adopting in an existing repository.
 6. Use `awg-ignore AWI001: reason` only for reviewed suppressions with an audit reason.
-7. Use `agentic-workflow-guard fix . --patch` to preview reviewable permission diffs.
-8. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
-9. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
-10. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
-11. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
-12. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
-13. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
+7. Review `Suppressed findings` in JSON and Markdown reports before accepting exceptions.
+8. Use `agentic-workflow-guard fix . --patch` to preview reviewable permission diffs.
+9. Use `agentic-workflow-guard fix . --apply` only for low-risk GitHub Actions permission downgrades.
+10. Use `agentic-workflow-guard rules search <platform>` to find relevant rule metadata.
+11. Use `agentic-workflow-guard rules verify <file>` before trusting external rule packs.
+12. Use `agentic-workflow-guard benchmark` to verify fixture snapshots.
+13. Use `agentic-workflow-guard mcp resources --format json` to expose rules, benchmarks, skill instructions, and remediation playbooks.
+14. Use `agentic-workflow-guard agents install <target>` to install supported agent instruction outputs.
 
 ## Safety Rules
 

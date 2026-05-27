@@ -75,6 +75,13 @@ North star:
 - Add policy profiles for advisory, balanced, and strict CI rollout. Shipped in v0.6.
 - Add audited inline suppressions with required reasons. Shipped in v0.6.
 
+## v0.7: Auditability and Release Readiness
+
+- Report suppressed findings in JSON and Markdown outputs with reason and suppression location.
+- Improve low-code workflow evidence with native step, node, and module labels for Activepieces, Make, Pipedream, and Node-RED.
+- Add documentation index for a future docs site.
+- Add npm publish checklist and package verification steps.
+
 ## v1.0: Stable Automation Safety Layer
 
 - Stable finding schema.

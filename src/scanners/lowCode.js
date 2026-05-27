@@ -17,18 +17,76 @@ function flatten(value) {
   return JSON.stringify(value).toLowerCase();
 }
 
+function valueLabel(value, fallback = "unnamed") {
+  if (!value || typeof value !== "object") return fallback;
+  return String(value.name ?? value.label ?? value.key ?? value.id ?? value.module ?? value.type ?? value.pieceName ?? fallback);
+}
+
+function moduleLabel(value, fallback = "unknown") {
+  if (!value || typeof value !== "object") return fallback;
+  return String(value.module ?? value.type ?? value.pieceName ?? value.app ?? value.actionName ?? valueLabel(value, fallback));
+}
+
+function includesAny(value, pattern) {
+  return pattern.test(JSON.stringify(value).toLowerCase());
+}
+
+function firstMatching(values, pattern) {
+  return values.find((value) => includesAny(value, pattern));
+}
+
+function activepiecesEvidence(json) {
+  const steps = Array.isArray(json.steps) ? json.steps : [];
+  const aiStep = firstMatching(steps, /openai|anthropic|ai|agent|llm|chatgpt/);
+  const sideEffectStep = firstMatching(steps, /github|http|webhook|code|script|gmail|slack|notion|database|credential/);
+  if (aiStep && sideEffectStep) {
+    return `Activepieces flow chains AI step ${valueLabel(aiStep)} (${moduleLabel(aiStep)}:${aiStep.actionName ?? "action"}) into side-effect step ${valueLabel(sideEffectStep)} (${moduleLabel(sideEffectStep)}:${sideEffectStep.actionName ?? "action"})`;
+  }
+  return "Activepieces flow chains AI steps into side-effect actions";
+}
+
+function nodeRedEvidence(json) {
+  const nodes = Array.isArray(json) ? json : [];
+  const aiNode = firstMatching(nodes, /openai|anthropic|ai|agent|llm|chatgpt/);
+  const sideEffectNode = firstMatching(nodes, /http request|function|exec|code|gmail|slack|github|notion|database/);
+  if (aiNode && sideEffectNode) {
+    return `Node-RED flow chains AI node ${valueLabel(aiNode)} (${moduleLabel(aiNode)}) into side-effect node ${valueLabel(sideEffectNode)} (${moduleLabel(sideEffectNode)})`;
+  }
+  return "Node-RED flow chains AI nodes into side-effect nodes";
+}
+
+function makeEvidence(json) {
+  const flow = Array.isArray(json.flow) ? json.flow : [];
+  const aiModule = firstMatching(flow, /openai|anthropic|ai|agent|llm|chatgpt/);
+  const sideEffectModule = firstMatching(flow, /http:|webhook|github|gmail|slack|notion|database|credential/);
+  if (aiModule && sideEffectModule) {
+    return `Make scenario chains AI module ${moduleLabel(aiModule)} into side-effect module ${moduleLabel(sideEffectModule)}`;
+  }
+  return "Make scenario chains AI modules into HTTP or app actions";
+}
+
+function pipedreamEvidence(json) {
+  const steps = json.steps && typeof json.steps === "object" ? Object.entries(json.steps) : [];
+  const aiStep = steps.find(([, step]) => includesAny(step, /openai|anthropic|ai|agent|llm|chatgpt/));
+  const sideEffectStep = steps.find(([, step]) => includesAny(step, /slack|github|http|notion|database|gmail|credential/));
+  if (aiStep && sideEffectStep) {
+    return `Pipedream workflow chains AI step ${aiStep[0]} (${moduleLabel(aiStep[1])}) into side-effect step ${sideEffectStep[0]} (${moduleLabel(sideEffectStep[1])})`;
+  }
+  return "Pipedream workflow chains AI output into side-effect actions";
+}
+
 function platformEvidence(file, json, text) {
   if (/activepieces/i.test(file) || /activepieces|@activepieces|pieceName|actionName/i.test(text)) {
-    return "Activepieces flow chains AI steps into side-effect actions";
+    return activepiecesEvidence(json);
   }
   if (Array.isArray(json) && json.some((node) => typeof node?.type === "string" && /http request|openai|agent|function/i.test(node.type))) {
-    return "Node-RED flow chains AI nodes into side-effect nodes";
+    return nodeRedEvidence(json);
   }
   if (/scenario\.blueprint\.json$/i.test(file) || (Array.isArray(json.flow) && /http:|openai|anthropic/i.test(text))) {
-    return "Make scenario chains AI modules into HTTP or app actions";
+    return makeEvidence(json);
   }
   if (/pipedream/i.test(file) || (json.steps && typeof json.steps === "object" && /slack|github|http|notion|database/i.test(text))) {
-    return "Pipedream workflow chains AI output into side-effect actions";
+    return pipedreamEvidence(json);
   }
   if (/zapier|zap/i.test(text)) {
     return "Zapier workflow chains AI steps into side-effect actions";

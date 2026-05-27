@@ -4,7 +4,7 @@ import { scanGitHubActions } from "./scanners/githubActions.js";
 import { scanLowCodeWorkflows } from "./scanners/lowCode.js";
 import { scanMcpConfigs } from "./scanners/mcp.js";
 import { scanN8nWorkflows } from "./scanners/n8n.js";
-import { applyInlineSuppressions } from "./suppressions.js";
+import { inspectInlineSuppressions } from "./suppressions.js";
 
 function dedupe(findings) {
   const seen = new Set();
@@ -17,6 +17,10 @@ function dedupe(findings) {
 }
 
 export async function scanProject(root, providedConfig) {
+  return (await scanProjectWithMetadata(root, providedConfig)).findings;
+}
+
+export async function scanProjectWithMetadata(root, providedConfig) {
   const config = providedConfig ?? (await loadConfig(root));
   const groups = await Promise.all([
     scanGitHubActions(root),
@@ -26,7 +30,11 @@ export async function scanProject(root, providedConfig) {
     scanLowCodeWorkflows(root)
   ]);
   const filtered = filterFindings(dedupe(groups.flat()), config);
-  return (await applyInlineSuppressions(root, filtered)).sort((a, b) => a.ruleId.localeCompare(b.ruleId) || a.file.localeCompare(b.file));
+  const result = await inspectInlineSuppressions(root, filtered);
+  return {
+    findings: result.findings.sort((a, b) => a.ruleId.localeCompare(b.ruleId) || a.file.localeCompare(b.file)),
+    suppressions: result.suppressions.sort((a, b) => a.ruleId.localeCompare(b.ruleId) || a.file.localeCompare(b.file))
+  };
 }
 
 export function hasHighFindings(findings, config = { severityThreshold: "high" }) {
