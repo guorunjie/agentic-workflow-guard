@@ -13,6 +13,9 @@ test("package metadata reflects the v0.20 marketplace and install readiness rele
   assert.ok(pkg.keywords.includes("circleci"));
   assert.ok(pkg.keywords.includes("azure-pipelines"));
   assert.ok(pkg.keywords.includes("jenkins"));
+  assert.ok(pkg.keywords.includes("dify"));
+  assert.ok(pkg.keywords.includes("flowise"));
+  assert.ok(pkg.keywords.includes("langflow"));
   assert.ok(pkg.keywords.includes("zapier"));
   assert.ok(pkg.keywords.includes("make"));
   assert.ok(pkg.keywords.includes("pipedream"));
@@ -135,6 +138,9 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-circleci/.circleci/config.yml",
     "examples/vulnerable-azure-pipelines/azure-pipelines.yml",
     "examples/vulnerable-jenkins/Jenkinsfile",
+    "examples/vulnerable-dify/app.yml",
+    "examples/vulnerable-flowise/chatflow.json",
+    "examples/vulnerable-langflow/flow.json",
     "examples/vulnerable-make/scenario.blueprint.json",
     "examples/vulnerable-pipedream/workflow.json",
     "examples/vulnerable-zapier/zap.json",
@@ -150,6 +156,9 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/safe-circleci/.circleci/config.yml",
     "examples/safe-azure-pipelines/azure-pipelines.yml",
     "examples/safe-jenkins/Jenkinsfile",
+    "examples/safe-dify/app.yml",
+    "examples/safe-flowise/chatflow.json",
+    "examples/safe-langflow/flow.json",
     "examples/safe-make/scenario.blueprint.json",
     "examples/safe-pipedream/workflow.json",
     "examples/safe-zapier/zap.json",

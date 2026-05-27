@@ -48,6 +48,16 @@ test("rules search finds Zapier low-code coverage", async () => {
   assert.match(stdout, /Zapier/i);
 });
 
+test("rules search finds agent workflow builder coverage", async () => {
+  const dify = await execFileAsync("node", [bin, "rules", "search", "dify"]);
+  const flowise = await execFileAsync("node", [bin, "rules", "search", "flowise"]);
+  const langflow = await execFileAsync("node", [bin, "rules", "search", "langflow"]);
+
+  assert.match(dify.stdout, /AWI009/);
+  assert.match(flowise.stdout, /AWI009/);
+  assert.match(langflow.stdout, /AWI009/);
+});
+
 test("rules install writes core rule pack metadata", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "awg-rules-"));
 

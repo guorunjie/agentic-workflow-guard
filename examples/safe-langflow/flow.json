@@ -1,0 +1,32 @@
+{
+  "name": "langflow read-only reviewer",
+  "data": {
+    "nodes": [
+      {
+        "id": "chat-input",
+        "data": {
+          "type": "ChatInput",
+          "display_name": "Review request"
+        }
+      },
+      {
+        "id": "openai-model",
+        "data": {
+          "type": "OpenAIModel",
+          "display_name": "OpenAI summarizer"
+        }
+      },
+      {
+        "id": "chat-output",
+        "data": {
+          "type": "ChatOutput",
+          "display_name": "Preview output"
+        }
+      }
+    ],
+    "edges": [
+      { "source": "chat-input", "target": "openai-model" },
+      { "source": "openai-model", "target": "chat-output" }
+    ]
+  }
+}

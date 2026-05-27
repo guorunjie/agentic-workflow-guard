@@ -19,6 +19,9 @@
         "n8n",
         "mcp",
         "activepieces",
+        "dify",
+        "flowise",
+        "langflow",
         "zapier",
         "make",
         "pipedream",
@@ -40,7 +43,7 @@
         "AWI009",
         "AWI010"
       ],
-      "checksum": "sha256:1ec23ddc71bdc90dd8aa4708afe557f65c9dfeff42fea2e627127f2010d148a7",
+      "checksum": "sha256:32d335de90b8e49bfede03ec70b0514a28018dd6334522f68dbe14a46cb7f88f",
       "install": "agentic-workflow-guard rules install core .",
       "path": "rules/marketplace.json"
     },
@@ -69,11 +72,14 @@
       "name": "agentic-workflow-guard-low-code-automation",
       "alias": "low-code-automation",
       "version": "0.20.0",
-      "description": "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
+      "description": "Focused low-code and browser automation rule pack for n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
       "source": "community",
       "platforms": [
         "n8n",
         "activepieces",
+        "dify",
+        "flowise",
+        "langflow",
         "zapier",
         "make",
         "pipedream",
@@ -88,7 +94,7 @@
         "AWI009",
         "AWI010"
       ],
-      "checksum": "sha256:8ce44ccc9b1b9390bed0afc0c1c523052735d4b554056f900a5d9400c41893f2",
+      "checksum": "sha256:aeadc977d09cc1d5b2b448e5f56160f2e95a3e2a43792f527b49c550d230f082",
       "install": "agentic-workflow-guard rules install low-code-automation .",
       "path": "rules/community/agentic-workflow-guard-low-code-automation.json"
     }

@@ -1,0 +1,23 @@
+app:
+  name: dify ai review preview
+  mode: workflow
+workflow:
+  graph:
+    nodes:
+      - id: start
+        type: start
+        data:
+          title: Manual input
+      - id: summarize
+        type: llm
+        data:
+          title: LLM summarizer
+      - id: answer
+        type: answer
+        data:
+          title: Review-only answer
+    edges:
+      - source: start
+        target: summarize
+      - source: summarize
+        target: answer

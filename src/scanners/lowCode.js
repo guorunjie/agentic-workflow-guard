@@ -1,6 +1,10 @@
 import { makeFinding } from "../rules/index.js";
 import { readJson, readText, walk } from "../utils/files.js";
 
+const aiSignalPattern = /(openai|anthropic|chatgpt|chatopenai|llm|agent|type:\s*(llm|agent))/i;
+const sideEffectSignalPattern =
+  /(http|webhook|code|script|exec|gmail|email|slack|github|notion|database|credential|salesforce|hubspot|google sheets|airtable|jira|stripe|shopify|requests?(get|post|put|patch|delete)|apirequest|api request|customcomponent|customtool|toolnode|type:\s*(tool|http-request|code))/i;
+
 function isLowCodeAutomation(json) {
   return (
     Array.isArray(json) ||
@@ -8,6 +12,10 @@ function isLowCodeAutomation(json) {
     Array.isArray(json.steps) ||
     Array.isArray(json.flows) ||
     Array.isArray(json.flow) ||
+    Array.isArray(json.nodes) ||
+    Array.isArray(json.data?.nodes) ||
+    Array.isArray(json.data?.edges) ||
+    typeof json.flowData === "string" ||
     Boolean(json.trigger) ||
     Boolean(json.steps && typeof json.steps === "object")
   );
@@ -33,6 +41,30 @@ function includesAny(value, pattern) {
 
 function firstMatching(values, pattern) {
   return values.find((value) => includesAny(value, pattern));
+}
+
+function workflowCandidates(json) {
+  const candidates = [json];
+  if (typeof json.flowData === "string") {
+    try {
+      candidates.push(JSON.parse(json.flowData));
+    } catch {
+      // Flowise stores flowData as a JSON string; ignore malformed exports here.
+    }
+  }
+  return candidates;
+}
+
+function isN8nWorkflow(json) {
+  return Array.isArray(json.nodes) && json.nodes.some((node) => typeof node?.type === "string" && /(^|@)n8n|n8n-nodes-base|n8n-nodes-langchain/i.test(node.type));
+}
+
+function graphNodes(json) {
+  if (Array.isArray(json.nodes)) return json.nodes;
+  if (Array.isArray(json.data?.nodes)) return json.data.nodes;
+  if (Array.isArray(json.flow?.nodes)) return json.flow.nodes;
+  if (Array.isArray(json.graph?.nodes)) return json.graph.nodes;
+  return [];
 }
 
 function activepiecesEvidence(json) {
@@ -94,7 +126,33 @@ function zapierEvidence(json) {
   return "Zapier Zap chains AI steps into side-effect actions";
 }
 
+function flowiseEvidence(json) {
+  const nodes = graphNodes(json);
+  const aiNode = firstMatching(nodes, /chatopenai|openai|anthropic|llm|agent|chatmodel/);
+  const sideEffectNode = firstMatching(nodes, /customtool|requests?(get|post|put|patch|delete)|http|webhook|slack|github|gmail|notion|database|jira|salesforce|credential/);
+  if (aiNode && sideEffectNode) {
+    return `Flowise flow chains AI node ${valueLabel(aiNode, "ai-node")} (${moduleLabel(aiNode)}) into side-effect node ${valueLabel(sideEffectNode, "side-effect-node")} (${moduleLabel(sideEffectNode)})`;
+  }
+  return "Flowise chatflow or agentflow chains AI nodes into side-effect tools or requests";
+}
+
+function langflowEvidence(json) {
+  const nodes = graphNodes(json);
+  const aiNode = firstMatching(nodes, /openai|anthropic|llm|agent|model/);
+  const sideEffectNode = firstMatching(nodes, /apirequest|api request|customcomponent|tool|http|webhook|github|slack|gmail|notion|database|credential/);
+  if (aiNode && sideEffectNode) {
+    return `Langflow flow chains AI component ${valueLabel(aiNode, "ai-component")} (${moduleLabel(aiNode)}) into side-effect component ${valueLabel(sideEffectNode, "side-effect-component")} (${moduleLabel(sideEffectNode)})`;
+  }
+  return "Langflow JSON chains AI components into side-effect tools or API requests";
+}
+
 function platformEvidence(file, json, text) {
+  if (/langflow/i.test(file) || /langflow|chatinput|openaimodel|apirequest|customcomponent/i.test(text)) {
+    return langflowEvidence(json);
+  }
+  if (/flowise/i.test(file) || /flowise|flowdata|chatflow|agentflow|chatopenai|customtool/i.test(text)) {
+    return flowiseEvidence(json);
+  }
   if (/activepieces/i.test(file) || /activepieces|@activepieces|pieceName|actionName/i.test(text)) {
     return activepiecesEvidence(json);
   }
@@ -113,6 +171,26 @@ function platformEvidence(file, json, text) {
   return "AI step appears in the same low-code workflow as side-effect actions";
 }
 
+function isDifyDsl(relative, text) {
+  return /\.ya?ml$/i.test(relative) && (/dify/i.test(relative) || /Dify DSL|kind:\s*app|app:\s*workflow|mode:\s*workflow|workflow:/i.test(text)) && /nodes:|graph:/i.test(text);
+}
+
+function difyHasAiAndSideEffect(text) {
+  return aiSignalPattern.test(text) && sideEffectSignalPattern.test(text);
+}
+
+function difyEvidence(text) {
+  const ai =
+    text.match(/(?:title|name):\s*["']?([^"'\n]+?(?:llm|agent|openai|anthropic)[^"'\n]*)/i)?.[1]?.trim() ??
+    text.match(/type:\s*["']?(llm|agent)/i)?.[1]?.trim() ??
+    "LLM or agent node";
+  const sideEffect =
+    text.match(/(?:title|name):\s*["']?([^"'\n]+?(?:http|tool|code|github|slack|webhook|api|request)[^"'\n]*)/i)?.[1]?.trim() ??
+    text.match(/type:\s*["']?(tool|http-request|code)/i)?.[1]?.trim() ??
+    "side-effect node";
+  return `Dify DSL chains AI node ${ai} into ${sideEffect}`;
+}
+
 function isAirflowDag(relative, text) {
   return /\.py$/i.test(relative) && /airflow|DAG\(/.test(text);
 }
@@ -129,10 +207,18 @@ function airflowHasAiAndSideEffect(text) {
 }
 
 export async function scanLowCodeWorkflows(root) {
-  const files = await walk(root, (relative) => /\.(json|py)$/i.test(relative));
+  const files = await walk(root, (relative) => /\.(json|py|ya?ml)$/i.test(relative));
   const findings = [];
 
   for (const file of files) {
+    if (/\.ya?ml$/i.test(file)) {
+      const text = await readText(root, file);
+      if (isDifyDsl(file, text) && difyHasAiAndSideEffect(text)) {
+        findings.push(makeFinding("AWI009", file, difyEvidence(text)));
+      }
+      continue;
+    }
+
     if (/\.py$/i.test(file)) {
       const text = await readText(root, file);
       const code = stripPythonComments(text);
@@ -148,10 +234,13 @@ export async function scanLowCodeWorkflows(root) {
     } catch {
       continue;
     }
-    if (!isLowCodeAutomation(json)) continue;
-    const text = flatten(json);
-    if (/(openai|anthropic|ai|agent|llm)/.test(text) && /(http|webhook|code|script|gmail|email|slack|github|notion|database|credential|salesforce|hubspot|google sheets|airtable|jira|stripe|shopify)/.test(text)) {
-      findings.push(makeFinding("AWI009", file, platformEvidence(file, json, text)));
+    if (isN8nWorkflow(json)) continue;
+    const candidates = workflowCandidates(json);
+    if (!candidates.some(isLowCodeAutomation)) continue;
+    const text = flatten(candidates);
+    if (aiSignalPattern.test(text) && sideEffectSignalPattern.test(text)) {
+      const evidenceSource = candidates.find((candidate) => graphNodes(candidate).length) ?? candidates.find(isLowCodeAutomation) ?? json;
+      findings.push(makeFinding("AWI009", file, platformEvidence(file, evidenceSource, text)));
     }
   }
 

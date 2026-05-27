@@ -1,0 +1,26 @@
+app:
+  name: dify ai issue router
+  mode: workflow
+workflow:
+  graph:
+    nodes:
+      - id: start
+        type: start
+        data:
+          title: Webhook input
+      - id: triage
+        type: llm
+        data:
+          title: LLM issue triage agent
+          prompt_template: "{{external_ticket_body}}"
+      - id: create_issue
+        type: http-request
+        data:
+          title: GitHub issue API request
+          method: POST
+          url: https://api.github.com/repos/acme/app/issues
+    edges:
+      - source: start
+        target: triage
+      - source: triage
+        target: create_issue

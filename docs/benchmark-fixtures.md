@@ -20,6 +20,12 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/safe-mcp` | MCP | none |
 | `examples/vulnerable-activepieces` | Activepieces-style JSON | `AWI009` |
 | `examples/safe-activepieces` | Activepieces-style JSON | none |
+| `examples/vulnerable-dify` | Dify workflow DSL YAML | `AWI009` |
+| `examples/safe-dify` | Dify workflow DSL YAML | none |
+| `examples/vulnerable-flowise` | Flowise chatflow JSON | `AWI009` |
+| `examples/safe-flowise` | Flowise chatflow JSON | none |
+| `examples/vulnerable-langflow` | Langflow exported JSON | `AWI009` |
+| `examples/safe-langflow` | Langflow exported JSON | none |
 | `examples/vulnerable-node-red` | Node-RED | `AWI009` |
 | `examples/safe-node-red` | Node-RED | none |
 | `examples/vulnerable-make` | Make | `AWI009` |

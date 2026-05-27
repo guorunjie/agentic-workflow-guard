@@ -1,0 +1,33 @@
+{
+  "name": "langflow ai to api request",
+  "data": {
+    "nodes": [
+      {
+        "id": "chat-input",
+        "data": {
+          "type": "ChatInput",
+          "display_name": "Customer request"
+        }
+      },
+      {
+        "id": "openai-model",
+        "data": {
+          "type": "OpenAIModel",
+          "display_name": "OpenAI decision model"
+        }
+      },
+      {
+        "id": "api-request",
+        "data": {
+          "type": "APIRequest",
+          "display_name": "POST CRM API",
+          "url": "https://crm.example.test/cases"
+        }
+      }
+    ],
+    "edges": [
+      { "source": "chat-input", "target": "openai-model" },
+      { "source": "openai-model", "target": "api-request" }
+    ]
+  }
+}

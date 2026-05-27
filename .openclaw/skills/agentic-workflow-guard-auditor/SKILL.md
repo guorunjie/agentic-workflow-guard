@@ -1,12 +1,12 @@
 ---
 name: agentic-workflow-guard-auditor
-description: Use before granting AI automation write access, reviewing agentic GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, auditing n8n, Node-RED, Make, Pipedream, Airflow, browser automation, or checking MCP tool configs for prompt-injection and side-effect risks.
+description: Use before granting AI automation write access, reviewing agentic GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, auditing n8n, Dify, Flowise, Langflow, Node-RED, Make, Pipedream, Airflow, browser automation, or checking MCP tool configs for prompt-injection and side-effect risks.
 ---
 
 # Agentic Workflow Guard Auditor
 
 ## Purpose
-Agentic Workflow Guard is a deterministic scanner for AI automation workflows. Use it to find prompt-injection paths, model-output-to-shell sinks, broad write permissions, risky GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs, risky MCP tools, Airflow AI DAGs, browser automation side effects, and low-code AI steps chained into external side effects.
+Agentic Workflow Guard is a deterministic scanner for AI automation workflows. Use it to find prompt-injection paths, model-output-to-shell sinks, broad write permissions, risky GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs, risky MCP tools, Dify, Flowise, Langflow, Airflow AI DAGs, browser automation side effects, and low-code AI steps chained into external side effects.
 
 ## Workflow
 1. Run `agentic-workflow-guard scan . --format markdown` for local review.

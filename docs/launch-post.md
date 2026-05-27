@@ -1,13 +1,13 @@
 # I built a safety scanner that turns AI workflows into portable agent skills
 
-AI automation is getting powerful fast: GitHub Actions can call agents, n8n and Activepieces can connect AI nodes to production APIs, and MCP servers can expose browsers, shells, filesystems, and repo tools.
+AI automation is getting powerful fast: GitHub Actions can call agents, n8n, Activepieces, Dify, Flowise, and Langflow can connect AI nodes to production APIs, and MCP servers can expose browsers, shells, filesystems, and repo tools.
 
 The gap is review. Before an agent gets write access, maintainers need a local, CI-friendly way to ask:
 
 - did untrusted issue or PR text reach an agent prompt?
 - did model output flow into a shell command?
 - does an AI job have write permissions?
-- does an n8n, Activepieces, Make, Pipedream, Node-RED, or Airflow workflow chain AI into side effects?
+- does an n8n, Activepieces, Dify, Flowise, Langflow, Make, Pipedream, Node-RED, or Airflow workflow chain AI into side effects?
 - do browser-use, Skyvern, Playwright, or Puppeteer traces let AI decisions click, fill, submit, or approve?
 - are MCP tools scoped tightly enough?
 

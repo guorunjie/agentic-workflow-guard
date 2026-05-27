@@ -2,7 +2,7 @@
 
 Find dangerous AI automation workflows before agents get write access.
 
-Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs, risky n8n flows, low-code workflow side effects, and MCP permission leaks before your AI automation runs.
+Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, and Jenkins agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
 Four-command demo:
 
@@ -28,7 +28,7 @@ Agentic Workflow Guard is a static security scanner for AI automation workflows.
 - n8n webhook or email triggers flowing through AI nodes into HTTP, code, or command nodes;
 - broad MCP filesystem, shell, browser, or GitHub tools;
 - low-code automation flows that chain AI steps into side effects;
-- Node-RED, Make, Pipedream, and Airflow workflows where LLM output reaches HTTP, shell, or deployment actions;
+- Dify, Flowise, Langflow, Node-RED, Make, Pipedream, and Airflow workflows where LLM output reaches HTTP, tools, shell, or deployment actions;
 - browser-use, Skyvern, Playwright, and Puppeteer traces where AI decisions reach browser side effects.
 
 ## Why This Can Win Stars
@@ -52,7 +52,7 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | Agent jobs in GitLab CI, CircleCI, Azure Pipelines, and Jenkins | Catches merge request text, branch names, commit messages, CI tokens, CircleCI contexts, Azure service connections, Jenkins credentials, and variable groups reaching agent prompts or shell sinks. |
 | n8n operations workflows | Detects Webhook or email triggers flowing through AI nodes into HTTP, Code, Execute Command, or credential-bearing nodes. |
 | MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
-| Low-code AI automation | Finds Activepieces, Zapier, Make, Pipedream, and Node-RED flows where AI output is chained into API calls or code execution. |
+| Low-code AI automation | Finds Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, and Node-RED flows where AI output is chained into API calls, tools, requests, or code execution. |
 | Airflow AI DAGs | Catches DAGs that combine LLM calls with Bash, Docker, Kubernetes, HTTP, or Python side-effect operators. |
 | Browser automation agents | Flags browser-use, Skyvern, Playwright, and Puppeteer traces where AI-driven steps click, fill, submit, upload, or approve. |
 | CI and code scanning | Emits SARIF so workflow risks can be tracked like code vulnerabilities. |
@@ -322,6 +322,9 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-azure-pipelines --
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-jenkins --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-n8n --format sarif
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-mcp --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-dify --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-flowise --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-langflow --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-node-red --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-make --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-pipedream --format markdown

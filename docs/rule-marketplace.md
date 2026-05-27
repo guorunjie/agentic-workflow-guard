@@ -34,9 +34,9 @@ Verification checks required schema metadata before trusting a checksum, then re
 
 | Alias | Source | Platforms | Rules |
 | --- | --- | --- | --- |
-| `core` | bundled | GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP, low-code, Airflow, browser automation | AWI001-AWI010 |
+| `core` | bundled | GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP, low-code, Dify, Flowise, Langflow, Airflow, browser automation | AWI001-AWI010 |
 | `github-actions-hardening` | community | GitHub Actions | AWI001-AWI004, AWI007-AWI008 |
-| `low-code-automation` | community | n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, browser automation | AWI005, AWI009-AWI010 |
+| `low-code-automation` | community | n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, browser automation | AWI005, AWI009-AWI010 |
 
 ## Contribution Checklist
 

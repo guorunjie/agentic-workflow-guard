@@ -84,6 +84,27 @@ What to show:
 - `AWI010` catches AI-driven browser side effects.
 - The safe fixture shows review mode or read-only browsing behavior.
 
+## Agent workflow builders: AI nodes reach tools or requests
+
+Risk path:
+
+1. A Dify, Flowise, or Langflow workflow receives user-controlled input.
+2. An LLM or agent node decides the next action.
+3. A downstream HTTP request, tool, custom component, or API request performs a side effect.
+
+Run it:
+
+```bash
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-dify --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-flowise --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-langflow --format markdown
+```
+
+What to show:
+
+- `AWI009` catches Dify DSL, Flowise chatflow, and Langflow JSON exports that connect AI nodes to side-effect steps.
+- The paired safe fixtures keep AI output in review-only paths.
+
 ## Benchmark proof
 
 Use the benchmark report when you want to show scanner coverage as data instead of anecdotes:

@@ -6,16 +6,19 @@
   "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "fixtureManifestVersion": 1,
-  "fixtureCount": 28,
+  "fixtureCount": 34,
   "platforms": [
     "Activepieces",
     "Airflow",
     "Azure Pipelines",
     "Browser automation",
     "CircleCI",
+    "Dify",
+    "Flowise",
     "GitHub Actions",
     "GitLab CI",
     "Jenkins",
+    "Langflow",
     "MCP",
     "Make",
     "Node-RED",
@@ -207,6 +210,66 @@
       "platformId": "activepieces",
       "platform": "Activepieces",
       "path": "examples/safe-activepieces",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-dify",
+      "kind": "vulnerable",
+      "platformId": "dify",
+      "platform": "Dify",
+      "path": "examples/vulnerable-dify",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-dify",
+      "kind": "safe",
+      "platformId": "dify",
+      "platform": "Dify",
+      "path": "examples/safe-dify",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-flowise",
+      "kind": "vulnerable",
+      "platformId": "flowise",
+      "platform": "Flowise",
+      "path": "examples/vulnerable-flowise",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-flowise",
+      "kind": "safe",
+      "platformId": "flowise",
+      "platform": "Flowise",
+      "path": "examples/safe-flowise",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-langflow",
+      "kind": "vulnerable",
+      "platformId": "langflow",
+      "platform": "Langflow",
+      "path": "examples/vulnerable-langflow",
+      "expectedRules": [
+        "AWI009"
+      ],
+      "risk": "Expected to trigger AWI009."
+    },
+    {
+      "name": "safe-langflow",
+      "kind": "safe",
+      "platformId": "langflow",
+      "platform": "Langflow",
+      "path": "examples/safe-langflow",
       "expectedRules": [],
       "risk": "Expected to produce no findings."
     },

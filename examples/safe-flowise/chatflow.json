@@ -1,0 +1,5 @@
+{
+  "name": "flowise review assistant",
+  "type": "CHATFLOW",
+  "flowData": "{\"nodes\":[{\"id\":\"chatOpenAI_0\",\"type\":\"chatOpenAI\",\"data\":{\"label\":\"ChatOpenAI\",\"name\":\"chatOpenAI\"}},{\"id\":\"llmChain_0\",\"type\":\"llmChain\",\"data\":{\"label\":\"Review Chain\",\"name\":\"llmChain\"}},{\"id\":\"chatOutput_0\",\"type\":\"chatOutput\",\"data\":{\"label\":\"Preview Output\",\"name\":\"chatOutput\"}}],\"edges\":[{\"source\":\"chatOpenAI_0\",\"target\":\"llmChain_0\"},{\"source\":\"llmChain_0\",\"target\":\"chatOutput_0\"}]}"
+}

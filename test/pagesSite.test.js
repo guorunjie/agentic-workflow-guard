@@ -43,7 +43,10 @@ test("docs:build creates a Pages-ready site with stable schema URLs", async () =
   assert.ok(registry.packs.some((pack) => pack.alias === "low-code-automation"));
   assert.equal(communityPack.provenance.source, "community");
   assert.equal(corpus.name, "agentic-workflow-guard-benchmark-corpus");
-  assert.equal(corpus.fixtureCount, 28);
+  assert.equal(corpus.fixtureCount, 34);
+  assert.ok(corpus.platforms.includes("Dify"));
+  assert.ok(corpus.platforms.includes("Flowise"));
+  assert.ok(corpus.platforms.includes("Langflow"));
 });
 
 test("Pages workflow builds and deploys the generated static site", async () => {

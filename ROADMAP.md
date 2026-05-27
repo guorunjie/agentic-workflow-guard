@@ -190,6 +190,6 @@ North star:
 - GitHub Marketplace release.
 - npm release.
 - Documentation site.
-- Compatibility matrix across GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, MCP, and browser automation stacks.
+- Compatibility matrix across GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, MCP, and browser automation stacks.
 - Compatibility matrix across Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, and AGENTS.md-aware agents.
 - Public benchmark corpus with vulnerable and safe workflow fixtures for every supported platform, with room to split into a standalone benchmark repository after v1.0.

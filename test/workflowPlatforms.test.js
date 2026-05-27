@@ -94,6 +94,72 @@ test("detects Activepieces flows that chain AI output into side effects", async 
   assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Activepieces.*summarize.*write_pr/i.test(finding.evidence)));
 });
 
+test("detects Dify workflow DSL that chains LLM output into HTTP requests", async () => {
+  const root = await writeFixture(
+    "dify-app.yml",
+    `
+app:
+  name: dify ai issue router
+  mode: workflow
+workflow:
+  graph:
+    nodes:
+      - id: llm
+        type: llm
+        data:
+          title: LLM issue triage agent
+      - id: write
+        type: http-request
+        data:
+          title: GitHub issue API request
+          url: https://api.github.com/repos/acme/app/issues
+`
+  );
+
+  const findings = await scanProject(root);
+
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Dify DSL.*LLM issue triage agent.*GitHub issue API request/i.test(finding.evidence)));
+});
+
+test("detects Flowise chatflows that chain AI nodes into request tools", async () => {
+  const root = await writeFixture(
+    "flowise-chatflow.json",
+    JSON.stringify({
+      name: "flowise ai to slack",
+      flowData: JSON.stringify({
+        nodes: [
+          { id: "chatOpenAI_0", type: "chatOpenAI", data: { label: "ChatOpenAI", name: "chatOpenAI" } },
+          { id: "requestsPost_0", type: "requestsPost", data: { label: "POST Slack webhook", name: "requestsPost" } }
+        ],
+        edges: [{ source: "chatOpenAI_0", target: "requestsPost_0" }]
+      })
+    })
+  );
+
+  const findings = await scanProject(root);
+
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Flowise.*chatOpenAI_0.*requestsPost_0/i.test(finding.evidence)));
+});
+
+test("detects Langflow exports that chain AI components into API requests", async () => {
+  const root = await writeFixture(
+    "langflow-flow.json",
+    JSON.stringify({
+      data: {
+        nodes: [
+          { id: "openai-model", data: { type: "OpenAIModel", display_name: "OpenAI decision model" } },
+          { id: "api-request", data: { type: "APIRequest", display_name: "POST CRM API" } }
+        ],
+        edges: [{ source: "openai-model", target: "api-request" }]
+      }
+    })
+  );
+
+  const findings = await scanProject(root);
+
+  assert.ok(findings.some((finding) => finding.ruleId === "AWI009" && /Langflow.*openai-model.*api-request/i.test(finding.evidence)));
+});
+
 test("detects Airflow DAGs that combine LLM calls and side-effect operators", async () => {
   const root = await writeFixture(
     "agent_dag.py",

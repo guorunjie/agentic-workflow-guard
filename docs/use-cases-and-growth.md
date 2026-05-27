@@ -42,11 +42,12 @@ Agentic Workflow Guard detects:
 
 ### 4. Low-Code AI Workflows
 
-Activepieces, Zapier, Make, Pipedream, Node-RED, and similar platforms are converging on AI steps plus API actions. Airflow DAGs are also starting to embed LLM calls next to shell, HTTP, Docker, and Kubernetes operators.
+Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, and similar platforms are converging on AI steps plus API actions. Airflow DAGs are also starting to embed LLM calls next to shell, HTTP, Docker, and Kubernetes operators.
 
 Agentic Workflow Guard detects:
 
 - AI or LLM steps in the same flow as HTTP, code, GitHub, Slack, Notion, database, or credential-bearing actions.
+- Dify DSL, Flowise chatflows, and Langflow exports that connect AI nodes to HTTP requests, tools, custom components, or API requests.
 - Zapier Zaps that route AI actions into app updates such as CRM, issue tracker, messaging, or webhook writes.
 - Node-RED, Make, and Pipedream exports that combine AI modules with side-effect steps.
 - Airflow DAGs that combine LLM calls with Bash, HTTP, Docker, Kubernetes, or Python side-effect operators.
@@ -64,7 +65,7 @@ Highest-impact improvements:
    Add upload examples, GitHub Code Scanning screenshots, stable rule metadata, and release-tagged Marketplace usage.
 
 2. **Add native platform parsers**  
-   Deepen GitLab CI, CircleCI, Azure Pipelines, Jenkins, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
+   Deepen GitLab CI, CircleCI, Azure Pipelines, Jenkins, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
 
 3. **Ship trusted examples**  
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
@@ -91,7 +92,7 @@ There is still meaningful room for iteration. The project is no longer just a CL
 Priority directions:
 
 1. **Deeper native parsers**
-   Replace broad heuristics with native understanding of GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
+   Replace broad heuristics with native understanding of GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
 
 2. **Policy and fix engine**
    Expand `fix --format json` and `fix --patch` into policy-aware remediation: approval snippets, allowlists, split read/write jobs, permission minimization, platform-specific dry-run defaults, and PR-ready patches with confidence levels.

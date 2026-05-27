@@ -1,0 +1,5 @@
+{
+  "name": "flowise ai to slack",
+  "type": "CHATFLOW",
+  "flowData": "{\"nodes\":[{\"id\":\"chatOpenAI_0\",\"type\":\"chatOpenAI\",\"data\":{\"label\":\"ChatOpenAI\",\"name\":\"chatOpenAI\"}},{\"id\":\"agentExecutor_0\",\"type\":\"agentExecutor\",\"data\":{\"label\":\"Agent Executor\",\"name\":\"agentExecutor\"}},{\"id\":\"requestsPost_0\",\"type\":\"requestsPost\",\"data\":{\"label\":\"POST Slack webhook\",\"name\":\"requestsPost\",\"url\":\"https://hooks.slack.com/services/example\"}}],\"edges\":[{\"source\":\"chatOpenAI_0\",\"target\":\"agentExecutor_0\"},{\"source\":\"agentExecutor_0\",\"target\":\"requestsPost_0\"}]}"
+}

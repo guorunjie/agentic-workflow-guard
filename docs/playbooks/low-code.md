@@ -1,10 +1,10 @@
 # Low-Code AI Workflow Remediation Playbook
 
-Use this playbook when Agentic Workflow Guard reports AWI009 in Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, or similar automation exports.
+Use this playbook when Agentic Workflow Guard reports AWI009 in Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, or similar automation exports.
 
 ## Risk Pattern
 
-A workflow combines an AI/LLM step with a side-effect step such as HTTP, code execution, database writes, GitHub actions, Slack, Notion, email, deployments, or infrastructure operations. The issue is strongest when the trigger is external or user-controlled.
+A workflow combines an AI/LLM step with a side-effect step such as HTTP, tool calls, request nodes, code execution, database writes, GitHub actions, Slack, Notion, email, deployments, or infrastructure operations. The issue is strongest when the trigger is external or user-controlled.
 
 ## Preferred Fixes
 

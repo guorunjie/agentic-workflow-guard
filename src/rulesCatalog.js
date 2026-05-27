@@ -6,7 +6,7 @@ import { rules } from "./rules/index.js";
 import { packageVersion, packageVersionRange, semverPattern } from "./version.js";
 
 const rulePackSchemaVersion = "1.0.0";
-const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "n8n", "mcp", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
+const corePlatforms = ["github-actions", "gitlab-ci", "circleci", "azure-pipelines", "jenkins", "n8n", "mcp", "activepieces", "dify", "flowise", "langflow", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
 const coreRuleIds = Object.keys(rules);
 const repository = "https://github.com/guorunjie/agentic-workflow-guard";
 const rulePackCompatibility = {
@@ -62,7 +62,7 @@ export const communityRulePacks = [
     schemaVersion: rulePackSchemaVersion,
     name: "agentic-workflow-guard-low-code-automation",
     version: packageVersion,
-    description: "Focused low-code and browser automation rule pack for n8n, Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
+    description: "Focused low-code and browser automation rule pack for n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, and browser-agent side effects.",
     publisher: "guorunjie",
     license: "MIT",
     homepage: repository,
@@ -70,7 +70,7 @@ export const communityRulePacks = [
       ...rulePackCompatibility,
       ruleIds: "AWI005,AWI009-AWI010"
     },
-    platforms: ["n8n", "activepieces", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"],
+    platforms: ["n8n", "activepieces", "dify", "flowise", "langflow", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"],
     rules: ["AWI005", "AWI009", "AWI010"],
     ruleCount: 3,
     provenance: {

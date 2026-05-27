@@ -1,6 +1,6 @@
 # Copilot Instructions for agentic-workflow-guard
 
-Static security scanner for AI automation workflows across GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, GitLab CI, CircleCI, Azure Pipelines, Jenkins, n8n, Dify, Flowise, Langflow, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Principles
 - Treat external workflow input as untrusted until validated

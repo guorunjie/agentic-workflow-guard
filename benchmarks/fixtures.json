@@ -82,6 +82,36 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-dify",
+      "path": "examples/vulnerable-dify",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-dify",
+      "path": "examples/safe-dify",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-flowise",
+      "path": "examples/vulnerable-flowise",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-flowise",
+      "path": "examples/safe-flowise",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-langflow",
+      "path": "examples/vulnerable-langflow",
+      "expectedRules": ["AWI009"]
+    },
+    {
+      "name": "safe-langflow",
+      "path": "examples/safe-langflow",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-node-red",
       "path": "examples/vulnerable-node-red",
       "expectedRules": ["AWI009"]

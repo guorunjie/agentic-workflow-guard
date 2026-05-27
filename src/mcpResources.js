@@ -193,7 +193,7 @@ export const mcpResourcePack = {
       uri: "awg://playbooks/low-code",
       name: "low-code-playbook",
       title: "Low-Code AI Workflow Remediation Playbook",
-      description: "How to guard Activepieces, Zapier, Make, Pipedream, Node-RED, and Airflow AI workflows.",
+      description: "How to guard Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, and Airflow AI workflows.",
       mimeType: "text/markdown",
       path: "docs/playbooks/low-code.md",
       annotations: { audience: ["assistant", "user"], priority: 0.75 }
