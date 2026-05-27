@@ -1,0 +1,20 @@
+[
+  {
+    "id": "webhook",
+    "type": "http in",
+    "name": "Webhook",
+    "url": "/agent"
+  },
+  {
+    "id": "agent",
+    "type": "openai",
+    "name": "OpenAI Agent",
+    "wires": [["post-crm"]]
+  },
+  {
+    "id": "post-crm",
+    "type": "http request",
+    "name": "POST CRM",
+    "method": "POST"
+  }
+]

@@ -1,12 +1,13 @@
 import path from "node:path";
 
+import { loadConfig } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
 import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
 import { renderJson } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
-import { renderRules } from "./rulesCatalog.js";
+import { installRulePack, renderRulePacks, renderRuleSearch, renderRules } from "./rulesCatalog.js";
 import { scanProject, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
 
@@ -25,9 +26,9 @@ function help() {
 
 Usage:
   agentic-workflow-guard scan [path] [--format json|markdown|sarif]
-  agentic-workflow-guard fix [path] [--dry-run]
+  agentic-workflow-guard fix [path] [--dry-run|--apply]
   agentic-workflow-guard explain <rule-id>
-  agentic-workflow-guard rules [--format markdown|json]
+  agentic-workflow-guard rules [list|search <query>|install core [path]] [--format markdown|json]
   agentic-workflow-guard agents [--format markdown|json]
   agentic-workflow-guard skillpack
 `;
@@ -49,14 +50,15 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
   if (command === "scan") {
     const root = path.resolve(firstPositional(args));
     const format = argValue(args, "--format", "markdown");
-    const findings = await scanProject(root);
+    const config = await loadConfig(root);
+    const findings = await scanProject(root, config);
     output.write(renderFindings(findings, format));
-    return hasHighFindings(findings) ? 1 : 0;
+    return hasHighFindings(findings, config) ? 1 : 0;
   }
 
   if (command === "fix") {
     const root = path.resolve(firstPositional(args));
-    output.write(await renderFixPlan(root));
+    output.write(await renderFixPlan(root, { apply: args.includes("--apply") }));
     return 0;
   }
 
@@ -66,7 +68,24 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
   }
 
   if (command === "rules") {
-    output.write(renderRules(argValue(args, "--format", "markdown")));
+    const subcommand = args[0];
+    const format = argValue(args, "--format", "markdown");
+    if (subcommand === "list") {
+      output.write(renderRulePacks(format));
+      return 0;
+    }
+    if (subcommand === "search") {
+      output.write(renderRuleSearch(args[1], format));
+      return 0;
+    }
+    if (subcommand === "install") {
+      const pack = args[1] ?? "core";
+      const root = path.resolve(args[2] ?? ".");
+      const outputPath = await installRulePack(root, pack);
+      output.write(`Installed ${pack} rule pack to ${outputPath}\n`);
+      return 0;
+    }
+    output.write(renderRules(format));
     return 0;
   }
 

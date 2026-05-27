@@ -22,16 +22,16 @@ North star:
 
 - Activepieces scanner with native schema support.
 - Zapier export scanner.
-- Make scenario export scanner.
-- Pipedream workflow scanner.
-- Node-RED flow scanner.
-- Airflow DAG heuristic scanner for LLM-to-operator side effects.
+- Make scenario export scanner. Shipped heuristic coverage in v0.2.
+- Pipedream workflow scanner. Shipped heuristic coverage in v0.2.
+- Node-RED flow scanner. Shipped heuristic coverage in v0.2.
+- Airflow DAG heuristic scanner for LLM-to-operator side effects. Shipped in v0.2.
 - Browser automation trace scanner for Playwright, browser-use, Skyvern, and similar agent browser stacks.
 
 ## v0.3: Guided Fixes
 
 - `fix --apply` for low-risk transformations:
-  - downgrade broad GitHub permissions to read-only;
+  - downgrade broad GitHub permissions to read-only. Shipped in v0.2;
   - add comments and guard blocks around prompt ingestion;
   - add dry-run defaults;
   - generate approval-job snippets.
@@ -41,7 +41,7 @@ North star:
 ## v0.4: Rule Marketplace
 
 - External rule pack format.
-- `rules list`, `rules search`, `rules install`.
+- `rules list`, `rules search`, `rules install`. Shipped core rule-pack metadata install in v0.2.
 - Community rule packs for GitHub Actions, n8n, MCP, browser automation, and data workflows.
 - Signed rule metadata and checksums.
 

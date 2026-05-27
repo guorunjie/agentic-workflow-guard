@@ -1,5 +1,5 @@
 name: Agentic Workflow Guard
-description: Semgrep-style scanner for AI automation workflows, prompt-injection paths, risky tools, and overpowered permissions.
+description: Security scanner and portable skill pack for AI automation workflows, prompt-injection paths, risky tools, and overpowered permissions.
 branding:
   icon: shield
   color: purple
@@ -12,9 +12,18 @@ inputs:
     description: Output format: markdown, json, or sarif.
     required: false
     default: sarif
+  output:
+    description: Optional report output file. Defaults to awg.sarif for SARIF scans.
+    required: false
+    default: awg.sarif
 runs:
   using: composite
   steps:
     - name: Run Agentic Workflow Guard
       shell: bash
-      run: node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" scan "${{ inputs.path }}" --format "${{ inputs.format }}"
+      run: |
+        if [ -n "${{ inputs.output }}" ]; then
+          node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" scan "${{ inputs.path }}" --format "${{ inputs.format }}" > "${{ inputs.output }}"
+        else
+          node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" scan "${{ inputs.path }}" --format "${{ inputs.format }}"
+        fi

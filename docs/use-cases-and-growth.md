@@ -41,11 +41,13 @@ Agentic Workflow Guard detects:
 
 ### 4. Low-Code AI Workflows
 
-Activepieces, Zapier, Make, Pipedream, and similar platforms are converging on AI steps plus API actions. The first version uses portable JSON heuristics; later versions should add platform-native parsers.
+Activepieces, Zapier, Make, Pipedream, Node-RED, and similar platforms are converging on AI steps plus API actions. Airflow DAGs are also starting to embed LLM calls next to shell, HTTP, Docker, and Kubernetes operators.
 
 Agentic Workflow Guard detects:
 
 - AI or LLM steps in the same flow as HTTP, code, GitHub, Slack, Notion, database, or credential-bearing actions.
+- Node-RED, Make, and Pipedream exports that combine AI modules with side-effect steps.
+- Airflow DAGs that combine LLM calls with Bash, HTTP, Docker, Kubernetes, or Python side-effect operators.
 
 ### 5. Agent Skill and Repository Audits
 
@@ -56,19 +58,19 @@ The scanner exports Skillpack Forge-compatible instructions and portable SKILL.m
 Highest-impact improvements:
 
 1. **Make SARIF first-class**  
-   Add upload examples, GitHub Code Scanning screenshots, and stable rule metadata.
+   Add upload examples, GitHub Code Scanning screenshots, stable rule metadata, and release-tagged Marketplace usage.
 
 2. **Add native platform parsers**  
-   Prioritize Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern.
+   Deepen Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
 
 3. **Ship trusted examples**  
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
 
 4. **Turn `fix` into a patch generator**  
-   Start with safe transformations: reduce permissions, add dry-run defaults, insert approval gates, and split write jobs.
+   Expand from current permission downgrades into dry-run defaults, approval gates, split write jobs, and PR-ready patches.
 
 5. **Build the rule marketplace**  
-   Support external rule packs, signed metadata, checksums, and community contributions.
+   Grow the current `rules list/search/install` into external rule packs, signed metadata, checksums, and community contributions.
 
 6. **Publish as a complete skill**  
    Maintain generated AGENTS.md, Claude Skill, Codex Skill, Gemini context/skill files, Cursor rule, Copilot instructions, OpenClaw/Hermes SKILL.md bundles, and eventually MCP resources.
@@ -79,7 +81,7 @@ Highest-impact improvements:
 ## Star Growth Playbook
 
 - README headline: "Semgrep-style scanner for AI automation workflows."
-- First demo: one vulnerable GitHub Action producing SARIF and a fix plan.
+- First demo: one vulnerable GitHub Action producing SARIF, upload-sarif integration, and a `fix --apply` permission patch.
 - Distribution: GitHub Action, npm package, Skillpack Forge, AGENTS.md, Claude/Codex/Gemini/OpenClaw/Hermes skills, Cursor rules, Copilot instructions.
 - Submit to lists: awesome-copilot, awesome-mcp-servers after MCP resources land, awesome-claude-skills after skill examples mature.
 - Content hooks:

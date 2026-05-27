@@ -1,0 +1,15 @@
+{
+  "name": "pipedream ai to slack workflow",
+  "steps": {
+    "generate": {
+      "type": "openai",
+      "app": "openai",
+      "name": "Generate response"
+    },
+    "send": {
+      "type": "action",
+      "app": "slack",
+      "name": "Send message"
+    }
+  }
+}

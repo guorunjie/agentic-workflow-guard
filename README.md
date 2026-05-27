@@ -11,7 +11,8 @@ Agentic Workflow Guard is a static security scanner for AI automation workflows.
 - AI jobs with write permissions;
 - n8n webhook or email triggers flowing through AI nodes into HTTP, code, or command nodes;
 - broad MCP filesystem, shell, browser, or GitHub tools;
-- low-code automation flows that chain AI steps into side effects.
+- low-code automation flows that chain AI steps into side effects;
+- Node-RED, Make, Pipedream, and Airflow workflows where LLM output reaches HTTP, shell, or deployment actions.
 
 ```bash
 npx agentic-workflow-guard scan . --format markdown
@@ -40,7 +41,8 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | AI-powered GitHub Actions | Prevents issue, PR, comment, or discussion text from steering an agent into privileged workflow actions. |
 | n8n operations workflows | Detects Webhook or email triggers flowing through AI nodes into HTTP, Code, Execute Command, or credential-bearing nodes. |
 | MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
-| Low-code AI automation | Finds Activepieces/Zapier/Make/Pipedream-style flows where AI output is chained into API calls or code execution. |
+| Low-code AI automation | Finds Activepieces, Zapier, Make, Pipedream, and Node-RED flows where AI output is chained into API calls or code execution. |
+| Airflow AI DAGs | Catches DAGs that combine LLM calls with Bash, Docker, Kubernetes, HTTP, or Python side-effect operators. |
 | CI and code scanning | Emits SARIF so workflow risks can be tracked like code vulnerabilities. |
 | Agent skill reviews | Ships instructions and skill bundles so Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md-aware agents can audit workflows consistently. |
 
@@ -70,6 +72,18 @@ Preview remediation:
 node ./bin/agentic-workflow-guard.js fix . --dry-run
 ```
 
+Apply low-risk permission fixes:
+
+```bash
+node ./bin/agentic-workflow-guard.js fix . --apply
+```
+
+Start from the sample config:
+
+```bash
+cp .awg.example.yml .awg.yml
+```
+
 Export a Skillpack Forge manifest:
 
 ```bash
@@ -90,8 +104,12 @@ node ./bin/agentic-workflow-guard.js agents
 | `scan [path] --format json` | Machine-readable findings. |
 | `scan [path] --format sarif` | GitHub Code Scanning compatible output. |
 | `fix [path] --dry-run` | Generates a remediation plan without editing workflows. |
+| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades and leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
+| `rules list` | Lists installable rule packs. |
+| `rules search <query>` | Searches rules by platform, risk, or remediation text. |
+| `rules install core [path]` | Installs core rule pack metadata into `.awg/rules/`. |
 | `agents --format markdown|json` | Prints the supported AI agent instruction and skill outputs. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
 
@@ -124,11 +142,26 @@ Claude, Codex, Cursor, Copilot, AGENTS.md, and Gemini use repository-local instr
 | `AWI006` | High | MCP exposes broad high-risk tools. |
 | `AWI007` | Medium | Secrets or environment values are visible to agent context. |
 | `AWI008` | Medium | Agentic workflow lacks approval, allowlist, dry-run, or safe-output controls. |
-| `AWI009` | Medium | Low-code automation chains AI into side-effect actions. |
+| `AWI009` | Medium | Workflow automation chains AI into side-effect actions. |
+
+## Configuration
+
+Add `.awg.yml` to tune CI behavior:
+
+```yaml
+ignore:
+  - node_modules/**
+  - dist/**
+severityThreshold: high
+rules:
+  AWI007: off
+```
+
+`severityThreshold` controls the CLI exit code. `rules` can disable noisy checks for a repository, while `ignore` removes generated files or fixture directories from scanning.
 
 ## GitHub Action
 
-Use this repository as a GitHub Action:
+Use this repository as a GitHub Action and upload SARIF to GitHub Code Scanning:
 
 ```yaml
 name: agentic workflow guard
@@ -147,7 +180,13 @@ jobs:
         with:
           path: .
           format: sarif
+        continue-on-error: true
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: awg.sarif
 ```
+
+For GitHub Marketplace, use the version tag once a release is cut, for example `guorunjie/agentic-workflow-guard@v0.2.0`.
 
 ## Examples
 
@@ -156,6 +195,10 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-github-action --fo
 node ./bin/agentic-workflow-guard.js scan examples/safe-github-action --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-n8n --format sarif
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-mcp --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-node-red --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-make --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-pipedream --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-airflow --format markdown
 ```
 
 ## Evolution Roadmap
@@ -165,9 +208,9 @@ The goal is to become the safety skill for mainstream automation platforms.
 | Stage | Coverage | Output |
 | --- | --- | --- |
 | v0.1 | GitHub Actions, n8n, MCP config, low-code JSON heuristics | CLI, SARIF, GitHub Action, rule catalog, Skillpack Forge export |
-| v0.2 | Activepieces, Zapier, Make, Pipedream exports | More scanners and platform-specific examples |
-| v0.3 | Auto-fix recipes for permissions, prompt gates, dry-run wrappers | `fix --apply` with patch review |
-| v0.4 | Rule marketplace and community rule packs | `rules install`, external rule metadata |
+| v0.2 | Activepieces, Zapier, Make, Pipedream, Node-RED, Airflow | Platform examples and native risk evidence |
+| v0.3 | Auto-fix recipes for permissions, prompt gates, dry-run wrappers | `fix --apply` with permission patch review |
+| v0.4 | Rule marketplace and community rule packs | `rules list/search/install`, external rule metadata |
 | v0.5 | Mainstream agent skill package | Claude/Codex/Cursor/Copilot/Gemini/OpenClaw/Hermes/AGENTS generated and tested |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, GitHub Marketplace release |
 

@@ -1,3 +1,4 @@
+import { filterFindings, loadConfig, reachesSeverityThreshold } from "./config.js";
 import { scanGitHubActions } from "./scanners/githubActions.js";
 import { scanLowCodeWorkflows } from "./scanners/lowCode.js";
 import { scanMcpConfigs } from "./scanners/mcp.js";
@@ -13,16 +14,17 @@ function dedupe(findings) {
   });
 }
 
-export async function scanProject(root) {
+export async function scanProject(root, providedConfig) {
+  const config = providedConfig ?? (await loadConfig(root));
   const groups = await Promise.all([
     scanGitHubActions(root),
     scanN8nWorkflows(root),
     scanMcpConfigs(root),
     scanLowCodeWorkflows(root)
   ]);
-  return dedupe(groups.flat()).sort((a, b) => a.ruleId.localeCompare(b.ruleId) || a.file.localeCompare(b.file));
+  return filterFindings(dedupe(groups.flat()), config).sort((a, b) => a.ruleId.localeCompare(b.ruleId) || a.file.localeCompare(b.file));
 }
 
-export function hasHighFindings(findings) {
-  return findings.some((finding) => finding.severity === "high");
+export function hasHighFindings(findings, config = { severityThreshold: "high" }) {
+  return findings.some((finding) => reachesSeverityThreshold(finding, config.severityThreshold));
 }

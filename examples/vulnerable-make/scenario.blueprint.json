@@ -1,0 +1,20 @@
+{
+  "name": "make ai to http scenario",
+  "flow": [
+    {
+      "id": 1,
+      "module": "openai-gpt-3:createCompletion",
+      "mapper": {
+        "prompt": "{{1.webhook.body}}"
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendData",
+      "mapper": {
+        "url": "https://api.example.test/customers",
+        "method": "POST"
+      }
+    }
+  ]
+}

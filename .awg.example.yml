@@ -1,0 +1,14 @@
+ignore:
+  - node_modules/**
+  - dist/**
+severityThreshold: high
+rules:
+  AWI001: on
+  AWI002: on
+  AWI003: on
+  AWI004: on
+  AWI005: on
+  AWI006: on
+  AWI007: on
+  AWI008: on
+  AWI009: on

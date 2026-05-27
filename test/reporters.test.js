@@ -30,6 +30,23 @@ test("Markdown reporter includes rule, evidence, and remediation", () => {
   assert.match(markdown, /Gate untrusted content/);
 });
 
+test("Markdown reporter includes medium findings even when no high findings exist", () => {
+  const markdown = renderMarkdown([
+    {
+      ruleId: "AWI009",
+      severity: "medium",
+      title: "Low-code automation workflow chains AI into side effects",
+      file: "flows.json",
+      evidence: "Node-RED flow chains AI nodes into side-effect nodes",
+      remediation: "Validate model output."
+    }
+  ]);
+
+  assert.match(markdown, /No high-risk findings/);
+  assert.match(markdown, /AWI009/);
+  assert.match(markdown, /Node-RED/);
+});
+
 test("SARIF reporter emits GitHub code scanning compatible shape", () => {
   const sarif = JSON.parse(renderSarif(findings));
   assert.equal(sarif.version, "2.1.0");

@@ -15,14 +15,18 @@ commands:
   install: "npm install"
   test: "npm test"
   scan: "npm run scan"
+  fix: "node ./bin/agentic-workflow-guard.js fix . --apply"
+  rules: "node ./bin/agentic-workflow-guard.js rules search github"
   agents: "node ./bin/agentic-workflow-guard.js agents"
 skills:
   - name: "agentic-workflow-guard-auditor"
-    description: "Use when auditing GitHub Actions, n8n workflows, MCP configs, or AI automation for AWI001-AWI009 risks."
+    description: "Use when auditing GitHub Actions, n8n, MCP, Node-RED, Make, Pipedream, Airflow, or AI automation for AWI001-AWI009 risks."
     workflow:
       - "Run agentic-workflow-guard scan . --format markdown"
       - "Prioritize high severity AWI001-AWI006 findings"
       - "Use agentic-workflow-guard explain AWI001 for rule-specific remediation"
+      - "Use agentic-workflow-guard fix . --apply only for low-risk permission downgrades"
+      - "Use agentic-workflow-guard rules search <platform> to find relevant marketplace rules"
       - "Use agentic-workflow-guard agents to confirm Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md support files"
       - "Prefer dry-run and approval gates before write-capable automation"
 `;
