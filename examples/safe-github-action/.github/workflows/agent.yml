@@ -1,0 +1,11 @@
+name: safe summary
+on:
+  workflow_dispatch:
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - run: echo "dry-run summary only; human approval required before write"

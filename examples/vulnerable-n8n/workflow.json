@@ -1,0 +1,31 @@
+{
+  "name": "vulnerable n8n agent workflow",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook"
+    },
+    {
+      "id": "2",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent"
+    },
+    {
+      "id": "3",
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "credentials": {
+        "httpHeaderAuth": "prod-api"
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "AI Agent" }]]
+    },
+    "AI Agent": {
+      "main": [[{ "node": "HTTP Request" }]]
+    }
+  }
+}

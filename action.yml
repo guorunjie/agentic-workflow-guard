@@ -1,0 +1,20 @@
+name: Agentic Workflow Guard
+description: Scan AI automation workflows for prompt-injection paths, risky tools, and overpowered permissions.
+branding:
+  icon: shield
+  color: purple
+inputs:
+  path:
+    description: Repository path to scan.
+    required: false
+    default: .
+  format:
+    description: Output format: markdown, json, or sarif.
+    required: false
+    default: sarif
+runs:
+  using: composite
+  steps:
+    - name: Run Agentic Workflow Guard
+      shell: bash
+      run: node "$GITHUB_ACTION_PATH/bin/agentic-workflow-guard.js" scan "${{ inputs.path }}" --format "${{ inputs.format }}"

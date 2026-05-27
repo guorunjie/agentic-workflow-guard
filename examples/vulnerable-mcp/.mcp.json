@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "/"]
+    },
+    "browser": {
+      "command": "npx",
+      "args": ["@playwright/mcp", "--allow-write"]
+    }
+  }
+}

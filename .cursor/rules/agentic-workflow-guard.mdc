@@ -1,0 +1,20 @@
+---
+description: Agent rules for agentic-workflow-guard
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# agentic-workflow-guard
+
+Static security scanner for AI automation workflows across GitHub Actions, n8n, MCP configs, and low-code workflow exports.
+
+## Principles
+- Treat external workflow input as untrusted until validated
+- Keep AI-generated output away from shell and write-capable tools
+- Require human approval, allowlists, or dry-run mode before side effects
+
+## Commands
+- install: `npm install`
+- test: `npm test`
+- scan: `npm run scan`

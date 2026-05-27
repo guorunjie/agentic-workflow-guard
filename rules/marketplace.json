@@ -1,0 +1,25 @@
+{
+  "name": "agentic-workflow-guard-core-rules",
+  "version": "0.1.0",
+  "description": "Core static-analysis rules for AI automation workflow security.",
+  "platforms": [
+    "github-actions",
+    "n8n",
+    "mcp",
+    "activepieces",
+    "zapier",
+    "make",
+    "pipedream"
+  ],
+  "rules": [
+    "AWI001",
+    "AWI002",
+    "AWI003",
+    "AWI004",
+    "AWI005",
+    "AWI006",
+    "AWI007",
+    "AWI008",
+    "AWI009"
+  ]
+}

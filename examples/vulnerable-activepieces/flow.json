@@ -1,0 +1,16 @@
+{
+  "trigger": {
+    "type": "webhook"
+  },
+  "steps": [
+    {
+      "name": "OpenAI",
+      "type": "openai.chat"
+    },
+    {
+      "name": "GitHub",
+      "type": "github.createPullRequest",
+      "credential": "repo-write-token"
+    }
+  ]
+}
