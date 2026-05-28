@@ -85,7 +85,7 @@ async function fileGate(root, file) {
 
 async function packageGate(root) {
   const pkg = await readJson(root, "package.json");
-  const requiredScripts = ["test", "docs:build", "smoke:package", "release:check", "release:prepare", "release:sync", "release:sync:check", "benchmark:report", "benchmark:corpus", "mcp:resources"];
+  const requiredScripts = ["test", "docs:build", "smoke:package", "release:check", "release:prepare", "release:verify", "release:sync", "release:sync:check", "benchmark:report", "benchmark:corpus", "mcp:resources"];
   const missingScripts = requiredScripts.filter((script) => !pkg.scripts?.[script]);
   const requiredFiles = ["bin", "src", "rules", "schemas", "mcp", "examples", "benchmarks", "docs", "docs-site", "scripts", "action.yml", ".github/copilot-instructions.md"];
   const missingFiles = requiredFiles.filter((file) => !pkg.files?.includes(file));
@@ -93,6 +93,8 @@ async function packageGate(root) {
   const evidence = [
     `version=${pkg.version}`,
     `bin.agentic-workflow-guard=${pkg.bin?.["agentic-workflow-guard"] ?? "missing"}`,
+    `repository=${pkg.repository?.url ?? "missing"}`,
+    `homepage=${pkg.homepage ?? "missing"}`,
     `scripts=${requiredScripts.filter((script) => pkg.scripts?.[script]).join(", ")}`,
     `files=${requiredFiles.filter((file) => pkg.files?.includes(file)).join(", ")}`
   ];
@@ -104,6 +106,9 @@ async function packageGate(root) {
   }
   if (pkg.bin?.["agentic-workflow-guard"] !== requiredBin) {
     return fail("package-metadata", "Package metadata", [`Invalid bin.agentic-workflow-guard: ${pkg.bin?.["agentic-workflow-guard"] ?? "missing"}`], `Set bin.agentic-workflow-guard to ${requiredBin} so npm installs the CLI without publish auto-correction.`);
+  }
+  if (!pkg.repository?.url || !pkg.homepage || !pkg.bugs?.url) {
+    return fail("package-metadata", "Package metadata", "Missing repository, homepage, or bugs URL.", "Add npm package metadata so the registry page links back to the public project.");
   }
   return pass("package-metadata", "Package metadata", evidence);
 }

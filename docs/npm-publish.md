@@ -26,6 +26,7 @@ npm run docs:build
 npm run smoke:package
 npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
+npm run release:verify -- --version 1.0.0 --dry-run
 npm pack --dry-run
 ```
 
@@ -54,10 +55,10 @@ npm publish --provenance --access public
 After publishing, verify:
 
 ```bash
-npm view agentic-workflow-guard version
-npx agentic-workflow-guard --help
-npx agentic-workflow-guard scan examples/vulnerable-github-action --format markdown
+npm run release:verify -- --version 1.0.0
 ```
+
+Use `--allow-draft` only while validating the draft GitHub Release before it is published. The final 1.0 verification should run without that flag so a draft release fails the gate.
 
 If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configure the `NPM_TOKEN` automation secret before running `npm publish`.
 

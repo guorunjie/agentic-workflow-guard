@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, marketplace action smoke tests, benchmark schemas, safe fixes, and portable skills.",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guorunjie/agentic-workflow-guard.git"
+  },
+  "homepage": "https://github.com/guorunjie/agentic-workflow-guard#readme",
+  "bugs": {
+    "url": "https://github.com/guorunjie/agentic-workflow-guard/issues"
+  },
   "bin": {
     "agentic-workflow-guard": "bin/agentic-workflow-guard.js"
   },
@@ -23,6 +31,7 @@
     "smoke:package": "node ./scripts/smoke-package.js",
     "release:check": "node ./bin/agentic-workflow-guard.js release check",
     "release:prepare": "node ./scripts/prepare-release.js",
+    "release:verify": "node ./scripts/verify-release.js",
     "release:sync": "node ./scripts/sync-static.js",
     "release:sync:check": "node ./scripts/sync-static.js --check",
     "agents": "node ./bin/agentic-workflow-guard.js agents",

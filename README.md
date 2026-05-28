@@ -219,6 +219,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `agents install <target> [path]` | Installs Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot, AGENTS.md, or MCP resource files into a project. |
 | `release check [path] --target 1.0.0` | Runs the v1 release gates for schemas, rule IDs, platform fixtures, agent files, Action metadata, docs, and npm readiness. |
 | `npm run release:prepare -- --version 1.0.1 --dry-run` | Previews the package version bump and release-tag doc updates before the next release. |
+| `npm run release:verify -- --version 1.0.0 --dry-run` | Prints the GitHub Release, npm registry, and npx smoke checks to run after publication. |
 | `npm run release:sync:check` | Verifies generated rule-pack, benchmark corpus, and MCP resource JSON files are in sync with runtime metadata. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
 
@@ -393,6 +394,7 @@ node ./bin/agentic-workflow-guard.js mcp resources --format json
 npm run docs:build
 npm run smoke:package
 npm run release:prepare -- --version 1.0.1 --dry-run
+npm run release:verify -- --version 1.0.0 --dry-run
 npm run release:sync:check
 npm run release:check
 npm pack --dry-run

@@ -20,7 +20,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 | Stable benchmark schemas | `schema benchmark-corpus`, `schema benchmark-report`, `benchmark corpus --format json`, and `benchmark --format json` stay in sync. |
 | Stable rule IDs | Existing `AWI###` IDs, severity levels, and default profile behavior are frozen for SemVer compatibility. |
 | GitHub Marketplace | A release-tagged `uses: guorunjie/agentic-workflow-guard@v1.0.0` example runs and uploads SARIF. |
-| npm release | `npm whoami`, `npm pack --dry-run`, `npm run smoke:package`, and `npm publish --dry-run` pass before publishing. |
+| npm release | `npm whoami`, `npm pack --dry-run`, `npm run smoke:package`, `npm publish --dry-run`, and `npm run release:verify` pass after publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
 | CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
 | Platform matrix | Vulnerable and safe examples exist for GitHub Actions, Bitbucket Pipelines, GitLab CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, MCP, and browser automation. |
@@ -45,6 +45,7 @@ npm run release:prepare -- --version 1.0.1 --dry-run
 npm run smoke:package
 npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
+npm run release:verify -- --version 1.0.0 --dry-run
 npm run docs:build
 node ../skillpack-forge/bin/skillpack-forge.js doctor .
 npm pack --dry-run
@@ -55,7 +56,7 @@ git diff --check
 5. Verify the remote `release-gates` job is green.
 6. Run the `release` workflow manually with `tag=v1.0.0` and `dry_run=true`.
 7. Publish the draft `v1.0.0` GitHub Release; the release workflow publishes npm with provenance when `NPM_TOKEN` is configured.
-8. Verify GitHub Release, GitHub Marketplace, npm package page, Pages site, and install smoke.
+8. Run `npm run release:verify -- --version 1.0.0` to verify GitHub Release, npm package page, npx CLI help, and the published schema command.
 
 ## Post-1.0 Growth
 
