@@ -22,7 +22,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 | Stable rule IDs | Existing `AWI###` IDs, severity levels, and default profile behavior are frozen for SemVer compatibility. |
 | GitHub Marketplace | `agentic-workflow-guard init .` scaffolds the release-tagged `uses: guorunjie/agentic-workflow-guard@v1.0.0` workflow, runs, and uploads SARIF. |
 | Setup doctor | `agentic-workflow-guard doctor .` validates repository config, schema annotation, Action setup, optional rule-pack lock file, and optional baseline file. |
-| npm release | `npm whoami` or `NPM_TOKEN`, `npm pack --dry-run`, `npm run smoke:package`, `npm publish --dry-run`, `npm run release:status` before publishing, and `npm run release:verify` after publishing. |
+| npm release | `npm whoami` or `NPM_TOKEN`, `npm pack --dry-run`, `npm run smoke:package`, `npm run release:status` before publishing, `npm run release:publish -- --otp <code>` for local 2FA publishing, and `npm run release:verify` after publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
 | CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
 | Platform matrix | Vulnerable and safe examples exist for GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, MCP, and browser automation. |
@@ -30,7 +30,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 
 ## Current Blockers
 
-- npm authentication is not available on this machine yet; `npm whoami` returns `ENEEDAUTH`.
+- Local npm authentication is available, but this npm account requires a fresh 2FA OTP or a granular access token with 2FA bypass for the final publish step.
 - The package has not been published to npm, so the `npx agentic-workflow-guard` public install path still needs live registry proof.
 - The `v1.0.0` GitHub Release is still a draft and should be published after npm publish is ready.
 - GitHub Marketplace still needs the release-tagged `guorunjie/agentic-workflow-guard@v1.0.0` path verified after the final Release is published.
@@ -38,7 +38,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 ## Recommended v1.0 Cut Plan
 
 1. Confirm the repository is clean and remote `main` has green `test` and `pages` workflows.
-2. Add `NPM_TOKEN` as a repository secret with `gh secret set NPM_TOKEN --repo guorunjie/agentic-workflow-guard`, or resolve local npm authentication and run `npm publish --dry-run`.
+2. Add `NPM_TOKEN` as a repository secret with `gh secret set NPM_TOKEN --repo guorunjie/agentic-workflow-guard`, or resolve local npm authentication and run `npm run release:publish -- --version 1.0.0 --plan`.
 3. Run the full local gate:
 
 ```bash
@@ -51,6 +51,7 @@ npm run smoke:package
 npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
 npm run release:status -- --version 1.0.0
+npm run release:publish -- --version 1.0.0 --plan
 npm run release:verify -- --version 1.0.0 --dry-run
 npm run docs:build
 node ../skillpack-forge/bin/skillpack-forge.js doctor .
@@ -61,8 +62,9 @@ git diff --check
 4. Push, wait for remote `test` and `pages`, and verify `action-smoke`.
 5. Verify the remote `release-gates` job is green.
 6. Run the `release` workflow manually with `tag=v1.0.0` and `dry_run=true`.
-7. Run `npm run release:status -- --version 1.0.0` and publish the draft `v1.0.0` GitHub Release when it reports `Ready to publish: yes`.
-8. Run `npm run release:verify -- --version 1.0.0` to verify GitHub Release, npm package page, npx CLI help, and the published schema command.
+7. Run `npm run release:status -- --version 1.0.0`, then publish locally with `npm run release:publish -- --version 1.0.0 --otp <6-digit-code>` or publish the draft `v1.0.0` GitHub Release after `NPM_TOKEN` is configured.
+8. Publish the draft GitHub Release after npm is public; the release workflow skips duplicate npm publication when the version already exists.
+9. Run `npm run release:verify -- --version 1.0.0` to verify GitHub Release, npm package page, npx CLI help, and the published schema command.
 
 ## Post-1.0 Growth
 

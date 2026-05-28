@@ -30,6 +30,7 @@ npm run smoke:package
 npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
 npm run release:status -- --version 1.0.0
+npm run release:publish -- --version 1.0.0 --plan
 npm run release:verify -- --version 1.0.0 --dry-run
 npm pack --dry-run
 ```
@@ -54,8 +55,10 @@ The workflow uses `npm publish --provenance --access public` for the real releas
 ## Manual Publication
 
 ```bash
-npm publish --provenance --access public
+npm run release:publish -- --version 1.0.0 --otp <6-digit-code>
 ```
+
+The helper first checks the prepublish status gate, masks the OTP in its output, skips safely if `agentic-workflow-guard@1.0.0` is already public, and then runs `npm publish --access public --otp <code>`. Use `--plan` for a no-network preview and `--dry-run` for a real `npm publish --dry-run` after status checks. Use `--provenance` only from an environment that can provide trusted publishing provenance; the GitHub release workflow is the preferred provenance path once `NPM_TOKEN` is configured.
 
 After publishing, verify:
 
@@ -65,7 +68,11 @@ npm run release:verify -- --version 1.0.0
 
 Use `--allow-draft` only while validating the draft GitHub Release before it is published. The final 1.0 verification should run without that flag so a draft release fails the gate.
 
-If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configure the `NPM_TOKEN` automation secret before running `npm publish`.
+If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configure the `NPM_TOKEN` automation secret before running `release:publish`. If npm returns a 2FA error, rerun the helper with a fresh authenticator code:
+
+```bash
+npm run release:publish -- --version 1.0.0 --otp <6-digit-code>
+```
 
 ## Release Notes
 

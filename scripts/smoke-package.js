@@ -31,6 +31,7 @@ try {
   await run("npx", ["agentic-workflow-guard", "release", "check", "node_modules/agentic-workflow-guard", "--format", "json"], { cwd: workspace });
   await run("npm", ["run", "release:prepare", "--", "--version", `${packageVersion}-rc.1`, "--dry-run", "--format", "json"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
   await run("npm", ["run", "release:status", "--", "--version", packageVersion, "--dry-run", "--format", "json"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
+  await run("npm", ["run", "release:publish", "--", "--version", packageVersion, "--plan", "--format", "json"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
   await run("npm", ["run", "release:sync:check"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
 
   console.log(`Package smoke passed in ${workspace}`);

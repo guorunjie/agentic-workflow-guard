@@ -237,6 +237,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `release check [path] --target 1.0.0` | Runs the v1 release gates for schemas, rule IDs, platform fixtures, agent files, Action metadata, docs, and npm readiness. |
 | `npm run release:prepare -- --version 1.0.1 --dry-run` | Previews the package version bump and release-tag doc updates before the next release. |
 | `npm run release:status -- --version 1.0.0` | Checks the release tag, GitHub Release, latest release dry-run, `NPM_TOKEN`, npm auth, and npm publication state before launch. |
+| `npm run release:publish -- --version 1.0.0 --otp <code>` | Publishes to npm after status checks, masks OTP in output, and skips safely if the version is already public. |
 | `npm run release:verify -- --version 1.0.0 --dry-run` | Prints the GitHub Release, npm registry, and npx smoke checks to run after publication. |
 | `npm run release:sync:check` | Verifies generated rule-pack, benchmark corpus, and MCP resource JSON files are in sync with runtime metadata. |
 | `skillpack` | Emits a Skillpack Forge manifest for Claude, Codex, Cursor, Copilot, and AGENTS.md. |
@@ -446,6 +447,7 @@ npm run docs:build
 npm run smoke:package
 npm run release:prepare -- --version 1.0.1 --dry-run
 npm run release:status -- --version 1.0.0 --dry-run
+npm run release:publish -- --version 1.0.0 --plan
 npm run release:verify -- --version 1.0.0 --dry-run
 npm run release:sync:check
 npm run release:check
