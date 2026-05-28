@@ -6,7 +6,7 @@
   "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "fixtureManifestVersion": 1,
-  "fixtureCount": 42,
+  "fixtureCount": 46,
   "platforms": [
     "Activepieces",
     "Airflow",
@@ -20,12 +20,14 @@
     "Flowise",
     "GitHub Actions",
     "GitLab CI",
+    "Harness CI/CD",
     "Jenkins",
     "Langflow",
     "MCP",
     "Make",
     "Node-RED",
     "Pipedream",
+    "TeamCity",
     "Travis CI",
     "Zapier",
     "n8n"
@@ -154,6 +156,52 @@
       "platformId": "drone-ci",
       "platform": "Drone CI",
       "path": "examples/safe-drone-ci",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-teamcity",
+      "kind": "vulnerable",
+      "platformId": "teamcity",
+      "platform": "TeamCity",
+      "path": "examples/vulnerable-teamcity",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-teamcity",
+      "kind": "safe",
+      "platformId": "teamcity",
+      "platform": "TeamCity",
+      "path": "examples/safe-teamcity",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-harness",
+      "kind": "vulnerable",
+      "platformId": "harness",
+      "platform": "Harness CI/CD",
+      "path": "examples/vulnerable-harness",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-harness",
+      "kind": "safe",
+      "platformId": "harness",
+      "platform": "Harness CI/CD",
+      "path": "examples/safe-harness",
       "expectedRules": [],
       "risk": "Expected to produce no findings."
     },

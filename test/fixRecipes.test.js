@@ -153,6 +153,55 @@ steps:
   assert.match(updated, /DRONE_COMMIT_MESSAGE/);
 });
 
+test("fix --apply adds TeamCity dry-run parameter", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".teamcity", "settings.kts"),
+    `
+project {
+  buildType {
+    steps {
+      script {
+        scriptContent = "npx openai-agent --prompt 'Review %teamcity.build.branch%'"
+      }
+    }
+  }
+}
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /params \{\n  param\("env\.AGENTIC_WORKFLOW_GUARD_DRY_RUN", "true"\)/);
+  assert.match(updated, /teamcity\.build\.branch/);
+});
+
+test("fix --apply adds Harness pipeline dry-run variable", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".harness", "pipeline.yaml"),
+    `
+pipeline:
+  name: agent deploy
+  stages:
+    - stage:
+        name: deploy
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  spec:
+                    command: npx openai-agent --prompt "Review <+codebase.branch>"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /pipeline:\n  variables:\n    - name: AGENTIC_WORKFLOW_GUARD_DRY_RUN\n      type: String\n      value: "true"/);
+  assert.match(updated, /<\+codebase\.branch>/);
+});
+
 test("fix --apply adds CircleCI job-level dry-run environment", async () => {
   const { root, filePath } = await projectFile(
     path.join(".circleci", "config.yml"),

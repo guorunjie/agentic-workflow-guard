@@ -15,11 +15,13 @@ test("benchmark command verifies fixture snapshots", async () => {
   const { stdout } = await execFileAsync("node", [bin, "benchmark"]);
 
   assert.match(stdout, /Benchmark passed/);
-  assert.match(stdout, /Score: 42\/42 \(100%\)/);
+  assert.match(stdout, /Score: 46\/46 \(100%\)/);
   assert.match(stdout, /vulnerable-bitbucket-pipelines/);
   assert.match(stdout, /vulnerable-gitlab-ci/);
   assert.match(stdout, /vulnerable-travis-ci/);
   assert.match(stdout, /vulnerable-drone-ci/);
+  assert.match(stdout, /vulnerable-teamcity/);
+  assert.match(stdout, /vulnerable-harness/);
   assert.match(stdout, /vulnerable-circleci/);
   assert.match(stdout, /vulnerable-azure-pipelines/);
   assert.match(stdout, /vulnerable-jenkins/);
@@ -40,7 +42,7 @@ test("benchmark command emits scored JSON reports", async () => {
   assert.equal(report.schemaVersion, "1.0.0");
   assert.equal(report.name, "agentic-workflow-guard-benchmark-report");
   assert.equal(report.version, packageVersion);
-  assert.deepEqual(report.summary, { fixtureCount: 42, passed: 42, failed: 0, passRate: 100 });
+  assert.deepEqual(report.summary, { fixtureCount: 46, passed: 46, failed: 0, passRate: 100 });
   assert.ok(report.platforms.includes("GitHub Actions"));
   assert.ok(report.ruleIds.includes("AWI010"));
   assert.equal(safeGithubAction.passed, true);
@@ -73,6 +75,10 @@ test("benchmark fixture manifest includes safe and vulnerable platform pairs", a
   assert.ok(names.includes("safe-travis-ci"));
   assert.ok(names.includes("vulnerable-drone-ci"));
   assert.ok(names.includes("safe-drone-ci"));
+  assert.ok(names.includes("vulnerable-teamcity"));
+  assert.ok(names.includes("safe-teamcity"));
+  assert.ok(names.includes("vulnerable-harness"));
+  assert.ok(names.includes("safe-harness"));
   assert.ok(names.includes("vulnerable-circleci"));
   assert.ok(names.includes("safe-circleci"));
   assert.ok(names.includes("vulnerable-azure-pipelines"));
@@ -92,11 +98,13 @@ test("benchmark corpus command emits portable fixture metadata", async () => {
 
   assert.equal(corpus.schemaVersion, "1.0.0");
   assert.equal(corpus.version, packageVersion);
-  assert.equal(corpus.fixtureCount, 42);
+  assert.equal(corpus.fixtureCount, 46);
   assert.ok(corpus.platforms.includes("GitHub Actions"));
   assert.ok(corpus.platforms.includes("Bitbucket Pipelines"));
   assert.ok(corpus.platforms.includes("Travis CI"));
   assert.ok(corpus.platforms.includes("Drone CI"));
+  assert.ok(corpus.platforms.includes("TeamCity"));
+  assert.ok(corpus.platforms.includes("Harness CI/CD"));
   assert.ok(corpus.platforms.includes("Azure Pipelines"));
   assert.ok(corpus.platforms.includes("Buildkite"));
   assert.ok(corpus.platforms.includes("Dify"));

@@ -31,10 +31,12 @@ test("rules search finds CI platform coverage", async () => {
   assert.match(stdout, /GitLab|CI/i);
 });
 
-test("rules search finds Azure Pipelines and Jenkins coverage", async () => {
+test("rules search finds expanded CI platform coverage", async () => {
   const bitbucket = await execFileAsync("node", [bin, "rules", "search", "bitbucket"]);
   const travis = await execFileAsync("node", [bin, "rules", "search", "travis"]);
   const drone = await execFileAsync("node", [bin, "rules", "search", "drone"]);
+  const teamcity = await execFileAsync("node", [bin, "rules", "search", "teamcity"]);
+  const harness = await execFileAsync("node", [bin, "rules", "search", "harness"]);
   const azure = await execFileAsync("node", [bin, "rules", "search", "azure"]);
   const jenkins = await execFileAsync("node", [bin, "rules", "search", "jenkins"]);
   const buildkite = await execFileAsync("node", [bin, "rules", "search", "buildkite"]);
@@ -45,6 +47,10 @@ test("rules search finds Azure Pipelines and Jenkins coverage", async () => {
   assert.match(travis.stdout, /Travis CI/i);
   assert.match(drone.stdout, /AWI001/);
   assert.match(drone.stdout, /Drone CI/i);
+  assert.match(teamcity.stdout, /AWI001/);
+  assert.match(teamcity.stdout, /TeamCity/i);
+  assert.match(harness.stdout, /AWI001/);
+  assert.match(harness.stdout, /Harness CI\/CD/i);
   assert.match(azure.stdout, /AWI001/);
   assert.match(azure.stdout, /Azure Pipelines/i);
   assert.match(jenkins.stdout, /AWI001/);
@@ -95,6 +101,8 @@ test("rules registry lists installable community packs", async () => {
         pack.platforms.includes("bitbucket-pipelines") &&
         pack.platforms.includes("travis-ci") &&
         pack.platforms.includes("drone-ci") &&
+        pack.platforms.includes("teamcity") &&
+        pack.platforms.includes("harness") &&
         pack.platforms.includes("buildkite")
     )
   );
@@ -127,6 +135,8 @@ test("rules install writes CI pipeline hardening community pack metadata", async
   assert.ok(installed.platforms.includes("bitbucket-pipelines"));
   assert.ok(installed.platforms.includes("travis-ci"));
   assert.ok(installed.platforms.includes("drone-ci"));
+  assert.ok(installed.platforms.includes("teamcity"));
+  assert.ok(installed.platforms.includes("harness"));
   assert.ok(installed.platforms.includes("buildkite"));
   assert.deepEqual(installed.rules, ["AWI001", "AWI002", "AWI007", "AWI008"]);
 });

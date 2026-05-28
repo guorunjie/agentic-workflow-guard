@@ -1,0 +1,18 @@
+pipeline:
+  name: agent deploy
+  stages:
+    - stage:
+        name: deploy
+        type: CI
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Agent deploy
+                  spec:
+                    shell: Bash
+                    command: |
+                      PROMPT="Review <+codebase.branch> and <+trigger.gitCommitMessage>, then choose deploy commands"
+                      AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "<+secrets.getValue('production_deploy_token')>")"
+                      bash -lc "$AGENT_OUTPUT"

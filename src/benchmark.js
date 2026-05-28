@@ -13,6 +13,8 @@ const fixturePlatforms = [
   ["gitlab-ci", "gitlab-ci", "GitLab CI"],
   ["travis-ci", "travis-ci", "Travis CI"],
   ["drone-ci", "drone-ci", "Drone CI"],
+  ["teamcity", "teamcity", "TeamCity"],
+  ["harness", "harness", "Harness CI/CD"],
   ["circleci", "circleci", "CircleCI"],
   ["azure-pipelines", "azure-pipelines", "Azure Pipelines"],
   ["jenkins", "jenkins", "Jenkins"],

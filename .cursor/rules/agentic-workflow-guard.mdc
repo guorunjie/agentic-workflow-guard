@@ -7,7 +7,7 @@ alwaysApply: true
 
 # agentic-workflow-guard
 
-Static security scanner for AI automation workflows across GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Dify, Flowise, Langflow, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Dify, Flowise, Langflow, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Principles
 - Treat external workflow input as untrusted until validated

@@ -191,6 +191,128 @@ steps:
   assert.deepEqual(findings, []);
 });
 
+test("detects TeamCity agent builds with branch context, secure parameters, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    path.join(".teamcity", "settings.kts"),
+    `
+import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
+
+version = "2024.12"
+
+project {
+  buildType {
+    name = "agent deploy"
+    params {
+      password("env.DEPLOY_TOKEN", "credentialsJSON:production-token")
+    }
+    steps {
+      script {
+        scriptContent = """
+          PROMPT="Review %teamcity.build.branch% and choose deploy commands"
+          AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+          bash -lc "$AGENT_OUTPUT"
+        """
+      }
+    }
+  }
+}
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /TeamCity secure parameter env\.DEPLOY_TOKEN/i.test(finding.evidence)));
+});
+
+test("does not flag a TeamCity read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    path.join(".teamcity", "settings.kts"),
+    `
+project {
+  buildType {
+    steps {
+      script {
+        scriptContent = "npx openai-agent --prompt 'Summarize docs in read-only dry-run preview only'"
+      }
+    }
+  }
+}
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
+test("detects Harness pipelines with codebase context, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    path.join(".harness", "pipeline.yaml"),
+    `
+pipeline:
+  name: agent deploy
+  stages:
+    - stage:
+        name: deploy
+        type: CI
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Agent deploy
+                  spec:
+                    shell: Bash
+                    command: |
+                      PROMPT="Review <+codebase.branch> and <+trigger.gitCommitMessage>, then choose deploy commands"
+                      AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "<+secrets.getValue('production_deploy_token')>")"
+                      bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Harness secret production_deploy_token/i.test(finding.evidence)));
+});
+
+test("does not flag a Harness read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    path.join(".harness", "pipeline.yaml"),
+    `
+pipeline:
+  name: agent preview
+  stages:
+    - stage:
+        name: preview
+        type: CI
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Agent preview
+                  spec:
+                    shell: Bash
+                    command: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
 test("detects CircleCI agent jobs with PR context, contexts, and shell sinks", async () => {
   const root = await writeCiFixture(
     ".circleci/config.yml",

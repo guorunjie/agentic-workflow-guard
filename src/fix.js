@@ -115,6 +115,30 @@ function insertDroneDryRunEnvironment(text) {
   };
 }
 
+function insertTeamCityDryRunParam(text) {
+  const params = text.match(/^([ \t]*)params\s*\{\s*$/m);
+  if (params) {
+    return {
+      text: insertIntoExistingBlock(text, params.index, `${params[1]}  param("env.${dryRunVariable}", "true")\n`),
+      changed: true
+    };
+  }
+  return {
+    text: `params {\n  param("env.${dryRunVariable}", "true")\n}\n\n${text}`,
+    changed: true
+  };
+}
+
+function insertHarnessDryRunVariable(text) {
+  const pipeline = text.match(/^([ \t]*)pipeline:\s*$/m);
+  if (!pipeline) return insertYamlVariableAtTopLevel(text);
+  const line = `${pipeline[1]}  variables:\n${pipeline[1]}    - name: ${dryRunVariable}\n${pipeline[1]}      type: String\n${pipeline[1]}      value: "true"\n`;
+  return {
+    text: insertIntoExistingBlock(text, pipeline.index, line),
+    changed: true
+  };
+}
+
 function applyJenkinsDryRunGuard(text) {
   const existingEnvironment = text.match(/^(\s*)environment\s*\{\s*$/m);
   if (existingEnvironment) {
@@ -136,6 +160,8 @@ function applyDryRunGuard(text, file) {
   if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return insertYamlScriptDryRunLine(text);
   if (/^\.travis\.ya?ml$/i.test(file)) return insertTravisDryRunVariable(text);
   if (/^\.drone\.ya?ml$/i.test(file)) return insertDroneDryRunEnvironment(text);
+  if (/^\.teamcity\/.+\.kts$/i.test(file)) return insertTeamCityDryRunParam(text);
+  if (/^\.harness\/.+\.ya?ml$/i.test(file) || /^harness\/.+\.ya?ml$/i.test(file)) return insertHarnessDryRunVariable(text);
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^\.gitlab-ci\.ya?ml$/i.test(file) || /^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) {
@@ -263,6 +289,8 @@ function platformForFile(file) {
   if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return "bitbucket-pipelines";
   if (/^\.travis\.ya?ml$/i.test(file)) return "travis-ci";
   if (/^\.drone\.ya?ml$/i.test(file)) return "drone-ci";
+  if (/^\.teamcity\/.+\.(kts|xml)$/i.test(file)) return "teamcity";
+  if (/^\.harness\/.+\.ya?ml$/i.test(file) || /^harness\/.+\.ya?ml$/i.test(file)) return "harness";
   if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return "buildkite";
@@ -335,6 +363,28 @@ when:
     - push
   branch:
     - main
+`
+    ),
+    teamcity: snippet(
+      "TeamCity approval build step",
+      "kotlin",
+      `
+steps {
+    script {
+        name = "Review agent output"
+        scriptContent = "cat agent-output.txt"
+    }
+}
+`
+    ),
+    harness: snippet(
+      "Harness approval stage",
+      "yaml",
+      `
+stage:
+  type: Approval
+  spec:
+    approvalMessage: Approve agent side effects?
 `
     ),
     circleci: snippet(

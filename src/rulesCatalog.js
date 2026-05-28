@@ -6,7 +6,7 @@ import { rules } from "./rules/index.js";
 import { packageVersion, packageVersionRange, semverPattern } from "./version.js";
 
 const rulePackSchemaVersion = "1.0.0";
-const corePlatforms = ["github-actions", "bitbucket-pipelines", "gitlab-ci", "travis-ci", "drone-ci", "circleci", "azure-pipelines", "jenkins", "buildkite", "n8n", "mcp", "activepieces", "dify", "flowise", "langflow", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
+const corePlatforms = ["github-actions", "bitbucket-pipelines", "gitlab-ci", "travis-ci", "drone-ci", "teamcity", "harness", "circleci", "azure-pipelines", "jenkins", "buildkite", "n8n", "mcp", "activepieces", "dify", "flowise", "langflow", "zapier", "make", "pipedream", "node-red", "airflow", "browser-use", "playwright", "skyvern"];
 const coreRuleIds = Object.keys(rules);
 const repository = "https://github.com/guorunjie/agentic-workflow-guard";
 const rulePackCompatibility = {
@@ -62,7 +62,7 @@ export const communityRulePacks = [
     schemaVersion: rulePackSchemaVersion,
     name: "agentic-workflow-guard-ci-pipeline-hardening",
     version: packageVersion,
-    description: "Focused CI pipeline rule pack for Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
+    description: "Focused CI pipeline rule pack for Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
     publisher: "guorunjie",
     license: "MIT",
     homepage: repository,
@@ -70,7 +70,7 @@ export const communityRulePacks = [
       ...rulePackCompatibility,
       ruleIds: "AWI001-AWI002,AWI007-AWI008"
     },
-    platforms: ["bitbucket-pipelines", "gitlab-ci", "travis-ci", "drone-ci", "circleci", "azure-pipelines", "jenkins", "buildkite"],
+    platforms: ["bitbucket-pipelines", "gitlab-ci", "travis-ci", "drone-ci", "teamcity", "harness", "circleci", "azure-pipelines", "jenkins", "buildkite"],
     rules: ["AWI001", "AWI002", "AWI007", "AWI008"],
     ruleCount: 4,
     provenance: {

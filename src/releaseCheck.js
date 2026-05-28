@@ -24,6 +24,8 @@ const requiredPlatforms = [
   "gitlab-ci",
   "travis-ci",
   "drone-ci",
+  "teamcity",
+  "harness",
   "circleci",
   "azure-pipelines",
   "jenkins",

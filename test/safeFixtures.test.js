@@ -8,6 +8,8 @@ const safeFixtures = [
   "examples/safe-gitlab-ci",
   "examples/safe-travis-ci",
   "examples/safe-drone-ci",
+  "examples/safe-teamcity",
+  "examples/safe-harness",
   "examples/safe-circleci",
   "examples/safe-azure-pipelines",
   "examples/safe-jenkins",

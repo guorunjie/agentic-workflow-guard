@@ -17,6 +17,8 @@
     "gitlab-ci",
     "travis-ci",
     "drone-ci",
+    "teamcity",
+    "harness",
     "circleci",
     "azure-pipelines",
     "jenkins",
@@ -54,5 +56,5 @@
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
     "releaseTag": "v1.0.0"
   },
-  "checksum": "sha256:2ad0148d7ab31be166fe1aade1081015c1803ccde3b702c34119a08f0a35b372"
+  "checksum": "sha256:0b4c469ede429b6de25cfc79fd3d37e8f0080d8ee537955e7a7bde15d1d6f284"
 }

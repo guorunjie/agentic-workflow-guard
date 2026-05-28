@@ -1,0 +1,15 @@
+pipeline:
+  name: agent preview
+  stages:
+    - stage:
+        name: preview
+        type: CI
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Agent preview
+                  spec:
+                    shell: Bash
+                    command: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

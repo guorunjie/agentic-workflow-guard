@@ -12,10 +12,10 @@ Teams increasingly add agents to issue triage, merge request review, release wor
 
 Agentic Workflow Guard detects:
 
-- untrusted GitHub, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite event or pipeline context in prompts;
-- agent output entering GitHub Actions `run:` steps, Bitbucket Pipelines `script:` lines, GitLab CI `script:` lines, Travis CI `script:` lines, Drone `commands:`, CircleCI `run` commands, Azure Pipelines `script:` steps, Jenkins `sh` steps, or Buildkite `command` steps;
+- untrusted GitHub, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, and Buildkite event or pipeline context in prompts;
+- agent output entering GitHub Actions `run:` steps, Bitbucket Pipelines `script:` lines, GitLab CI `script:` lines, Travis CI `script:` lines, Drone `commands:`, TeamCity script steps, Harness Run steps, CircleCI `run` commands, Azure Pipelines `script:` steps, Jenkins `sh` steps, or Buildkite `command` steps;
 - high write permissions in AI jobs;
-- CI tokens, secret-like environment values, Bitbucket deployment/OIDC tokens, Travis secure env, Drone secrets, CircleCI contexts, Azure service connections, Azure variable groups, Jenkins credential bindings, and Buildkite env secrets near agent execution;
+- CI tokens, secret-like environment values, Bitbucket deployment/OIDC tokens, Travis secure env, Drone secrets, TeamCity secure parameters, Harness secrets, CircleCI contexts, Azure service connections, Azure variable groups, Jenkins credential bindings, and Buildkite env secrets near agent execution;
 - `pull_request_target` combined with agent or script execution;
 - secrets or environment values exposed to agent-visible context.
 
@@ -65,7 +65,7 @@ Highest-impact improvements:
    Add upload examples, GitHub Code Scanning screenshots, stable rule metadata, and release-tagged Marketplace usage.
 
 2. **Add native platform parsers**  
-   Deepen Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
+   Deepen Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, Buildkite, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern beyond the current static heuristics.
 
 3. **Ship trusted examples**  
    Add paired vulnerable/safe fixtures for every platform so users can understand findings in seconds.
@@ -92,7 +92,7 @@ There is still meaningful room for iteration. The project is no longer just a CL
 Priority directions:
 
 1. **Deeper native parsers**
-   Replace broad heuristics with native understanding of GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
+   Replace broad heuristics with native understanding of GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, Node-RED, Airflow, Playwright, browser-use, and Skyvern exports. This improves precision, evidence quality, and trust.
 
 2. **Policy and fix engine**
    Expand `fix --format json`, `fix --output`, and `fix --patch` into policy-aware remediation: approval snippets, allowlists, split read/write jobs, MCP filesystem read-only scoping, permission minimization, platform-specific dry-run defaults, and PR-ready patches with confidence levels.

@@ -14,6 +14,10 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/safe-travis-ci` | Travis CI | none |
 | `examples/vulnerable-drone-ci` | Drone CI | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
 | `examples/safe-drone-ci` | Drone CI | none |
+| `examples/vulnerable-teamcity` | TeamCity | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-teamcity` | TeamCity | none |
+| `examples/vulnerable-harness` | Harness CI/CD | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-harness` | Harness CI/CD | none |
 | `examples/vulnerable-circleci` | CircleCI | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
 | `examples/safe-circleci` | CircleCI | none |
 | `examples/vulnerable-azure-pipelines` | Azure Pipelines | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
