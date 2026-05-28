@@ -70,6 +70,9 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   const marketplaceGuide = await readFile(path.join(root, "docs", "rule-marketplace.md"), "utf8");
   const demos = await readFile(path.join(root, "docs", "demos.md"), "utf8");
   const v1Readiness = await readFile(path.join(root, "docs", "v1-readiness.md"), "utf8");
+  const contributing = await readFile(path.join(root, "CONTRIBUTING.md"), "utf8");
+  const security = await readFile(path.join(root, "SECURITY.md"), "utf8");
+  const conduct = await readFile(path.join(root, "CODE_OF_CONDUCT.md"), "utf8");
 
   assert.match(stdout, /Installed mcp-resources/);
   assert.match(manifest, /awg:\/\/rules\/core/);
@@ -110,6 +113,9 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(marketplaceGuide, /rules registry/);
   assert.match(demos, /Demo Playbook/);
   assert.match(v1Readiness, /v1\.0 Readiness/);
+  assert.match(contributing, /Rule Pack Contributions/);
+  assert.match(security, /Reporting A Vulnerability/);
+  assert.match(conduct, /Expected Behavior/);
 });
 
 test("agents install all is a no-op when run against the package root", async () => {

@@ -337,6 +337,8 @@ node ./bin/agentic-workflow-guard.js scan examples/vulnerable-travis-ci --format
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-drone-ci --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-teamcity --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-harness --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-tekton --format markdown
+node ./bin/agentic-workflow-guard.js scan examples/vulnerable-argo-workflows --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-aws-codebuild --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-google-cloud-build --format markdown
 node ./bin/agentic-workflow-guard.js scan examples/vulnerable-circleci --format markdown
@@ -389,6 +391,13 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, release-tagged GitHub Action, npm package, and GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage, [docs/v1-readiness.md](docs/v1-readiness.md) for the remaining 1.0 release gates, and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.
+
+## Contributing And Security
+
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before adding platform scanners, rule packs, benchmark fixtures, fix recipes, or agent outputs.
+- Use [SECURITY.md](SECURITY.md) for scanner bypasses, unsafe automatic fixes, package integrity issues, and private vulnerability reporting guidance.
+- Follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) in public issues, reviews, and security-sensitive discussions.
+- Pull requests should use the checklist in `.github/pull_request_template.md`; issue templates cover bug reports, platform coverage requests, and rule-pack proposals.
 
 ## Development
 

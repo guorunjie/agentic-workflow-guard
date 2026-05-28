@@ -127,6 +127,33 @@ export const mcpResourcePack = {
       annotations: { audience: ["assistant", "user"], priority: 0.8 }
     },
     {
+      uri: "awg://project/contributing",
+      name: "contributing-guide",
+      title: "Agentic Workflow Guard Contributing Guide",
+      description: "How to contribute platform scanners, rule packs, benchmark fixtures, fix recipes, docs, and agent outputs.",
+      mimeType: "text/markdown",
+      path: "CONTRIBUTING.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.85 }
+    },
+    {
+      uri: "awg://project/security",
+      name: "security-policy",
+      title: "Agentic Workflow Guard Security Policy",
+      description: "Supported versions, vulnerability reporting scope, and safe research guidance.",
+      mimeType: "text/markdown",
+      path: "SECURITY.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.85 }
+    },
+    {
+      uri: "awg://project/code-of-conduct",
+      name: "code-of-conduct",
+      title: "Agentic Workflow Guard Code Of Conduct",
+      description: "Collaboration expectations for public and security-sensitive project discussions.",
+      mimeType: "text/markdown",
+      path: "CODE_OF_CONDUCT.md",
+      annotations: { audience: ["assistant", "user"], priority: 0.65 }
+    },
+    {
       uri: "awg://docs/demos",
       name: "demo-playbook",
       title: "Agentic Workflow Guard Demo Playbook",

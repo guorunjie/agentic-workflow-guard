@@ -19,6 +19,9 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 - [GitHub Pages Site Source](../docs-site/index.html): static docs landing page, Marketplace page, and schema URL aliases.
 - [Use Cases and Growth Strategy](use-cases-and-growth.md): positioning, growth path, and optimization directions.
 - [NPM Publish Checklist](npm-publish.md): package publication and release verification steps.
+- [Contributing](../CONTRIBUTING.md): platform scanner, rule-pack, benchmark fixture, fix recipe, and agent-output contribution workflow.
+- [Security Policy](../SECURITY.md): vulnerability reporting scope, safe research guidelines, and supported versions.
+- [Code of Conduct](../CODE_OF_CONDUCT.md): collaboration expectations for public and security-sensitive discussions.
 
 ## Remediation Playbooks
 

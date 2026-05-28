@@ -61,7 +61,12 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.ok(pkg.files.includes("schemas"));
   assert.ok(pkg.files.includes("docs-site"));
   assert.ok(pkg.files.includes("scripts"));
+  assert.ok(pkg.files.includes("CONTRIBUTING.md"));
+  assert.ok(pkg.files.includes("SECURITY.md"));
+  assert.ok(pkg.files.includes("CODE_OF_CONDUCT.md"));
   assert.ok(pkg.files.includes(".github/copilot-instructions.md"));
+  assert.ok(pkg.files.includes(".github/pull_request_template.md"));
+  assert.ok(pkg.files.includes(".github/ISSUE_TEMPLATE"));
   assert.ok(pkg.files.includes(".github/workflows/release.yml"));
 });
 
@@ -123,6 +128,41 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /awg-ignore AWI001/);
   assert.match(readme, /Suppressed findings/);
   assert.match(readme, /\.awg\.yml/);
+  assert.match(readme, /CONTRIBUTING\.md/);
+  assert.match(readme, /SECURITY\.md/);
+  assert.match(readme, /CODE_OF_CONDUCT\.md/);
+});
+
+test("repository includes contribution, security, and collaboration templates", async () => {
+  const files = [
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/platform_request.md",
+    ".github/ISSUE_TEMPLATE/rule_pack_request.md"
+  ];
+
+  for (const file of files) {
+    const content = await readFile(file, "utf8");
+    assert.ok(content.length > 100, `${file} should have actionable content`);
+  }
+
+  const contributing = await readFile("CONTRIBUTING.md", "utf8");
+  const security = await readFile("SECURITY.md", "utf8");
+  const prTemplate = await readFile(".github/pull_request_template.md", "utf8");
+  const platformTemplate = await readFile(".github/ISSUE_TEMPLATE/platform_request.md", "utf8");
+
+  assert.match(contributing, /Adding Platform Coverage/);
+  assert.match(contributing, /Rule Pack Contributions/);
+  assert.match(contributing, /benchmark/);
+  assert.match(security, /Reporting A Vulnerability/);
+  assert.match(security, /Safe Research Guidelines/);
+  assert.match(prTemplate, /npm run release:sync:check/);
+  assert.match(prTemplate, /No real secrets/);
+  assert.match(platformTemplate, /Vulnerable fixture/);
+  assert.match(platformTemplate, /Safe fixture/);
 });
 
 test("GitHub Action writes SARIF and optional fix report files for follow-up jobs", async () => {
@@ -257,6 +297,13 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/demos.md",
     "docs/v1-readiness.md",
     "docs/index.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "CODE_OF_CONDUCT.md",
+    ".github/pull_request_template.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/platform_request.md",
+    ".github/ISSUE_TEMPLATE/rule_pack_request.md",
     "docs-site/index.html",
     "docs-site/marketplace.html",
     ".github/workflows/release.yml",
