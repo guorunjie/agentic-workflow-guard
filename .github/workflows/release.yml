@@ -59,8 +59,23 @@ jobs:
       - run: npm run smoke:package
       - run: npm pack --dry-run
 
+      - name: Check npm publication
+        id: npm
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          VERSION="${RELEASE_TAG#v}"
+          if npm view "agentic-workflow-guard@$VERSION" version --json >/dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "agentic-workflow-guard@$VERSION is already published on npm."
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "agentic-workflow-guard@$VERSION is not published on npm yet."
+          fi
+
       - name: Require NPM_TOKEN for real publish
-        if: ${{ steps.release.outputs.dry_run != 'true' }}
+        if: ${{ steps.release.outputs.dry_run != 'true' && steps.npm.outputs.published != 'true' }}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -76,15 +91,17 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           RELEASE_TAG: ${{ steps.release.outputs.tag }}
           DRY_RUN: ${{ steps.release.outputs.dry_run }}
+          NPM_PUBLISHED: ${{ steps.npm.outputs.published }}
         run: |
           VERSION="${RELEASE_TAG#v}"
-          if [ "$DRY_RUN" = "true" ]; then
+          if [ "$DRY_RUN" = "true" ] || [ "$NPM_PUBLISHED" = "true" ]; then
             npm run release:check -- --target "$VERSION"
           else
             npm run release:check -- --target "$VERSION" --require-npm-auth
           fi
 
       - name: Publish to npm
+        if: ${{ steps.npm.outputs.published != 'true' }}
         shell: bash
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -95,3 +112,11 @@ jobs:
           else
             npm publish --provenance --access public
           fi
+
+      - name: Skip npm publish
+        if: ${{ steps.npm.outputs.published == 'true' }}
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          echo "agentic-workflow-guard@${RELEASE_TAG#v} is already published; skipping npm publish."
