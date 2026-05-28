@@ -20,6 +20,7 @@ test("MCP resource pack uses resource descriptors with stable custom URIs", () =
   assert.ok(uris.includes("awg://benchmarks/corpus"));
   assert.ok(uris.includes("awg://schemas/report"));
   assert.ok(uris.includes("awg://schemas/fix-report"));
+  assert.ok(uris.includes("awg://schemas/config"));
   assert.ok(uris.includes("awg://schemas/rule-pack"));
   assert.ok(uris.includes("awg://schemas/benchmark-corpus"));
   assert.ok(uris.includes("awg://schemas/benchmark-report"));
@@ -58,6 +59,7 @@ test("CLI mcp resources emits markdown and JSON resource manifests", async () =>
   assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://playbooks/browser-automation"));
   assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://playbooks/ci-pipelines"));
   assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://schemas/fix-report"));
+  assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://schemas/config"));
   assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://schemas/rule-pack"));
   assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://schemas/benchmark-corpus"));
   assert.ok(parsed.resourcePack.resources.some((resource) => resource.uri === "awg://schemas/benchmark-report"));

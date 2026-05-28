@@ -56,6 +56,7 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   const { stdout } = await execFileAsync("node", [bin, "agents", "install", "mcp-resources", root]);
   const manifest = await readFile(path.join(root, "mcp", "resources", "agentic-workflow-guard.resources.json"), "utf8");
   const fixSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-fix-report.schema.json"), "utf8");
+  const configSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-config.schema.json"), "utf8");
   const rulePackSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-rule-pack.schema.json"), "utf8");
   const corpusSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-benchmark-corpus.schema.json"), "utf8");
   const benchmarkReportSchema = await readFile(path.join(root, "schemas", "agentic-workflow-guard-benchmark-report.schema.json"), "utf8");
@@ -77,6 +78,7 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(stdout, /Installed mcp-resources/);
   assert.match(manifest, /awg:\/\/rules\/core/);
   assert.match(fixSchema, /Agentic Workflow Guard Fix Report/);
+  assert.match(configSchema, /Agentic Workflow Guard Config/);
   assert.match(rulePackSchema, /Agentic Workflow Guard Rule Pack/);
   assert.match(corpusSchema, /Agentic Workflow Guard Benchmark Corpus/);
   assert.match(benchmarkReportSchema, /Agentic Workflow Guard Benchmark Report/);

@@ -96,6 +96,7 @@ Print stable JSON schemas:
 ```bash
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
+node ./bin/agentic-workflow-guard.js schema config
 node ./bin/agentic-workflow-guard.js schema rule-pack
 node ./bin/agentic-workflow-guard.js schema benchmark-corpus
 node ./bin/agentic-workflow-guard.js schema benchmark-report
@@ -220,6 +221,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules verify <file>` | Verifies rule pack schema metadata and checksum before use. |
 | `schema report` | Emits the stable JSON Schema for `scan --format json` reports. |
 | `schema fix` | Emits the stable JSON Schema for `fix --format json` recipe reports. |
+| `schema config` | Emits the stable JSON Schema for `.awg.yml`, `.awg.yaml`, and `.awg.json` repository config. |
 | `schema rule-pack` | Emits the stable rule pack schema for marketplace metadata. |
 | `schema benchmark-corpus` | Emits the stable benchmark corpus metadata schema. |
 | `schema benchmark-report` | Emits the stable benchmark scoring report schema. |
@@ -283,6 +285,14 @@ rules:
 ```
 
 `profile` controls rollout mode: `advisory` reports without blocking normal findings, `balanced` fails on high severity findings, and `strict` fails on medium and high findings. `severityThreshold` can override the profile default. `rules` can disable noisy checks for a repository, while `ignore` removes generated files or fixture directories from scanning. Use `.awg-baseline.json` when adopting the scanner in an existing repository and you want CI to fail only on newly introduced findings.
+
+The config format is documented by a stable schema:
+
+```bash
+node ./bin/agentic-workflow-guard.js schema config
+```
+
+The public schema URL is `https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json`.
 
 For reviewed exceptions, use inline suppressions with a reason:
 

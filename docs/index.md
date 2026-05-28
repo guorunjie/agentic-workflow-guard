@@ -12,6 +12,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 - [GitHub Action Marketplace Guide](github-action-marketplace.md): release-tagged Action usage and Marketplace checklist.
 - [Report Schema](../schemas/agentic-workflow-guard-report.schema.json): stable JSON schema for machine-readable scan reports.
 - [Fix Report Schema](../schemas/agentic-workflow-guard-fix-report.schema.json): stable JSON schema for structured remediation recipes, approval snippets, and next steps.
+- [Config Schema](../schemas/agentic-workflow-guard-config.schema.json): stable JSON schema for `.awg.yml`, `.awg.yaml`, and `.awg.json` repository config.
 - [Rule Pack Schema](../schemas/agentic-workflow-guard-rule-pack.schema.json): stable JSON schema for trusted marketplace metadata.
 - [Benchmark Corpus Schema](../schemas/agentic-workflow-guard-benchmark-corpus.schema.json): stable JSON schema for public benchmark corpus metadata.
 - [Benchmark Report Schema](../schemas/agentic-workflow-guard-benchmark-report.schema.json): stable JSON schema for scored benchmark reports.
@@ -42,6 +43,7 @@ node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
 node ./bin/agentic-workflow-guard.js schema report
 node ./bin/agentic-workflow-guard.js schema fix
+node ./bin/agentic-workflow-guard.js schema config
 node ./bin/agentic-workflow-guard.js schema rule-pack
 node ./bin/agentic-workflow-guard.js schema benchmark-corpus
 node ./bin/agentic-workflow-guard.js schema benchmark-report

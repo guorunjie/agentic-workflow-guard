@@ -14,6 +14,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 - Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads
 - Use agentic-workflow-guard schema report when integrating machine-readable JSON reports
 - Use agentic-workflow-guard schema fix when integrating structured fix recipe reports
+- Use agentic-workflow-guard schema config when integrating .awg.yml, .awg.yaml, or .awg.json repository settings
 - Use agentic-workflow-guard schema rule-pack when integrating trusted marketplace metadata
 - Use agentic-workflow-guard schema benchmark-corpus and schema benchmark-report when integrating benchmark metadata
 - Use agentic-workflow-guard scan . --profile strict in write-capable or sensitive automation repositories
@@ -63,6 +64,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 - release-sync-check: `npm run release:sync:check`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
 - schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
+- schema-config: `node ./bin/agentic-workflow-guard.js schema config`
 - schema-rule-pack: `node ./bin/agentic-workflow-guard.js schema rule-pack`
 - schema-benchmark-corpus: `node ./bin/agentic-workflow-guard.js schema benchmark-corpus`
 - schema-benchmark-report: `node ./bin/agentic-workflow-guard.js schema benchmark-report`

@@ -97,6 +97,21 @@
       }
     },
     {
+      "uri": "awg://schemas/config",
+      "name": "config-schema",
+      "title": "Agentic Workflow Guard Config Schema",
+      "description": "Stable JSON Schema for .awg.yml, .awg.yaml, and .awg.json repository config.",
+      "mimeType": "application/schema+json",
+      "path": "schemas/agentic-workflow-guard-config.schema.json",
+      "annotations": {
+        "audience": [
+          "assistant",
+          "user"
+        ],
+        "priority": 0.95
+      }
+    },
+    {
       "uri": "awg://schemas/rule-pack",
       "name": "rule-pack-schema",
       "title": "Agentic Workflow Guard Rule Pack Schema",

@@ -22,6 +22,12 @@ const schemaAliases = [
     url: "https://guorunjie.github.io/agentic-workflow-guard/schemas/fix-report.schema.json"
   },
   {
+    name: "config",
+    source: "schemas/agentic-workflow-guard-config.schema.json",
+    path: "schemas/config.schema.json",
+    url: "https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json"
+  },
+  {
     name: "rule pack",
     source: "schemas/agentic-workflow-guard-rule-pack.schema.json",
     path: "schemas/rule-pack.schema.json",

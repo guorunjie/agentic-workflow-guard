@@ -16,6 +16,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 | --- | --- |
 | Stable finding schema | `node ./bin/agentic-workflow-guard.js schema report` matches the shipped JSON schema and README integration examples. |
 | Stable fix recipe schema | `schema fix` covers recipe mode, confidence, patch availability, snippets, next steps, changed files, CI dry-run defaults, and MCP filesystem read-only scoping. |
+| Stable config schema | `schema config` documents `.awg.yml`, `.awg.yaml`, and `.awg.json` profiles, thresholds, ignore globs, and rule toggles. |
 | Stable rule pack schema | `schema rule-pack`, `rules registry`, `rules install`, and `rules verify` agree on provenance, checksum, compatibility, and license metadata. |
 | Stable benchmark schemas | `schema benchmark-corpus`, `schema benchmark-report`, `benchmark corpus --format json`, and `benchmark --format json` stay in sync. |
 | Stable rule IDs | Existing `AWI###` IDs, severity levels, and default profile behavior are frozen for SemVer compatibility. |
@@ -42,6 +43,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 ```bash
 npm test
 node ./bin/agentic-workflow-guard.js init /tmp/awg-init-smoke --force
+node ./bin/agentic-workflow-guard.js schema config
 npm run release:prepare -- --version 1.0.1 --dry-run
 npm run smoke:package
 npm run release:sync:check

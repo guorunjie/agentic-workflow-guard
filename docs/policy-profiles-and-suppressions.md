@@ -28,6 +28,14 @@ rules:
 
 An explicit `severityThreshold` in `.awg.yml` overrides the profile default for that repository.
 
+The config surface is stable and documented by:
+
+```bash
+agentic-workflow-guard schema config
+```
+
+Published schema URL: `https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json`.
+
 ## Inline Suppressions
 
 Use inline suppressions only for reviewed exceptions. Suppressions require a reason after `:`.

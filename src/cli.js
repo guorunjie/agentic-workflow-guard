@@ -14,7 +14,7 @@ import { renderJson, summarize } from "./reporters/json.js";
 import { renderMarkdown } from "./reporters/markdown.js";
 import { renderSarif } from "./reporters/sarif.js";
 import { buildReleaseCheck, renderReleaseCheck } from "./releaseCheck.js";
-import { renderBenchmarkCorpusSchema, renderBenchmarkReportSchema, renderFixReportSchema, renderReportSchema, renderRulePackSchema } from "./schema.js";
+import { renderBenchmarkCorpusSchema, renderBenchmarkReportSchema, renderConfigSchema, renderFixReportSchema, renderReportSchema, renderRulePackSchema } from "./schema.js";
 import { installRulePack, renderRulePacks, renderRuleRegistry, renderRuleSearch, renderRules, verifyRulePack } from "./rulesCatalog.js";
 import { scanProject, scanProjectWithMetadata, hasHighFindings } from "./scan.js";
 import { renderSkillpack } from "./skillpack.js";
@@ -48,7 +48,7 @@ Usage:
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json] [--output report]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|registry|search <query>|install <pack> [path]|verify <file>] [--format markdown|json]
-  agentic-workflow-guard schema report|fix|rule-pack|benchmark-corpus|benchmark-report
+  agentic-workflow-guard schema report|fix|config|rule-pack|benchmark-corpus|benchmark-report
   agentic-workflow-guard mcp resources [--format markdown|json]
   agentic-workflow-guard benchmark [path]|corpus [path] [--format markdown|json]
   agentic-workflow-guard agents [--format markdown|json]
@@ -194,6 +194,10 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       output.write(await renderFixReportSchema());
       return 0;
     }
+    if (subcommand === "config") {
+      output.write(await renderConfigSchema());
+      return 0;
+    }
     if (subcommand === "rule-pack") {
       output.write(await renderRulePackSchema());
       return 0;
@@ -206,7 +210,7 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
       output.write(await renderBenchmarkReportSchema());
       return 0;
     }
-    if (!["report", "fix", "rule-pack", "benchmark-corpus", "benchmark-report"].includes(subcommand)) {
+    if (!["report", "fix", "config", "rule-pack", "benchmark-corpus", "benchmark-report"].includes(subcommand)) {
       error.write(`Unknown schema command: ${subcommand}\n`);
       return 1;
     }

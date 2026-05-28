@@ -22,6 +22,7 @@ function validateCiTarget(ci) {
 export function renderAwgConfig(profile = "balanced") {
   validateProfile(profile);
   const lines = [
+    "# yaml-language-server: $schema=https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json",
     "ignore:",
     "  - node_modules/**",
     "  - dist/**",

@@ -27,6 +27,7 @@ const installTargets = {
     "benchmarks/corpus.json",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
+    "schemas/agentic-workflow-guard-config.schema.json",
     "schemas/agentic-workflow-guard-rule-pack.schema.json",
     "schemas/agentic-workflow-guard-benchmark-corpus.schema.json",
     "schemas/agentic-workflow-guard-benchmark-report.schema.json",

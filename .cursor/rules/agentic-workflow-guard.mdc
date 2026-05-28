@@ -33,6 +33,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 - release-sync-check: `npm run release:sync:check`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
 - schema-fix: `node ./bin/agentic-workflow-guard.js schema fix`
+- schema-config: `node ./bin/agentic-workflow-guard.js schema config`
 - schema-rule-pack: `node ./bin/agentic-workflow-guard.js schema rule-pack`
 - schema-benchmark-corpus: `node ./bin/agentic-workflow-guard.js schema benchmark-corpus`
 - schema-benchmark-report: `node ./bin/agentic-workflow-guard.js schema benchmark-report`

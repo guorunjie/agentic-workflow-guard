@@ -47,6 +47,20 @@ test("CLI schema fix emits the shipped fix report schema", async () => {
   assert.ok(parsed.properties.recipes.items.properties.snippets);
 });
 
+test("CLI schema config emits the shipped config schema", async () => {
+  const schema = JSON.parse(await readFile("schemas/agentic-workflow-guard-config.schema.json", "utf8"));
+  const { stdout } = await execFileAsync("node", [bin, "schema", "config"]);
+  const parsed = JSON.parse(stdout);
+
+  assert.equal(schema.$id, "https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json");
+  assert.equal(parsed.title, "Agentic Workflow Guard Config");
+  assert.deepEqual(parsed.properties.profile.enum, ["advisory", "balanced", "strict"]);
+  assert.deepEqual(parsed.properties.severityThreshold.enum, ["low", "medium", "high", "critical"]);
+  assert.ok(parsed.properties.rules.properties.AWI001);
+  assert.ok(parsed.properties.rules.properties.AWI010);
+  assert.equal(parsed.additionalProperties, false);
+});
+
 test("CLI schema benchmark-corpus emits the shipped benchmark corpus schema", async () => {
   const schema = JSON.parse(await readFile("schemas/agentic-workflow-guard-benchmark-corpus.schema.json", "utf8"));
   const { stdout } = await execFileAsync("node", [bin, "schema", "benchmark-corpus"]);

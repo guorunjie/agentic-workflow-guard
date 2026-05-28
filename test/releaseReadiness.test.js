@@ -45,6 +45,7 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.equal(pkg.scripts["mcp:resources"], "node ./bin/agentic-workflow-guard.js mcp resources --format json");
   assert.equal(pkg.scripts["schema:report"], "node ./bin/agentic-workflow-guard.js schema report");
   assert.equal(pkg.scripts["schema:fix"], "node ./bin/agentic-workflow-guard.js schema fix");
+  assert.equal(pkg.scripts["schema:config"], "node ./bin/agentic-workflow-guard.js schema config");
   assert.equal(pkg.scripts["schema:rule-pack"], "node ./bin/agentic-workflow-guard.js schema rule-pack");
   assert.equal(pkg.scripts["schema:benchmark-corpus"], "node ./bin/agentic-workflow-guard.js schema benchmark-corpus");
   assert.equal(pkg.scripts["schema:benchmark-report"], "node ./bin/agentic-workflow-guard.js schema benchmark-report");
@@ -93,6 +94,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /--output awg\.sarif/);
   assert.match(readme, /schema report/);
   assert.match(readme, /schema fix/);
+  assert.match(readme, /schema config/);
   assert.match(readme, /schema rule-pack/);
   assert.match(readme, /schema benchmark-corpus/);
   assert.match(readme, /schema benchmark-report/);
@@ -317,6 +319,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "docs/npm-publish.md",
     "schemas/agentic-workflow-guard-report.schema.json",
     "schemas/agentic-workflow-guard-fix-report.schema.json",
+    "schemas/agentic-workflow-guard-config.schema.json",
     "schemas/agentic-workflow-guard-rule-pack.schema.json",
     "schemas/agentic-workflow-guard-benchmark-corpus.schema.json",
     "schemas/agentic-workflow-guard-benchmark-report.schema.json",

@@ -89,7 +89,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, one-command project initialization, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, one-command project initialization, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, stable config/report/fix/rule/benchmark schemas, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 

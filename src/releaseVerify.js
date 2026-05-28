@@ -104,6 +104,19 @@ function buildChecks({ version, packageName, repository, allowDraft }) {
         }
         return "Published CLI emits the stable report schema.";
       }
+    },
+    {
+      id: "npx-config-schema",
+      title: "npx config schema smoke",
+      command: "npx",
+      args: ["--yes", `${packageName}@${version}`, "schema", "config"],
+      validate({ stdout }) {
+        const schema = parseJsonOutput(stdout, "schema config");
+        if (schema.title !== "Agentic Workflow Guard Config") {
+          throw new Error("Published CLI did not emit the config schema.");
+        }
+        return "Published CLI emits the stable config schema.";
+      }
     }
   ];
 }

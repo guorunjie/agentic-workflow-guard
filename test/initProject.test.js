@@ -27,6 +27,7 @@ test("initProject scaffolds config and GitHub Actions workflow", async () => {
   );
 
   const config = await readFile(path.join(root, ".awg.yml"), "utf8");
+  assert.match(config, /yaml-language-server: \$schema=https:\/\/guorunjie\.github\.io\/agentic-workflow-guard\/schemas\/config\.schema\.json/);
   assert.match(config, /profile: strict/);
   assert.match(config, /severityThreshold: medium/);
   assert.match(config, /AWI010: on/);

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json",
+  "title": "Agentic Workflow Guard Config",
+  "description": "Configuration for .awg.yml, .awg.yaml, and .awg.json files.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional schema URL for JSON editors. YAML configs may omit this field."
+    },
+    "ignore": {
+      "type": "array",
+      "description": "Repository-relative glob patterns to remove generated or irrelevant files from scans.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "default": []
+    },
+    "profile": {
+      "description": "Rollout mode. advisory reports without blocking normal findings, balanced fails high severity findings, and strict fails medium and high findings.",
+      "enum": ["advisory", "balanced", "strict"],
+      "default": "balanced"
+    },
+    "severityThreshold": {
+      "description": "Optional explicit exit threshold. Overrides the default threshold from profile.",
+      "enum": ["low", "medium", "high", "critical"],
+      "default": "high"
+    },
+    "rules": {
+      "type": "object",
+      "description": "Per-rule toggles. Use off, disabled, or false to suppress a rule for the repository.",
+      "additionalProperties": false,
+      "properties": {
+        "AWI001": { "$ref": "#/$defs/ruleToggle" },
+        "AWI002": { "$ref": "#/$defs/ruleToggle" },
+        "AWI003": { "$ref": "#/$defs/ruleToggle" },
+        "AWI004": { "$ref": "#/$defs/ruleToggle" },
+        "AWI005": { "$ref": "#/$defs/ruleToggle" },
+        "AWI006": { "$ref": "#/$defs/ruleToggle" },
+        "AWI007": { "$ref": "#/$defs/ruleToggle" },
+        "AWI008": { "$ref": "#/$defs/ruleToggle" },
+        "AWI009": { "$ref": "#/$defs/ruleToggle" },
+        "AWI010": { "$ref": "#/$defs/ruleToggle" }
+      },
+      "default": {}
+    }
+  },
+  "examples": [
+    {
+      "ignore": ["node_modules/**", "dist/**"],
+      "profile": "balanced",
+      "severityThreshold": "high",
+      "rules": {
+        "AWI001": "on",
+        "AWI007": "off"
+      }
+    }
+  ],
+  "$defs": {
+    "ruleToggle": {
+      "description": "Rule state. Any value other than off, disabled, or false is treated as enabled by the scanner; the schema keeps the public config surface explicit.",
+      "enum": ["on", "off", "disabled", true, false]
+    }
+  }
+}
