@@ -83,6 +83,38 @@ function insertYamlScriptDryRunLine(text) {
   };
 }
 
+function insertTravisDryRunVariable(text) {
+  const global = text.match(/^([ \t]*)global:\s*$/m);
+  if (global) {
+    return {
+      text: insertIntoExistingBlock(text, global.index, `${global[1]}  - ${dryRunVariable}="true"\n`),
+      changed: true
+    };
+  }
+
+  const env = text.match(/^([ \t]*)env:\s*$/m);
+  if (env) {
+    return {
+      text: insertIntoExistingBlock(text, env.index, `${env[1]}  global:\n${env[1]}    - ${dryRunVariable}="true"\n`),
+      changed: true
+    };
+  }
+
+  return {
+    text: `env:\n  global:\n    - ${dryRunVariable}="true"\n\n${text}`,
+    changed: true
+  };
+}
+
+function insertDroneDryRunEnvironment(text) {
+  const commands = text.match(/^([ \t]*)commands:\s*$/m);
+  if (!commands) return { text, changed: false };
+  return {
+    text: `${text.slice(0, commands.index)}${commands[1]}environment:\n${commands[1]}  ${dryRunVariable}: "true"\n${text.slice(commands.index)}`,
+    changed: true
+  };
+}
+
 function applyJenkinsDryRunGuard(text) {
   const existingEnvironment = text.match(/^(\s*)environment\s*\{\s*$/m);
   if (existingEnvironment) {
@@ -102,6 +134,8 @@ function applyDryRunGuard(text, file) {
   if (/AGENTIC_WORKFLOW_GUARD_DRY_RUN/.test(text)) return { text, changed: false };
   if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return insertYamlScriptDryRunLine(text);
+  if (/^\.travis\.ya?ml$/i.test(file)) return insertTravisDryRunVariable(text);
+  if (/^\.drone\.ya?ml$/i.test(file)) return insertDroneDryRunEnvironment(text);
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^\.gitlab-ci\.ya?ml$/i.test(file) || /^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) {
@@ -227,6 +261,8 @@ function fixableFiles(findings) {
 function platformForFile(file) {
   if (/^\.github\/workflows\/.+\.ya?ml$/i.test(file)) return "github-actions";
   if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return "bitbucket-pipelines";
+  if (/^\.travis\.ya?ml$/i.test(file)) return "travis-ci";
+  if (/^\.drone\.ya?ml$/i.test(file)) return "drone-ci";
   if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return "buildkite";
@@ -275,6 +311,30 @@ pipelines:
         trigger: manual
         script:
           - npm run agent:review
+`
+    ),
+    "travis-ci": snippet(
+      "Travis CI gated deploy stage",
+      "yaml",
+      `
+jobs:
+  include:
+    - stage: agent preview
+      script: npm run agent:preview
+    - stage: approved side effects
+      if: branch = main AND type = push
+      script: npm run agent:review
+`
+    ),
+    "drone-ci": snippet(
+      "Drone CI protected event gate",
+      "yaml",
+      `
+when:
+  event:
+    - push
+  branch:
+    - main
 `
     ),
     circleci: snippet(

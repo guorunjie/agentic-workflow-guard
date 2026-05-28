@@ -32,6 +32,26 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-travis-ci",
+      "path": "examples/vulnerable-travis-ci",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-travis-ci",
+      "path": "examples/safe-travis-ci",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-drone-ci",
+      "path": "examples/vulnerable-drone-ci",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-drone-ci",
+      "path": "examples/safe-drone-ci",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-circleci",
       "path": "examples/vulnerable-circleci",
       "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]

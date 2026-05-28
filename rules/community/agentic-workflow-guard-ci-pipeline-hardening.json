@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "name": "agentic-workflow-guard-ci-pipeline-hardening",
   "version": "1.0.0",
-  "description": "Focused CI pipeline rule pack for Bitbucket Pipelines, GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
+  "description": "Focused CI pipeline rule pack for Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
   "publisher": "guorunjie",
   "license": "MIT",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
@@ -14,6 +14,8 @@
   "platforms": [
     "bitbucket-pipelines",
     "gitlab-ci",
+    "travis-ci",
+    "drone-ci",
     "circleci",
     "azure-pipelines",
     "jenkins",
@@ -31,5 +33,5 @@
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
     "releaseTag": "v1.0.0"
   },
-  "checksum": "sha256:e6f954c12b409b5bf592b468e5d31e17305331caa7b5c39c5aad678d52bb1a2d"
+  "checksum": "sha256:dc094964ac90518bdef107944bb94376a5cdc5cd34b7e07892f4e23780881dbd"
 }

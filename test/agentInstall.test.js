@@ -19,9 +19,13 @@ test("agents install gemini writes Gemini context and skill bundle", async () =>
   assert.match(stdout, /Installed gemini/);
   assert.match(gemini, /Agentic Workflow Guard/);
   assert.match(gemini, /Bitbucket Pipelines/);
+  assert.match(gemini, /Travis CI/);
+  assert.match(gemini, /Drone CI/);
   assert.match(gemini, /Buildkite/);
   assert.match(skill, /agentic-workflow-guard-auditor/);
   assert.match(skill, /Bitbucket Pipelines/);
+  assert.match(skill, /Travis CI/);
+  assert.match(skill, /Drone CI/);
   assert.match(skill, /Buildkite/);
 });
 
@@ -68,10 +72,14 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(corpus, /agentic-workflow-guard-benchmark-corpus/);
   assert.match(community, /AWI004/);
   assert.match(ciCommunity, /Bitbucket Pipelines/);
+  assert.match(ciCommunity, /Travis CI/);
+  assert.match(ciCommunity, /Drone CI/);
   assert.match(ciCommunity, /Buildkite/);
   assert.match(mcpCommunity, /AWI006/);
   assert.match(playbook, /GitHub Actions/);
   assert.match(ciPlaybook, /Bitbucket Pipelines/);
+  assert.match(ciPlaybook, /Travis CI/);
+  assert.match(ciPlaybook, /Drone CI/);
   assert.match(ciPlaybook, /Azure Pipelines/);
   assert.match(ciPlaybook, /Jenkins/);
   assert.match(ciPlaybook, /Buildkite/);

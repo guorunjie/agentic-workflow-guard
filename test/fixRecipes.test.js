@@ -114,6 +114,45 @@ pipelines:
   assert.match(updated, /BITBUCKET_BRANCH/);
 });
 
+test("fix --apply adds Travis CI top-level dry-run variables", async () => {
+  const { root, filePath } = await projectFile(
+    ".travis.yml",
+    `
+language: node_js
+script:
+  - npx openai-agent --prompt "Review $TRAVIS_COMMIT_MESSAGE"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /^env:\n  global:\n    - AGENTIC_WORKFLOW_GUARD_DRY_RUN="true"/);
+  assert.match(updated, /TRAVIS_COMMIT_MESSAGE/);
+});
+
+test("fix --apply adds Drone CI dry-run environment", async () => {
+  const { root, filePath } = await projectFile(
+    ".drone.yml",
+    `
+kind: pipeline
+type: docker
+name: default
+steps:
+  - name: agent-deploy
+    image: node:24
+    commands:
+      - npx openai-agent --prompt "Review $DRONE_COMMIT_MESSAGE"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /    environment:\n      AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"\n    commands:/);
+  assert.match(updated, /DRONE_COMMIT_MESSAGE/);
+});
+
 test("fix --apply adds CircleCI job-level dry-run environment", async () => {
   const { root, filePath } = await projectFile(
     path.join(".circleci", "config.yml"),

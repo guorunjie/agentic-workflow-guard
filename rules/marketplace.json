@@ -15,6 +15,8 @@
     "github-actions",
     "bitbucket-pipelines",
     "gitlab-ci",
+    "travis-ci",
+    "drone-ci",
     "circleci",
     "azure-pipelines",
     "jenkins",
@@ -52,5 +54,5 @@
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
     "releaseTag": "v1.0.0"
   },
-  "checksum": "sha256:7597e80d75acb78e495be30e192d5bd2450a7044446c436eb9f55701cc03c13e"
+  "checksum": "sha256:2ad0148d7ab31be166fe1aade1081015c1803ccde3b702c34119a08f0a35b372"
 }

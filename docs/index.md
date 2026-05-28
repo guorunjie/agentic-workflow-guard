@@ -23,7 +23,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 ## Remediation Playbooks
 
 - [GitHub Actions](playbooks/github-actions.md)
-- [Bitbucket Pipelines, GitLab CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite](playbooks/ci-pipelines.md)
+- [Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, and Buildkite](playbooks/ci-pipelines.md)
 - [n8n](playbooks/n8n.md)
 - [MCP Tool Governance](playbooks/mcp.md)
 - [Low-Code AI Workflows](playbooks/low-code.md)

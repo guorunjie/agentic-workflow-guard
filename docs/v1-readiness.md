@@ -23,7 +23,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 | npm release | `npm whoami` or `NPM_TOKEN`, `npm pack --dry-run`, `npm run smoke:package`, `npm publish --dry-run`, `npm run release:status` before publishing, and `npm run release:verify` after publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
 | CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
-| Platform matrix | Vulnerable and safe examples exist for GitHub Actions, Bitbucket Pipelines, GitLab CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, MCP, and browser automation. |
+| Platform matrix | Vulnerable and safe examples exist for GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, MCP, and browser automation. |
 | Agent matrix | Generated instructions are present and tested for AGENTS.md, Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, and GitHub Copilot. |
 
 ## Current Blockers

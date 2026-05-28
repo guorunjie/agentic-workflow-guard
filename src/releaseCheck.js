@@ -22,6 +22,8 @@ const requiredPlatforms = [
   "github-actions",
   "bitbucket-pipelines",
   "gitlab-ci",
+  "travis-ci",
+  "drone-ci",
   "circleci",
   "azure-pipelines",
   "jenkins",

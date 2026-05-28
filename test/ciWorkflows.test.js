@@ -97,6 +97,100 @@ agent_preview:
   assert.deepEqual(findings, []);
 });
 
+test("detects Travis CI agent jobs with PR context, secure env, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    ".travis.yml",
+    `
+language: node_js
+node_js:
+  - "24"
+env:
+  global:
+    - secure: "encrypted-deploy-token"
+script:
+  - PROMPT="Review $TRAVIS_PULL_REQUEST_BRANCH and $TRAVIS_COMMIT_MESSAGE, then choose deploy commands"
+  - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+  - bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Travis CI secure env encrypted-deploy-token/i.test(finding.evidence)));
+});
+
+test("does not flag a Travis CI read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    ".travis.yml",
+    `
+language: node_js
+script:
+  - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
+test("detects Drone CI agent pipelines with PR context, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    ".drone.yml",
+    `
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: agent-deploy
+    image: node:24
+    environment:
+      DEPLOY_TOKEN:
+        from_secret: production_deploy_token
+    commands:
+      - PROMPT="Review $DRONE_SOURCE_BRANCH and $DRONE_COMMIT_MESSAGE, then choose deploy commands"
+      - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+      - bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Drone CI from_secret production_deploy_token/i.test(finding.evidence)));
+});
+
+test("does not flag a Drone CI read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    ".drone.yml",
+    `
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: agent-preview
+    image: node:24
+    commands:
+      - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
 test("detects CircleCI agent jobs with PR context, contexts, and shell sinks", async () => {
   const root = await writeCiFixture(
     ".circleci/config.yml",

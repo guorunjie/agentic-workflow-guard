@@ -6,7 +6,7 @@
   "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "fixtureManifestVersion": 1,
-  "fixtureCount": 38,
+  "fixtureCount": 42,
   "platforms": [
     "Activepieces",
     "Airflow",
@@ -16,6 +16,7 @@
     "Buildkite",
     "CircleCI",
     "Dify",
+    "Drone CI",
     "Flowise",
     "GitHub Actions",
     "GitLab CI",
@@ -25,6 +26,7 @@
     "Make",
     "Node-RED",
     "Pipedream",
+    "Travis CI",
     "Zapier",
     "n8n"
   ],
@@ -106,6 +108,52 @@
       "platformId": "gitlab-ci",
       "platform": "GitLab CI",
       "path": "examples/safe-gitlab-ci",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-travis-ci",
+      "kind": "vulnerable",
+      "platformId": "travis-ci",
+      "platform": "Travis CI",
+      "path": "examples/vulnerable-travis-ci",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-travis-ci",
+      "kind": "safe",
+      "platformId": "travis-ci",
+      "platform": "Travis CI",
+      "path": "examples/safe-travis-ci",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-drone-ci",
+      "kind": "vulnerable",
+      "platformId": "drone-ci",
+      "platform": "Drone CI",
+      "path": "examples/vulnerable-drone-ci",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-drone-ci",
+      "kind": "safe",
+      "platformId": "drone-ci",
+      "platform": "Drone CI",
+      "path": "examples/safe-drone-ci",
       "expectedRules": [],
       "risk": "Expected to produce no findings."
     },

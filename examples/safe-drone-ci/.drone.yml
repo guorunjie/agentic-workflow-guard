@@ -1,0 +1,9 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: agent-preview
+    image: node:24
+    commands:
+      - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

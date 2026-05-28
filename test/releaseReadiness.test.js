@@ -15,6 +15,8 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.equal(pkg.bin?.["agentic-workflow-guard"], "bin/agentic-workflow-guard.js");
   assert.ok(pkg.keywords.includes("bitbucket-pipelines"));
   assert.ok(pkg.keywords.includes("gitlab-ci"));
+  assert.ok(pkg.keywords.includes("travis-ci"));
+  assert.ok(pkg.keywords.includes("drone-ci"));
   assert.ok(pkg.keywords.includes("circleci"));
   assert.ok(pkg.keywords.includes("azure-pipelines"));
   assert.ok(pkg.keywords.includes("jenkins"));
@@ -62,6 +64,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /actions\/upload-artifact@v4/);
   assert.match(readme, /Bitbucket Pipelines/);
   assert.match(readme, /GitLab CI/);
+  assert.match(readme, /Travis CI/);
+  assert.match(readme, /Drone CI/);
   assert.match(readme, /CircleCI/);
   assert.match(readme, /Azure Pipelines/);
   assert.match(readme, /Jenkins/);
@@ -184,6 +188,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-node-red/flows.json",
     "examples/vulnerable-bitbucket-pipelines/bitbucket-pipelines.yml",
     "examples/vulnerable-gitlab-ci/.gitlab-ci.yml",
+    "examples/vulnerable-travis-ci/.travis.yml",
+    "examples/vulnerable-drone-ci/.drone.yml",
     "examples/vulnerable-circleci/.circleci/config.yml",
     "examples/vulnerable-azure-pipelines/azure-pipelines.yml",
     "examples/vulnerable-jenkins/Jenkinsfile",
@@ -206,6 +212,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/safe-node-red/flows.json",
     "examples/safe-bitbucket-pipelines/bitbucket-pipelines.yml",
     "examples/safe-gitlab-ci/.gitlab-ci.yml",
+    "examples/safe-travis-ci/.travis.yml",
+    "examples/safe-drone-ci/.drone.yml",
     "examples/safe-circleci/.circleci/config.yml",
     "examples/safe-azure-pipelines/azure-pipelines.yml",
     "examples/safe-jenkins/Jenkinsfile",

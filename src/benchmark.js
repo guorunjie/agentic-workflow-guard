@@ -11,6 +11,8 @@ const fixturePlatforms = [
   ["github-action", "github-actions", "GitHub Actions"],
   ["bitbucket", "bitbucket-pipelines", "Bitbucket Pipelines"],
   ["gitlab-ci", "gitlab-ci", "GitLab CI"],
+  ["travis-ci", "travis-ci", "Travis CI"],
+  ["drone-ci", "drone-ci", "Drone CI"],
   ["circleci", "circleci", "CircleCI"],
   ["azure-pipelines", "azure-pipelines", "Azure Pipelines"],
   ["jenkins", "jenkins", "Jenkins"],

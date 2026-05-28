@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "24"
+env:
+  global:
+    - secure: "encrypted-deploy-token"
+script:
+  - PROMPT="Review $TRAVIS_PULL_REQUEST_BRANCH and $TRAVIS_COMMIT_MESSAGE, then choose deploy commands"
+  - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+  - bash -lc "$AGENT_OUTPUT"

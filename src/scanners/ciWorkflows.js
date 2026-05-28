@@ -3,7 +3,7 @@ import { readText, walk } from "../utils/files.js";
 
 const agentSignalPattern = /(prompt|agent|openai|anthropic|llm|ai-inference|copilot|model|chatgpt|claude|gemini)/i;
 const untrustedCiContextPattern =
-  /(\$\{?(CI_MERGE_REQUEST_(DESCRIPTION|TITLE|SOURCE_BRANCH_NAME)|CI_COMMIT_(MESSAGE|TITLE|DESCRIPTION)|CIRCLE_BRANCH|CIRCLE_PULL_REQUEST|CIRCLE_USERNAME|BUILDKITE_(MESSAGE|BRANCH|COMMIT|PULL_REQUEST|PULL_REQUEST_BASE_BRANCH|PULL_REQUEST_REPO)|BITBUCKET_(BRANCH|COMMIT|TAG|PR_ID|PR_DESTINATION_BRANCH|PR_DESTINATION_COMMIT)|CHANGE_TITLE|CHANGE_BRANCH|BRANCH_NAME|GIT_BRANCH)\}?|\$\((Build\.(SourceVersionMessage|SourceBranchName|SourceBranch)|System\.PullRequest\.(SourceBranch|TargetBranch|PullRequestId))\)|env\.(CHANGE_TITLE|CHANGE_BRANCH|BRANCH_NAME|CHANGE_ID|CHANGE_URL|GIT_BRANCH)|<<\s*pipeline\.git\.(branch|tag|revision)\s*>>)/i;
+  /(\$\{?(CI_MERGE_REQUEST_(DESCRIPTION|TITLE|SOURCE_BRANCH_NAME)|CI_COMMIT_(MESSAGE|TITLE|DESCRIPTION)|CIRCLE_BRANCH|CIRCLE_PULL_REQUEST|CIRCLE_USERNAME|BUILDKITE_(MESSAGE|BRANCH|COMMIT|PULL_REQUEST|PULL_REQUEST_BASE_BRANCH|PULL_REQUEST_REPO)|BITBUCKET_(BRANCH|COMMIT|TAG|PR_ID|PR_DESTINATION_BRANCH|PR_DESTINATION_COMMIT)|TRAVIS_(BRANCH|COMMIT|COMMIT_MESSAGE|PULL_REQUEST|PULL_REQUEST_BRANCH|PULL_REQUEST_SHA)|DRONE_(BRANCH|COMMIT|COMMIT_BRANCH|COMMIT_MESSAGE|COMMIT_REF|COMMIT_SHA|PULL_REQUEST|SOURCE_BRANCH|TARGET_BRANCH)|CHANGE_TITLE|CHANGE_BRANCH|BRANCH_NAME|GIT_BRANCH)\}?|\$\((Build\.(SourceVersionMessage|SourceBranchName|SourceBranch)|System\.PullRequest\.(SourceBranch|TargetBranch|PullRequestId))\)|env\.(CHANGE_TITLE|CHANGE_BRANCH|BRANCH_NAME|CHANGE_ID|CHANGE_URL|GIT_BRANCH)|<<\s*pipeline\.git\.(branch|tag|revision)\s*>>)/i;
 const modelOutputToShellPattern =
   /((bash|sh|zsh|pwsh|powershell)\s+-[a-z]*c\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?|\bsh\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?|eval\s+["']?\$[{]?[A-Z0-9_]*(AGENT|AI|LLM|MODEL)[A-Z0-9_]*(OUTPUT|RESULT|RESPONSE|MESSAGE)[}]?["']?)/i;
 const secretPromptPattern =
@@ -13,11 +13,15 @@ const azureCredentialPattern = /^\s*-?\s*(group|azureSubscription|connectedServi
 const jenkinsCredentialPattern = /(withCredentials\s*\(|credentials\s*\()/gim;
 const buildkiteCredentialPattern = /^\s*([A-Z0-9_]*(?:SECRET|TOKEN|KEY)):\s*["']?([^"'\n]+)["']?\s*$/gim;
 const bitbucketCredentialPattern = /^\s*(deployment|oidc):\s*["']?([^"'\n]+)["']?\s*$/gim;
+const travisCredentialPattern = /^\s*-\s+secure:\s*["']?([^"'\n]+)["']?\s*$/gim;
+const droneCredentialPattern = /^\s*(from_secret|secrets?):\s*["']?([^"'\n\[\]]+)["']?\s*$/gim;
 const safetyControlPattern = /(human approval|manual approval|allowlist|allow-list|dry-run|dry_run|safe output|read-only|preview only|approval gate)/i;
 
 function ciWorkflowFiles(relative) {
   return (
     /^\.gitlab-ci\.ya?ml$/i.test(relative) ||
+    /^\.travis\.ya?ml$/i.test(relative) ||
+    /^\.drone\.ya?ml$/i.test(relative) ||
     /^bitbucket-pipelines\.ya?ml$/i.test(relative) ||
     /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(relative) ||
     /^\.circleci\/config\.ya?ml$/i.test(relative) ||
@@ -34,6 +38,8 @@ function lineOf(text, index) {
 
 function platformName(file) {
   if (/^bitbucket-pipelines\.ya?ml$/i.test(file) || /^\.bitbucket\/.*pipelines\.ya?ml$/i.test(file)) return "Bitbucket Pipelines";
+  if (/^\.travis\.ya?ml$/i.test(file)) return "Travis CI";
+  if (/^\.drone\.ya?ml$/i.test(file)) return "Drone CI";
   if (file.startsWith(".circleci/")) return "CircleCI";
   if (file.startsWith(".buildkite/")) return "Buildkite";
   if (/Jenkinsfile/i.test(file)) return "Jenkins";
@@ -97,6 +103,20 @@ export async function scanCiWorkflows(root) {
       const credentials = [...text.matchAll(bitbucketCredentialPattern)];
       for (const credential of credentials) {
         findings.push(makeFinding("AWI007", `${file}:${lineOf(text, credential.index)}`, `Bitbucket Pipelines ${credential[1]} ${credential[2].trim()} is attached to an agent step`));
+      }
+    }
+
+    if (hasAgent && platform === "Travis CI") {
+      const credentials = [...text.matchAll(travisCredentialPattern)];
+      for (const credential of credentials) {
+        findings.push(makeFinding("AWI007", `${file}:${lineOf(text, credential.index)}`, `Travis CI secure env ${credential[1].trim()} is attached to an agent job`));
+      }
+    }
+
+    if (hasAgent && platform === "Drone CI") {
+      const credentials = [...text.matchAll(droneCredentialPattern)];
+      for (const credential of credentials) {
+        findings.push(makeFinding("AWI007", `${file}:${lineOf(text, credential.index)}`, `Drone CI ${credential[1]} ${credential[2].trim()} is attached to an agent pipeline`));
       }
     }
 

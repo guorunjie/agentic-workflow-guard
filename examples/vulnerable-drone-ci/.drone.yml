@@ -1,0 +1,14 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: agent-deploy
+    image: node:24
+    environment:
+      DEPLOY_TOKEN:
+        from_secret: production_deploy_token
+    commands:
+      - PROMPT="Review $DRONE_SOURCE_BRANCH and $DRONE_COMMIT_MESSAGE, then choose deploy commands"
+      - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+      - bash -lc "$AGENT_OUTPUT"
