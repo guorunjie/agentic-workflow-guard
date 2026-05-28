@@ -20,6 +20,8 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.ok(pkg.keywords.includes("teamcity"));
   assert.ok(pkg.keywords.includes("harness"));
   assert.ok(pkg.keywords.includes("harness-ci"));
+  assert.ok(pkg.keywords.includes("aws-codebuild"));
+  assert.ok(pkg.keywords.includes("google-cloud-build"));
   assert.ok(pkg.keywords.includes("circleci"));
   assert.ok(pkg.keywords.includes("azure-pipelines"));
   assert.ok(pkg.keywords.includes("jenkins"));
@@ -71,6 +73,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /Drone CI/);
   assert.match(readme, /TeamCity/);
   assert.match(readme, /Harness CI\/CD/);
+  assert.match(readme, /AWS CodeBuild/);
+  assert.match(readme, /Google Cloud Build/);
   assert.match(readme, /CircleCI/);
   assert.match(readme, /Azure Pipelines/);
   assert.match(readme, /Jenkins/);

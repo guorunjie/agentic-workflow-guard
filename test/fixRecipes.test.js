@@ -202,6 +202,45 @@ pipeline:
   assert.match(updated, /<\+codebase\.branch>/);
 });
 
+test("fix --apply adds AWS CodeBuild env dry-run variable", async () => {
+  const { root, filePath } = await projectFile(
+    "buildspec.yml",
+    `
+version: 0.2
+phases:
+  build:
+    commands:
+      - npx openai-agent --prompt "Review $CODEBUILD_WEBHOOK_HEAD_REF"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /^env:\n  variables:\n    AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"/);
+  assert.match(updated, /CODEBUILD_WEBHOOK_HEAD_REF/);
+});
+
+test("fix --apply adds Google Cloud Build dry-run substitution", async () => {
+  const { root, filePath } = await projectFile(
+    "cloudbuild.yaml",
+    `
+steps:
+  - name: node:24
+    entrypoint: bash
+    args:
+      - -lc
+      - npx openai-agent --prompt "Review $BRANCH_NAME"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /^substitutions:\n  _AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"/);
+  assert.match(updated, /BRANCH_NAME/);
+});
+
 test("fix --apply adds CircleCI job-level dry-run environment", async () => {
   const { root, filePath } = await projectFile(
     path.join(".circleci", "config.yml"),

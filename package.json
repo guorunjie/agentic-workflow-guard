@@ -50,6 +50,8 @@
     "teamcity",
     "harness",
     "harness-ci",
+    "aws-codebuild",
+    "google-cloud-build",
     "circleci",
     "azure-pipelines",
     "jenkins",

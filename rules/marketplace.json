@@ -19,6 +19,8 @@
     "drone-ci",
     "teamcity",
     "harness",
+    "aws-codebuild",
+    "google-cloud-build",
     "circleci",
     "azure-pipelines",
     "jenkins",
@@ -56,5 +58,5 @@
     "repository": "https://github.com/guorunjie/agentic-workflow-guard",
     "releaseTag": "v1.0.0"
   },
-  "checksum": "sha256:0b4c469ede429b6de25cfc79fd3d37e8f0080d8ee537955e7a7bde15d1d6f284"
+  "checksum": "sha256:d8010acd6ff9f0fc7b0bdf768d72b44175e375591d2e0855774d5e53447b637c"
 }

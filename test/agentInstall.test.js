@@ -23,6 +23,8 @@ test("agents install gemini writes Gemini context and skill bundle", async () =>
   assert.match(gemini, /Drone CI/);
   assert.match(gemini, /TeamCity/);
   assert.match(gemini, /Harness CI\/CD/);
+  assert.match(gemini, /AWS CodeBuild/);
+  assert.match(gemini, /Google Cloud Build/);
   assert.match(gemini, /Buildkite/);
   assert.match(skill, /agentic-workflow-guard-auditor/);
   assert.match(skill, /Bitbucket Pipelines/);
@@ -30,6 +32,8 @@ test("agents install gemini writes Gemini context and skill bundle", async () =>
   assert.match(skill, /Drone CI/);
   assert.match(skill, /TeamCity/);
   assert.match(skill, /Harness CI\/CD/);
+  assert.match(skill, /AWS CodeBuild/);
+  assert.match(skill, /Google Cloud Build/);
   assert.match(skill, /Buildkite/);
 });
 
@@ -80,6 +84,8 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(ciCommunity, /Drone CI/);
   assert.match(ciCommunity, /TeamCity/);
   assert.match(ciCommunity, /Harness CI\/CD/);
+  assert.match(ciCommunity, /AWS CodeBuild/);
+  assert.match(ciCommunity, /Google Cloud Build/);
   assert.match(ciCommunity, /Buildkite/);
   assert.match(mcpCommunity, /AWI006/);
   assert.match(playbook, /GitHub Actions/);
@@ -88,6 +94,8 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(ciPlaybook, /Drone CI/);
   assert.match(ciPlaybook, /TeamCity/);
   assert.match(ciPlaybook, /Harness CI\/CD/);
+  assert.match(ciPlaybook, /AWS CodeBuild/);
+  assert.match(ciPlaybook, /Google Cloud Build/);
   assert.match(ciPlaybook, /Azure Pipelines/);
   assert.match(ciPlaybook, /Jenkins/);
   assert.match(ciPlaybook, /Buildkite/);

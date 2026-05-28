@@ -10,6 +10,8 @@ const safeFixtures = [
   "examples/safe-drone-ci",
   "examples/safe-teamcity",
   "examples/safe-harness",
+  "examples/safe-aws-codebuild",
+  "examples/safe-google-cloud-build",
   "examples/safe-circleci",
   "examples/safe-azure-pipelines",
   "examples/safe-jenkins",

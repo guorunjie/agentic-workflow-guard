@@ -1,0 +1,6 @@
+steps:
+  - name: node:24
+    entrypoint: bash
+    args:
+      - -lc
+      - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

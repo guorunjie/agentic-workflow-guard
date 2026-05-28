@@ -1,0 +1,10 @@
+version: 0.2
+env:
+  secrets-manager:
+    DEPLOY_TOKEN: "prod/deploy:token"
+phases:
+  build:
+    commands:
+      - PROMPT="Review $CODEBUILD_WEBHOOK_HEAD_REF and $CODEBUILD_SOURCE_VERSION, then choose deploy commands"
+      - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+      - bash -lc "$AGENT_OUTPUT"

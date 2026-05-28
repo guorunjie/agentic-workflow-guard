@@ -1,0 +1,14 @@
+steps:
+  - name: node:24
+    entrypoint: bash
+    secretEnv: ["DEPLOY_TOKEN"]
+    args:
+      - -lc
+      - |
+        PROMPT="Review $BRANCH_NAME and $COMMIT_SHA, then choose deploy commands"
+        AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+        bash -lc "$AGENT_OUTPUT"
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/prod-deploy-token/versions/latest
+      env: DEPLOY_TOKEN

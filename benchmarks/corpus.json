@@ -6,8 +6,9 @@
   "description": "Reusable vulnerable and safe fixtures for AI automation workflow security scanners.",
   "homepage": "https://github.com/guorunjie/agentic-workflow-guard",
   "fixtureManifestVersion": 1,
-  "fixtureCount": 46,
+  "fixtureCount": 50,
   "platforms": [
+    "AWS CodeBuild",
     "Activepieces",
     "Airflow",
     "Azure Pipelines",
@@ -20,6 +21,7 @@
     "Flowise",
     "GitHub Actions",
     "GitLab CI",
+    "Google Cloud Build",
     "Harness CI/CD",
     "Jenkins",
     "Langflow",
@@ -202,6 +204,52 @@
       "platformId": "harness",
       "platform": "Harness CI/CD",
       "path": "examples/safe-harness",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-aws-codebuild",
+      "kind": "vulnerable",
+      "platformId": "aws-codebuild",
+      "platform": "AWS CodeBuild",
+      "path": "examples/vulnerable-aws-codebuild",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-aws-codebuild",
+      "kind": "safe",
+      "platformId": "aws-codebuild",
+      "platform": "AWS CodeBuild",
+      "path": "examples/safe-aws-codebuild",
+      "expectedRules": [],
+      "risk": "Expected to produce no findings."
+    },
+    {
+      "name": "vulnerable-google-cloud-build",
+      "kind": "vulnerable",
+      "platformId": "google-cloud-build",
+      "platform": "Google Cloud Build",
+      "path": "examples/vulnerable-google-cloud-build",
+      "expectedRules": [
+        "AWI001",
+        "AWI002",
+        "AWI007",
+        "AWI008"
+      ],
+      "risk": "Expected to trigger AWI001, AWI002, AWI007, AWI008."
+    },
+    {
+      "name": "safe-google-cloud-build",
+      "kind": "safe",
+      "platformId": "google-cloud-build",
+      "platform": "Google Cloud Build",
+      "path": "examples/safe-google-cloud-build",
       "expectedRules": [],
       "risk": "Expected to produce no findings."
     },

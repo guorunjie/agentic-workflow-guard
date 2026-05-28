@@ -3,7 +3,7 @@
 Generated from `skillpack.yaml` by Skillpack Forge.
 
 ## Project
-Static security scanner for AI automation workflows across GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Dify, Flowise, Langflow, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
+Static security scanner for AI automation workflows across GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Dify, Flowise, Langflow, MCP configs, browser traces, Airflow DAGs, and low-code workflow exports.
 
 ## Working Principles
 - Treat external workflow input as untrusted until validated
@@ -43,7 +43,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 
 ## Agent Workflows
 ### agentic-workflow-guard-auditor
-Use when auditing GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Dify, Flowise, Langflow, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
+Use when auditing GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, Buildkite, n8n, Dify, Flowise, Langflow, MCP, Node-RED, Make, Pipedream, Airflow, browser automation, or AI automation for AWI001-AWI010 risks.
 
 - Run agentic-workflow-guard scan . --format markdown
 - Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads

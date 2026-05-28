@@ -139,6 +139,45 @@ function insertHarnessDryRunVariable(text) {
   };
 }
 
+function insertCodeBuildDryRunVariable(text) {
+  const variables = text.match(/^([ \t]*)variables:\s*$/m);
+  if (variables) {
+    return {
+      text: insertIntoExistingBlock(text, variables.index, `${variables[1]}  ${dryRunVariable}: "true"\n`),
+      changed: true
+    };
+  }
+
+  const env = text.match(/^([ \t]*)env:\s*$/m);
+  if (env) {
+    return {
+      text: insertIntoExistingBlock(text, env.index, `${env[1]}  variables:\n${env[1]}    ${dryRunVariable}: "true"\n`),
+      changed: true
+    };
+  }
+
+  return {
+    text: `env:\n  variables:\n    ${dryRunVariable}: "true"\n\n${text}`,
+    changed: true
+  };
+}
+
+function insertCloudBuildDryRunSubstitution(text) {
+  const substitutions = text.match(/^([ \t]*)substitutions:\s*$/m);
+  const variable = `_AGENTIC_WORKFLOW_GUARD_DRY_RUN`;
+  if (substitutions) {
+    return {
+      text: insertIntoExistingBlock(text, substitutions.index, `${substitutions[1]}  ${variable}: "true"\n`),
+      changed: true
+    };
+  }
+
+  return {
+    text: `substitutions:\n  ${variable}: "true"\n\n${text}`,
+    changed: true
+  };
+}
+
 function applyJenkinsDryRunGuard(text) {
   const existingEnvironment = text.match(/^(\s*)environment\s*\{\s*$/m);
   if (existingEnvironment) {
@@ -162,6 +201,8 @@ function applyDryRunGuard(text, file) {
   if (/^\.drone\.ya?ml$/i.test(file)) return insertDroneDryRunEnvironment(text);
   if (/^\.teamcity\/.+\.kts$/i.test(file)) return insertTeamCityDryRunParam(text);
   if (/^\.harness\/.+\.ya?ml$/i.test(file) || /^harness\/.+\.ya?ml$/i.test(file)) return insertHarnessDryRunVariable(text);
+  if (/^(?:\.aws\/)?buildspec(?:\.[\w-]+)?\.ya?ml$/i.test(file)) return insertCodeBuildDryRunVariable(text);
+  if (/^cloudbuild\.ya?ml$/i.test(file) || /^\.cloudbuild\/.+\.ya?ml$/i.test(file) || /^cloudbuild\/.+\.ya?ml$/i.test(file)) return insertCloudBuildDryRunSubstitution(text);
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "env");
   if (/^\.gitlab-ci\.ya?ml$/i.test(file) || /^azure-pipelines\.ya?ml$/i.test(file) || /^\.azure-pipelines\/.+\.ya?ml$/i.test(file)) {
@@ -291,6 +332,8 @@ function platformForFile(file) {
   if (/^\.drone\.ya?ml$/i.test(file)) return "drone-ci";
   if (/^\.teamcity\/.+\.(kts|xml)$/i.test(file)) return "teamcity";
   if (/^\.harness\/.+\.ya?ml$/i.test(file) || /^harness\/.+\.ya?ml$/i.test(file)) return "harness";
+  if (/^(?:\.aws\/)?buildspec(?:\.[\w-]+)?\.ya?ml$/i.test(file)) return "aws-codebuild";
+  if (/^cloudbuild\.ya?ml$/i.test(file) || /^\.cloudbuild\/.+\.ya?ml$/i.test(file) || /^cloudbuild\/.+\.ya?ml$/i.test(file)) return "google-cloud-build";
   if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return "circleci";
   if (/^\.buildkite\/.+\.ya?ml$/i.test(file)) return "buildkite";
@@ -385,6 +428,25 @@ stage:
   type: Approval
   spec:
     approvalMessage: Approve agent side effects?
+`
+    ),
+    "aws-codebuild": snippet(
+      "AWS CodeBuild protected source gate",
+      "yaml",
+      `
+phases:
+  pre_build:
+    commands:
+      - test "$CODEBUILD_WEBHOOK_TRIGGER" = "branch/main"
+`
+    ),
+    "google-cloud-build": snippet(
+      "Google Cloud Build trigger approval gate",
+      "yaml",
+      `
+# Enable trigger approval for write-capable builds, then keep deploy steps after approval.
+substitutions:
+  _AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"
 `
     ),
     circleci: snippet(

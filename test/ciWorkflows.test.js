@@ -313,6 +313,99 @@ pipeline:
   assert.deepEqual(findings, []);
 });
 
+test("detects AWS CodeBuild agent builds with webhook context, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    "buildspec.yml",
+    `
+version: 0.2
+env:
+  secrets-manager:
+    DEPLOY_TOKEN: "prod/deploy:token"
+phases:
+  build:
+    commands:
+      - PROMPT="Review $CODEBUILD_WEBHOOK_HEAD_REF and $CODEBUILD_SOURCE_VERSION, then choose deploy commands"
+      - AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+      - bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /AWS CodeBuild secret DEPLOY_TOKEN/i.test(finding.evidence)));
+});
+
+test("does not flag an AWS CodeBuild read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    "buildspec.yml",
+    `
+version: 0.2
+phases:
+  build:
+    commands:
+      - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
+test("detects Google Cloud Build agent builds with trigger context, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    "cloudbuild.yaml",
+    `
+steps:
+  - name: node:24
+    entrypoint: bash
+    secretEnv: ["DEPLOY_TOKEN"]
+    args:
+      - -lc
+      - |
+        PROMPT="Review $BRANCH_NAME and $COMMIT_SHA, then choose deploy commands"
+        AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+        bash -lc "$AGENT_OUTPUT"
+availableSecrets:
+  secretManager:
+    - versionName: projects/$PROJECT_ID/secrets/prod-deploy-token/versions/latest
+      env: DEPLOY_TOKEN
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Google Cloud Build secretEnv/i.test(finding.evidence)));
+});
+
+test("does not flag a Google Cloud Build read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    "cloudbuild.yaml",
+    `
+steps:
+  - name: node:24
+    entrypoint: bash
+    args:
+      - -lc
+      - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
 test("detects CircleCI agent jobs with PR context, contexts, and shell sinks", async () => {
   const root = await writeCiFixture(
     ".circleci/config.yml",

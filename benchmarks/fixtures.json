@@ -72,6 +72,26 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-aws-codebuild",
+      "path": "examples/vulnerable-aws-codebuild",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-aws-codebuild",
+      "path": "examples/safe-aws-codebuild",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-google-cloud-build",
+      "path": "examples/vulnerable-google-cloud-build",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-google-cloud-build",
+      "path": "examples/safe-google-cloud-build",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-circleci",
       "path": "examples/vulnerable-circleci",
       "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]

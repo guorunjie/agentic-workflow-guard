@@ -26,6 +26,8 @@ const requiredPlatforms = [
   "drone-ci",
   "teamcity",
   "harness",
+  "aws-codebuild",
+  "google-cloud-build",
   "circleci",
   "azure-pipelines",
   "jenkins",
