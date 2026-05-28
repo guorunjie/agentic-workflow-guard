@@ -10,6 +10,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 ## Commands
 - install: `npm install`
 - test: `npm test`
+- init: `node ./bin/agentic-workflow-guard.js init .`
 - scan: `npm run scan`
 - scan-strict: `node ./bin/agentic-workflow-guard.js scan . --profile strict`
 - scan-output: `node ./bin/agentic-workflow-guard.js scan . --format sarif --output awg.sarif`
@@ -40,6 +41,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 
 ## Preferred Workflow
 - Run agentic-workflow-guard scan . --format markdown
+- Use agentic-workflow-guard init . --profile balanced to scaffold .awg.yml and GitHub Code Scanning workflow adoption
 - Use agentic-workflow-guard scan . --format sarif --output awg.sarif for GitHub Code Scanning uploads
 - Use agentic-workflow-guard schema report when integrating machine-readable JSON reports
 - Use agentic-workflow-guard schema fix when integrating structured fix recipe reports

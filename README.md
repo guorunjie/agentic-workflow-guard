@@ -4,9 +4,10 @@ Find dangerous AI automation workflows before agents get write access.
 
 Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
-Four-command demo:
+Five-command demo:
 
 ```bash
+npx agentic-workflow-guard init .
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format markdown
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format sarif --output awg.sarif
 npx agentic-workflow-guard fix examples/unsafe-ai-pr-bot --patch
@@ -59,6 +60,12 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | Agent skill reviews | Ships instructions and skill bundles so Claude, Codex, Cursor, Copilot, Gemini, OpenClaw, Hermes, and AGENTS.md-aware agents can audit workflows consistently. |
 
 ## Quick Start
+
+Initialize a repository with `.awg.yml` and a GitHub Actions workflow:
+
+```bash
+node ./bin/agentic-workflow-guard.js init .
+```
 
 Run against the unsafe AI PR bot demo:
 
@@ -155,10 +162,12 @@ node ./bin/agentic-workflow-guard.js rules install ci-pipeline-hardening .
 node ./bin/agentic-workflow-guard.js rules install mcp-tool-governance .
 ```
 
-Start from the sample config:
+Initialize config and CI scaffolding:
 
 ```bash
-cp .awg.example.yml .awg.yml
+node ./bin/agentic-workflow-guard.js init . --profile balanced
+node ./bin/agentic-workflow-guard.js init . --ci none
+node ./bin/agentic-workflow-guard.js init . --force
 ```
 
 Export a Skillpack Forge manifest:
@@ -184,6 +193,8 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 
 | Command | Purpose |
 | --- | --- |
+| `init [path] --ci github-actions|none` | Scaffolds `.awg.yml` and, by default, `.github/workflows/agentic-workflow-guard.yml` for Code Scanning adoption. |
+| `init [path] --profile advisory|balanced|strict --force` | Chooses rollout strictness and overwrites existing scaffolded files when explicitly requested. |
 | `scan [path] --format markdown` | Human-readable report for local review, issues, and PRs. |
 | `scan [path] --format json` | Machine-readable findings. |
 | `scan [path] --format sarif` | GitHub Code Scanning compatible output. |
@@ -287,6 +298,10 @@ JSON and Markdown reports include a `Suppressed findings` audit trail so reviewe
 ## GitHub Action
 
 Use this repository as a GitHub Action and upload SARIF to GitHub Code Scanning:
+
+```bash
+node ./bin/agentic-workflow-guard.js init .
+```
 
 ```yaml
 name: agentic workflow guard

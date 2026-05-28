@@ -14,6 +14,7 @@ Use this checklist before publishing `agentic-workflow-guard` to npm.
 npm run release:prepare -- --version 1.0.0 --dry-run
 npm test
 node ./bin/agentic-workflow-guard.js benchmark
+node ./bin/agentic-workflow-guard.js init /tmp/awg-init-smoke --force
 node ./bin/agentic-workflow-guard.js benchmark --format json
 node ./bin/agentic-workflow-guard.js benchmark corpus --format json
 node ./bin/agentic-workflow-guard.js mcp resources --format json
@@ -66,4 +67,4 @@ If `npm whoami` returns `ENEEDAUTH`, authenticate with `npm adduser` or configur
 
 ## Release Notes
 
-Mention scanner coverage, policy profiles, suppression audit trails, stable report, fix, rule pack, benchmark corpus, and benchmark report schemas, `scan --output`, `fix --format json`, `fix --output`, approval snippets, trusted rule marketplace metadata, community rule-pack registry, public benchmark corpus, scored benchmark reports, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.
+Mention scanner coverage, policy profiles, suppression audit trails, stable report, fix, rule pack, benchmark corpus, and benchmark report schemas, `init`, `scan --output`, `fix --format json`, `fix --output`, approval snippets, trusted rule marketplace metadata, community rule-pack registry, public benchmark corpus, scored benchmark reports, MCP resources, Skillpack Forge output, GitHub Action usage, and benchmark status. Keep the npm package aligned with the GitHub release tag.

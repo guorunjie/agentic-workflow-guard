@@ -74,6 +74,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
+  assert.match(readme, /agentic-workflow-guard\.js init \./);
   assert.match(readme, /actions\/upload-artifact@v4/);
   assert.match(readme, /Bitbucket Pipelines/);
   assert.match(readme, /GitLab CI/);

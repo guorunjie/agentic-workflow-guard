@@ -19,6 +19,8 @@ Agentic Workflow Guard detects:
 - `pull_request_target` combined with agent or script execution;
 - secrets or environment values exposed to agent-visible context.
 
+Teams can start with `agentic-workflow-guard init .` to scaffold `.awg.yml` and a release-tagged GitHub Actions Code Scanning workflow before tuning policies.
+
 ### 2. n8n and Operations Automation
 
 n8n is a natural target because it combines triggers, AI nodes, credentials, HTTP calls, code nodes, and operations workflows. The risky pattern is external trigger -> AI node -> side-effect node.
@@ -77,7 +79,7 @@ Highest-impact improvements:
    Grow the current `rules list/registry/search/install` into external rule packs with a stable schema, lock files, signed metadata, checksums, and community contributions.
 
 6. **Make adoption incremental**
-   Use `baseline create` and `scan --baseline` so existing repositories can adopt the scanner without failing CI on known legacy findings.
+   Use `init`, `baseline create`, and `scan --baseline` so existing repositories can scaffold CI quickly and adopt the scanner without failing CI on known legacy findings.
 
 7. **Publish as a complete skill**
    Maintain generated AGENTS.md, Claude Skill, Codex Skill, Gemini context/skill files, Cursor rule, Copilot instructions, OpenClaw/Hermes SKILL.md bundles, and eventually MCP resources.
@@ -87,7 +89,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, one-command project initialization, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 
@@ -114,7 +116,7 @@ The strongest star-growth path is to show one scary, easy-to-understand demo per
 ## Star Growth Playbook
 
 - README headline: "Semgrep-style scanner for AI automation workflows."
-- First demo: one vulnerable GitHub Action producing SARIF, upload-sarif integration, and a `fix --apply` permission patch.
+- First demo: `init .`, one vulnerable GitHub Action producing SARIF, upload-sarif integration, and a `fix --apply` permission patch.
 - Distribution: GitHub Action, npm package, Skillpack Forge, public benchmark corpus, AGENTS.md, Claude/Codex/Gemini/OpenClaw/Hermes skills, Cursor rules, Copilot instructions.
 - Submit to lists: awesome-copilot, awesome-mcp-servers after MCP resources land, awesome-claude-skills after skill examples mature.
 - Content hooks:

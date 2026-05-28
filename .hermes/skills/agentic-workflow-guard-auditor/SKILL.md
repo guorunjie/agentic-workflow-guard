@@ -9,6 +9,8 @@ description: Use before granting AI automation write access, reviewing agentic G
 Agentic Workflow Guard is a deterministic scanner for AI automation workflows. Use it to find prompt-injection paths, model-output-to-shell sinks, broad write permissions, risky Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky MCP tools, Dify, Flowise, Langflow, Airflow AI DAGs, browser automation side effects, and low-code AI steps chained into external side effects.
 
 ## Workflow
+For a new repository, run `agentic-workflow-guard init . --profile balanced` first to scaffold `.awg.yml` and a release-tagged GitHub Code Scanning workflow.
+
 1. Run `agentic-workflow-guard scan . --format markdown` for local review.
 2. Run `agentic-workflow-guard scan . --format sarif` when the result should feed GitHub Code Scanning.
 3. Use `agentic-workflow-guard scan . --format sarif --output awg.sarif` for GitHub Code Scanning uploads.
@@ -50,6 +52,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - Prefer human review for any agent output that can modify code, tickets, deployments, cloud resources, or customer data.
 
 ## Commands
+- `agentic-workflow-guard init .`
 - `agentic-workflow-guard scan . --format markdown`
 - `agentic-workflow-guard scan . --format json`
 - `agentic-workflow-guard scan . --format sarif`

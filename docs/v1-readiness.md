@@ -1,6 +1,6 @@
 # v1.0 Readiness
 
-As of 2026-05-28, Agentic Workflow Guard has 1.0.0 release metadata, a `v1.0.0` tag, and a draft GitHub Release prepared. The scanner covers mainstream CI, low-code, MCP, browser automation, structured reports, rule packs, benchmark scoring, public docs, and portable agent skills. The remaining work is publication proof: npm authentication, npm registry publication, and live registry/Marketplace verification.
+As of 2026-05-28, Agentic Workflow Guard has 1.0.0 release metadata, a `v1.0.0` tag, and a draft GitHub Release prepared. The scanner covers mainstream CI, low-code, MCP, browser automation, structured reports, rule packs, benchmark scoring, one-command project initialization, public docs, and portable agent skills. The remaining work is publication proof: npm authentication, npm registry publication, and live registry/Marketplace verification.
 
 ## Earliest Practical Timeline
 
@@ -19,7 +19,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 | Stable rule pack schema | `schema rule-pack`, `rules registry`, `rules install`, and `rules verify` agree on provenance, checksum, compatibility, and license metadata. |
 | Stable benchmark schemas | `schema benchmark-corpus`, `schema benchmark-report`, `benchmark corpus --format json`, and `benchmark --format json` stay in sync. |
 | Stable rule IDs | Existing `AWI###` IDs, severity levels, and default profile behavior are frozen for SemVer compatibility. |
-| GitHub Marketplace | A release-tagged `uses: guorunjie/agentic-workflow-guard@v1.0.0` example runs and uploads SARIF. |
+| GitHub Marketplace | `agentic-workflow-guard init .` scaffolds the release-tagged `uses: guorunjie/agentic-workflow-guard@v1.0.0` workflow, runs, and uploads SARIF. |
 | npm release | `npm whoami` or `NPM_TOKEN`, `npm pack --dry-run`, `npm run smoke:package`, `npm publish --dry-run`, `npm run release:status` before publishing, and `npm run release:verify` after publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
 | CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
@@ -41,6 +41,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 
 ```bash
 npm test
+node ./bin/agentic-workflow-guard.js init /tmp/awg-init-smoke --force
 npm run release:prepare -- --version 1.0.1 --dry-run
 npm run smoke:package
 npm run release:sync:check

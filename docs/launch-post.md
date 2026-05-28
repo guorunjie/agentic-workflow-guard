@@ -14,6 +14,7 @@ The gap is review. Before an agent gets write access, maintainers need a local, 
 Agentic Workflow Guard is a deterministic scanner for that gap. It has no hosted service, no LLM call, and no API key requirement.
 
 ```bash
+npx agentic-workflow-guard init .
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format markdown
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format sarif > awg.sarif
 npx agentic-workflow-guard fix examples/unsafe-ai-pr-bot --patch
@@ -27,6 +28,7 @@ The project is intentionally small:
 - static scanner for AI automation workflows;
 - Markdown, JSON, and SARIF output;
 - GitHub Action support for Code Scanning upload;
+- one-command `.awg.yml` and GitHub Actions workflow scaffolding;
 - baseline mode for incremental adoption;
 - browser automation trace checks;
 - `fix --patch` for PR-ready GitHub permission, MCP filesystem, and CI dry-run diffs;

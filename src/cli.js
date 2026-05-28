@@ -6,6 +6,7 @@ import { buildBenchmarkReport, loadBenchmarkCorpus, renderBenchmarkReport, rende
 import { loadConfig, withPolicyProfile } from "./config.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
+import { initProject, renderInitSummary } from "./initProject.js";
 import { renderAgentSupportJson, renderAgentSupportMarkdown } from "./agentSupport.js";
 import { agentInstallTargets, installAgent } from "./agentsInstall.js";
 import { renderMcpResources } from "./mcpResources.js";
@@ -25,7 +26,7 @@ function argValue(args, name, fallback) {
 }
 
 function firstPositional(args, fallback = ".") {
-  const optionsWithValues = new Set(["--baseline", "--format", "--output", "--profile", "--target"]);
+  const optionsWithValues = new Set(["--baseline", "--ci", "--format", "--output", "--profile", "--target"]);
   for (let index = 0; index < args.length; index += 1) {
     const arg = args[index];
     if (optionsWithValues.has(arg)) {
@@ -41,6 +42,7 @@ function help() {
   return `Agentic Workflow Guard
 
 Usage:
+  agentic-workflow-guard init [path] [--ci github-actions|none] [--profile advisory|balanced|strict] [--force]
   agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--output report] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json] [--output report]
@@ -72,6 +74,22 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
   if (!command || command === "--help" || command === "-h") {
     output.write(help());
     return 0;
+  }
+
+  if (command === "init") {
+    const root = path.resolve(firstPositional(args));
+    try {
+      const result = await initProject(root, {
+        ci: argValue(args, "--ci", "github-actions"),
+        profile: argValue(args, "--profile", "balanced"),
+        force: args.includes("--force")
+      });
+      output.write(renderInitSummary(result));
+      return 0;
+    } catch (initError) {
+      error.write(`${initError.message}\n`);
+      return 1;
+    }
   }
 
   if (command === "scan") {

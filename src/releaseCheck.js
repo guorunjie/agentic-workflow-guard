@@ -241,13 +241,14 @@ async function actionGate(root, targetVersion) {
   const missing = requiredPatterns.filter((pattern) => !pattern.test(action)).map((pattern) => pattern.source);
   const readmeTag = `guorunjie/agentic-workflow-guard@v${targetVersion}`;
   const readmeHasTarget = readme.includes(readmeTag);
-  if (missing.length || !readmeHasTarget) {
+  const readmeHasInit = readme.includes("agentic-workflow-guard.js init .") || readme.includes("agentic-workflow-guard init .");
+  if (missing.length || !readmeHasTarget || !readmeHasInit) {
     const status = targetVersion === (await readJson(root, "package.json")).version ? "fail" : "warn";
-    const evidence = [`Missing action metadata patterns: ${missing.join(", ") || "none"}`, `README target tag ${readmeTag}: ${readmeHasTarget ? "present" : "missing"}`];
+    const evidence = [`Missing action metadata patterns: ${missing.join(", ") || "none"}`, `README target tag ${readmeTag}: ${readmeHasTarget ? "present" : "missing"}`, `README init scaffold command: ${readmeHasInit ? "present" : "missing"}`];
     const remediation = "Keep action metadata Marketplace-ready and update README examples to the release tag before cutting that version.";
     return gate("github-action-marketplace", "GitHub Action Marketplace readiness", status, evidence, remediation);
   }
-  return pass("github-action-marketplace", "GitHub Action Marketplace readiness", [`README uses ${readmeTag}.`, "Action metadata includes output/profile/baseline/report-path, optional fix reports, and Step Summary support."]);
+  return pass("github-action-marketplace", "GitHub Action Marketplace readiness", [`README uses ${readmeTag}.`, "README documents one-command init scaffolding.", "Action metadata includes output/profile/baseline/report-path, optional fix reports, and Step Summary support."]);
 }
 
 async function docsGate(root) {
