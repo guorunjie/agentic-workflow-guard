@@ -15,6 +15,8 @@ const fixturePlatforms = [
   ["drone-ci", "drone-ci", "Drone CI"],
   ["teamcity", "teamcity", "TeamCity"],
   ["harness", "harness", "Harness CI/CD"],
+  ["tekton", "tekton", "Tekton Pipelines"],
+  ["argo-workflows", "argo-workflows", "Argo Workflows"],
   ["codebuild", "aws-codebuild", "AWS CodeBuild"],
   ["cloud-build", "google-cloud-build", "Google Cloud Build"],
   ["cloudbuild", "google-cloud-build", "Google Cloud Build"],

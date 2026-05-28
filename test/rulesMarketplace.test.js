@@ -37,6 +37,8 @@ test("rules search finds expanded CI platform coverage", async () => {
   const drone = await execFileAsync("node", [bin, "rules", "search", "drone"]);
   const teamcity = await execFileAsync("node", [bin, "rules", "search", "teamcity"]);
   const harness = await execFileAsync("node", [bin, "rules", "search", "harness"]);
+  const tekton = await execFileAsync("node", [bin, "rules", "search", "tekton"]);
+  const argo = await execFileAsync("node", [bin, "rules", "search", "argo"]);
   const codebuild = await execFileAsync("node", [bin, "rules", "search", "codebuild"]);
   const cloudBuild = await execFileAsync("node", [bin, "rules", "search", "cloud build"]);
   const azure = await execFileAsync("node", [bin, "rules", "search", "azure"]);
@@ -53,6 +55,10 @@ test("rules search finds expanded CI platform coverage", async () => {
   assert.match(teamcity.stdout, /TeamCity/i);
   assert.match(harness.stdout, /AWI001/);
   assert.match(harness.stdout, /Harness CI\/CD/i);
+  assert.match(tekton.stdout, /AWI001/);
+  assert.match(tekton.stdout, /Tekton Pipelines/i);
+  assert.match(argo.stdout, /AWI001/);
+  assert.match(argo.stdout, /Argo Workflows/i);
   assert.match(codebuild.stdout, /AWI001/);
   assert.match(codebuild.stdout, /AWS CodeBuild/i);
   assert.match(cloudBuild.stdout, /AWI001/);
@@ -109,6 +115,8 @@ test("rules registry lists installable community packs", async () => {
         pack.platforms.includes("drone-ci") &&
         pack.platforms.includes("teamcity") &&
         pack.platforms.includes("harness") &&
+        pack.platforms.includes("tekton") &&
+        pack.platforms.includes("argo-workflows") &&
         pack.platforms.includes("aws-codebuild") &&
         pack.platforms.includes("google-cloud-build") &&
         pack.platforms.includes("buildkite")
@@ -145,6 +153,8 @@ test("rules install writes CI pipeline hardening community pack metadata", async
   assert.ok(installed.platforms.includes("drone-ci"));
   assert.ok(installed.platforms.includes("teamcity"));
   assert.ok(installed.platforms.includes("harness"));
+  assert.ok(installed.platforms.includes("tekton"));
+  assert.ok(installed.platforms.includes("argo-workflows"));
   assert.ok(installed.platforms.includes("aws-codebuild"));
   assert.ok(installed.platforms.includes("google-cloud-build"));
   assert.ok(installed.platforms.includes("buildkite"));

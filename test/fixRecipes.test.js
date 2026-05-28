@@ -202,6 +202,56 @@ pipeline:
   assert.match(updated, /<\+codebase\.branch>/);
 });
 
+test("fix --apply adds Tekton dry-run parameter", async () => {
+  const { root, filePath } = await projectFile(
+    path.join(".tekton", "agent-task.yaml"),
+    `
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: agent-review
+spec:
+  steps:
+    - name: agent
+      image: node:24
+      script: npx openai-agent --prompt "Review $(params.pull-request-body)"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /spec:\n  params:\n    - name: AGENTIC_WORKFLOW_GUARD_DRY_RUN\n      default: "true"/);
+  assert.match(updated, /\$\(params\.pull-request-body\)/);
+});
+
+test("fix --apply adds Argo Workflows dry-run parameter", async () => {
+  const { root, filePath } = await projectFile(
+    path.join("argo-workflows", "agent-workflow.yaml"),
+    `
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: agent-review-
+spec:
+  entrypoint: agent
+  templates:
+    - name: agent
+      container:
+        image: node:24
+        command: [bash, -lc]
+        args:
+          - npx openai-agent --prompt "Review {{workflow.parameters.pr-body}}"
+`
+  );
+
+  await execFileAsync("node", [bin, "fix", root, "--apply"]);
+  const updated = await readFile(filePath, "utf8");
+
+  assert.match(updated, /spec:\n  arguments:\n    parameters:\n      - name: AGENTIC_WORKFLOW_GUARD_DRY_RUN\n        value: "true"/);
+  assert.match(updated, /\{\{workflow\.parameters\.pr-body\}\}/);
+});
+
 test("fix --apply adds AWS CodeBuild env dry-run variable", async () => {
   const { root, filePath } = await projectFile(
     "buildspec.yml",

@@ -18,6 +18,8 @@
         "drone-ci",
         "teamcity",
         "harness",
+        "tekton",
+        "argo-workflows",
         "aws-codebuild",
         "google-cloud-build",
         "circleci",
@@ -51,7 +53,7 @@
         "AWI009",
         "AWI010"
       ],
-      "checksum": "sha256:d8010acd6ff9f0fc7b0bdf768d72b44175e375591d2e0855774d5e53447b637c",
+      "checksum": "sha256:c4eb873c488034033748ad56f765173f39f2eaa6d7dc41e97bd4a1da1dbf2224",
       "install": "agentic-workflow-guard rules install core .",
       "path": "rules/marketplace.json"
     },
@@ -80,7 +82,7 @@
       "name": "agentic-workflow-guard-ci-pipeline-hardening",
       "alias": "ci-pipeline-hardening",
       "version": "1.0.0",
-      "description": "Focused CI pipeline rule pack for Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
+      "description": "Focused CI pipeline rule pack for Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs.",
       "source": "community",
       "platforms": [
         "bitbucket-pipelines",
@@ -89,6 +91,8 @@
         "drone-ci",
         "teamcity",
         "harness",
+        "tekton",
+        "argo-workflows",
         "aws-codebuild",
         "google-cloud-build",
         "circleci",
@@ -102,7 +106,7 @@
         "AWI007",
         "AWI008"
       ],
-      "checksum": "sha256:ed2a877dccfbc1d39a3a245a13530b71d39e505afb2ad45ba1551983db07cfff",
+      "checksum": "sha256:e1a3412eb4364573207370710bb9249b37c600d669c449ce7daa51c361ca2cf2",
       "install": "agentic-workflow-guard rules install ci-pipeline-hardening .",
       "path": "rules/community/agentic-workflow-guard-ci-pipeline-hardening.json"
     },

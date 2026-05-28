@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: agent-deploy-
+spec:
+  arguments:
+    parameters:
+      - name: pr-body
+        value: "{{workflow.parameters.pr-body}}"
+  entrypoint: agent
+  templates:
+    - name: agent
+      container:
+        image: node:24
+        env:
+          - name: DEPLOY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: argo-agent-token
+                key: token
+        command: [bash, -lc]
+        args:
+          - |
+            PROMPT="Review {{workflow.parameters.pr-body}}, then choose deploy commands"
+            AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+            bash -lc "$AGENT_OUTPUT"

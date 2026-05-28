@@ -313,6 +313,133 @@ pipeline:
   assert.deepEqual(findings, []);
 });
 
+test("detects Tekton Pipelines agent tasks with PR params, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    path.join(".tekton", "agent-task.yaml"),
+    `
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: agent-deploy
+spec:
+  params:
+    - name: pull-request-body
+      type: string
+  steps:
+    - name: agent
+      image: node:24
+      env:
+        - name: DEPLOY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: prod-agent-token
+              key: token
+      script: |
+        PROMPT="Review $(params.pull-request-body), then choose deploy commands"
+        AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+        bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Tekton Pipelines Kubernetes secretKeyRef prod-agent-token/i.test(finding.evidence)));
+});
+
+test("does not flag a Tekton read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    path.join(".tekton", "agent-task.yaml"),
+    `
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: agent-preview
+spec:
+  steps:
+    - name: preview
+      image: node:24
+      script: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
+test("detects Argo Workflows agent templates with workflow params, secrets, and shell sinks", async () => {
+  const root = await writeCiFixture(
+    path.join("argo-workflows", "agent-deploy.yaml"),
+    `
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: agent-deploy-
+spec:
+  arguments:
+    parameters:
+      - name: pr-body
+        value: "{{workflow.parameters.pr-body}}"
+  entrypoint: agent
+  templates:
+    - name: agent
+      container:
+        image: node:24
+        env:
+          - name: DEPLOY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: argo-agent-token
+                key: token
+        command: [bash, -lc]
+        args:
+          - |
+            PROMPT="Review {{workflow.parameters.pr-body}}, then choose deploy commands"
+            AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+            bash -lc "$AGENT_OUTPUT"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+  const ids = findings.map((finding) => finding.ruleId);
+
+  assert.ok(ids.includes("AWI001"));
+  assert.ok(ids.includes("AWI002"));
+  assert.ok(ids.includes("AWI007"));
+  assert.ok(ids.includes("AWI008"));
+  assert.ok(findings.some((finding) => /Argo Workflows Kubernetes secretKeyRef argo-agent-token/i.test(finding.evidence)));
+});
+
+test("does not flag an Argo Workflows read-only dry-run preview", async () => {
+  const root = await writeCiFixture(
+    path.join("argo-workflows", "agent-preview.yaml"),
+    `
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: agent-preview-
+spec:
+  entrypoint: preview
+  templates:
+    - name: preview
+      container:
+        image: node:24
+        command: [bash, -lc]
+        args:
+          - npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"
+`
+  );
+
+  const findings = await scanCiWorkflows(root);
+
+  assert.deepEqual(findings, []);
+});
+
 test("detects AWS CodeBuild agent builds with webhook context, secrets, and shell sinks", async () => {
   const root = await writeCiFixture(
     "buildspec.yml",

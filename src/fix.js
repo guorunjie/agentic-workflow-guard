@@ -178,6 +178,60 @@ function insertCloudBuildDryRunSubstitution(text) {
   };
 }
 
+function insertTektonDryRunParam(text) {
+  const params = text.match(/^([ \t]*)params:\s*$/m);
+  if (params) {
+    return {
+      text: insertIntoExistingBlock(text, params.index, `${params[1]}  - name: ${dryRunVariable}\n${params[1]}    default: "true"\n`),
+      changed: true
+    };
+  }
+
+  const spec = text.match(/^([ \t]*)spec:\s*$/m);
+  if (spec) {
+    return {
+      text: insertIntoExistingBlock(text, spec.index, `${spec[1]}  params:\n${spec[1]}    - name: ${dryRunVariable}\n${spec[1]}      default: "true"\n`),
+      changed: true
+    };
+  }
+
+  return {
+    text: `spec:\n  params:\n    - name: ${dryRunVariable}\n      default: "true"\n\n${text}`,
+    changed: true
+  };
+}
+
+function insertArgoDryRunParameter(text) {
+  const parameters = text.match(/^([ \t]*)parameters:\s*$/m);
+  if (parameters) {
+    return {
+      text: insertIntoExistingBlock(text, parameters.index, `${parameters[1]}  - name: ${dryRunVariable}\n${parameters[1]}    value: "true"\n`),
+      changed: true
+    };
+  }
+
+  const argumentsBlock = text.match(/^([ \t]*)arguments:\s*$/m);
+  if (argumentsBlock) {
+    return {
+      text: insertIntoExistingBlock(text, argumentsBlock.index, `${argumentsBlock[1]}  parameters:\n${argumentsBlock[1]}    - name: ${dryRunVariable}\n${argumentsBlock[1]}      value: "true"\n`),
+      changed: true
+    };
+  }
+
+  const spec = text.match(/^([ \t]*)spec:\s*$/m);
+  if (spec) {
+    return {
+      text: insertIntoExistingBlock(text, spec.index, `${spec[1]}  arguments:\n${spec[1]}    parameters:\n${spec[1]}      - name: ${dryRunVariable}\n${spec[1]}        value: "true"\n`),
+      changed: true
+    };
+  }
+
+  return {
+    text: `spec:\n  arguments:\n    parameters:\n      - name: ${dryRunVariable}\n        value: "true"\n\n${text}`,
+    changed: true
+  };
+}
+
 function applyJenkinsDryRunGuard(text) {
   const existingEnvironment = text.match(/^(\s*)environment\s*\{\s*$/m);
   if (existingEnvironment) {
@@ -201,6 +255,8 @@ function applyDryRunGuard(text, file) {
   if (/^\.drone\.ya?ml$/i.test(file)) return insertDroneDryRunEnvironment(text);
   if (/^\.teamcity\/.+\.kts$/i.test(file)) return insertTeamCityDryRunParam(text);
   if (/^\.harness\/.+\.ya?ml$/i.test(file) || /^harness\/.+\.ya?ml$/i.test(file)) return insertHarnessDryRunVariable(text);
+  if (/^\.tekton\/.+\.ya?ml$/i.test(file) || /^tekton\/.+\.ya?ml$/i.test(file)) return insertTektonDryRunParam(text);
+  if (/^\.argo-workflows\/.+\.ya?ml$/i.test(file) || /^argo-workflows\/.+\.ya?ml$/i.test(file) || /^\.argo\/.+\.ya?ml$/i.test(file) || /^argo\/.+\.ya?ml$/i.test(file)) return insertArgoDryRunParameter(text);
   if (/^(?:\.aws\/)?buildspec(?:\.[\w-]+)?\.ya?ml$/i.test(file)) return insertCodeBuildDryRunVariable(text);
   if (/^cloudbuild\.ya?ml$/i.test(file) || /^\.cloudbuild\/.+\.ya?ml$/i.test(file) || /^cloudbuild\/.+\.ya?ml$/i.test(file)) return insertCloudBuildDryRunSubstitution(text);
   if (/^\.circleci\/config\.ya?ml$/i.test(file)) return insertYamlDryRunBlockBeforeSteps(text, "environment");
@@ -332,6 +388,8 @@ function platformForFile(file) {
   if (/^\.drone\.ya?ml$/i.test(file)) return "drone-ci";
   if (/^\.teamcity\/.+\.(kts|xml)$/i.test(file)) return "teamcity";
   if (/^\.harness\/.+\.ya?ml$/i.test(file) || /^harness\/.+\.ya?ml$/i.test(file)) return "harness";
+  if (/^\.tekton\/.+\.ya?ml$/i.test(file) || /^tekton\/.+\.ya?ml$/i.test(file)) return "tekton";
+  if (/^\.argo-workflows\/.+\.ya?ml$/i.test(file) || /^argo-workflows\/.+\.ya?ml$/i.test(file) || /^\.argo\/.+\.ya?ml$/i.test(file) || /^argo\/.+\.ya?ml$/i.test(file)) return "argo-workflows";
   if (/^(?:\.aws\/)?buildspec(?:\.[\w-]+)?\.ya?ml$/i.test(file)) return "aws-codebuild";
   if (/^cloudbuild\.ya?ml$/i.test(file) || /^\.cloudbuild\/.+\.ya?ml$/i.test(file) || /^cloudbuild\/.+\.ya?ml$/i.test(file)) return "google-cloud-build";
   if (/^\.gitlab-ci\.ya?ml$/i.test(file)) return "gitlab-ci";
@@ -447,6 +505,24 @@ phases:
 # Enable trigger approval for write-capable builds, then keep deploy steps after approval.
 substitutions:
   _AGENTIC_WORKFLOW_GUARD_DRY_RUN: "true"
+`
+    ),
+    tekton: snippet(
+      "Tekton approval parameter gate",
+      "yaml",
+      `
+when:
+  - input: "$(params.approved)"
+    operator: in
+    values: ["true"]
+`
+    ),
+    "argo-workflows": snippet(
+      "Argo suspend approval step",
+      "yaml",
+      `
+- name: approve-agent-side-effects
+  suspend: {}
 `
     ),
     circleci: snippet(

@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: agent-preview
+spec:
+  params:
+    - name: AGENTIC_WORKFLOW_GUARD_DRY_RUN
+      default: "true"
+  steps:
+    - name: preview
+      image: node:24
+      script: npx openai-agent --prompt "Summarize docs in read-only dry-run preview only"

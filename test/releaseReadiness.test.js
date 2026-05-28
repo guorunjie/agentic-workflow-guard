@@ -20,6 +20,9 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.ok(pkg.keywords.includes("teamcity"));
   assert.ok(pkg.keywords.includes("harness"));
   assert.ok(pkg.keywords.includes("harness-ci"));
+  assert.ok(pkg.keywords.includes("tekton"));
+  assert.ok(pkg.keywords.includes("tekton-pipelines"));
+  assert.ok(pkg.keywords.includes("argo-workflows"));
   assert.ok(pkg.keywords.includes("aws-codebuild"));
   assert.ok(pkg.keywords.includes("google-cloud-build"));
   assert.ok(pkg.keywords.includes("circleci"));
@@ -73,6 +76,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /Drone CI/);
   assert.match(readme, /TeamCity/);
   assert.match(readme, /Harness CI\/CD/);
+  assert.match(readme, /Tekton Pipelines/);
+  assert.match(readme, /Argo Workflows/);
   assert.match(readme, /AWS CodeBuild/);
   assert.match(readme, /Google Cloud Build/);
   assert.match(readme, /CircleCI/);
@@ -203,6 +208,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/vulnerable-azure-pipelines/azure-pipelines.yml",
     "examples/vulnerable-jenkins/Jenkinsfile",
     "examples/vulnerable-buildkite/.buildkite/pipeline.yml",
+    "examples/vulnerable-tekton/.tekton/agent-task.yaml",
+    "examples/vulnerable-argo-workflows/argo-workflows/agent-deploy.yaml",
     "examples/vulnerable-dify/app.yml",
     "examples/vulnerable-flowise/chatflow.json",
     "examples/vulnerable-langflow/flow.json",
@@ -227,6 +234,8 @@ test("repository ships examples for new workflow platform scanners", async () =>
     "examples/safe-azure-pipelines/azure-pipelines.yml",
     "examples/safe-jenkins/Jenkinsfile",
     "examples/safe-buildkite/.buildkite/pipeline.yml",
+    "examples/safe-tekton/.tekton/agent-task.yaml",
+    "examples/safe-argo-workflows/argo-workflows/agent-preview.yaml",
     "examples/safe-dify/app.yml",
     "examples/safe-flowise/chatflow.json",
     "examples/safe-langflow/flow.json",

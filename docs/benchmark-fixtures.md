@@ -18,6 +18,10 @@ The repository includes vulnerable and safe fixtures for the current scanner sur
 | `examples/safe-teamcity` | TeamCity | none |
 | `examples/vulnerable-harness` | Harness CI/CD | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
 | `examples/safe-harness` | Harness CI/CD | none |
+| `examples/vulnerable-tekton` | Tekton Pipelines | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-tekton` | Tekton Pipelines | none |
+| `examples/vulnerable-argo-workflows` | Argo Workflows | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
+| `examples/safe-argo-workflows` | Argo Workflows | none |
 | `examples/vulnerable-aws-codebuild` | AWS CodeBuild | `AWI001`, `AWI002`, `AWI007`, `AWI008` |
 | `examples/safe-aws-codebuild` | AWS CodeBuild | none |
 | `examples/vulnerable-google-cloud-build` | Google Cloud Build | `AWI001`, `AWI002`, `AWI007`, `AWI008` |

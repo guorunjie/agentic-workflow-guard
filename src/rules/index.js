@@ -2,7 +2,7 @@ export const rules = {
   AWI001: {
     severity: "high",
     title: "Untrusted CI or workflow context reaches an agent prompt",
-    risk: "Issue, pull request, merge request, branch, discussion, comment, or commit text from GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, or Buildkite can contain prompt-injection instructions that influence an agent.",
+    risk: "Issue, pull request, merge request, branch, discussion, comment, or commit text from GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, or Buildkite can contain prompt-injection instructions that influence an agent.",
     remediation: "Gate untrusted content, check author association, summarize in read-only mode, or require human approval before tool execution."
   },
   AWI002: {

@@ -2,7 +2,7 @@
 
 Find dangerous AI automation workflows before agents get write access.
 
-Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
+Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
 Four-command demo:
 
@@ -21,10 +21,10 @@ Start with [Demo Playbook](docs/demos.md) when you want a quick story for the ri
 
 Agentic Workflow Guard is a static security scanner for AI automation workflows. It scans repositories and workflow exports for risky paths such as:
 
-- untrusted GitHub issue, Bitbucket pull request, GitLab merge request, Travis pull request, Drone pull request, TeamCity branch, Harness codebase or trigger context, CodeBuild webhook context, Cloud Build trigger substitutions, CircleCI branch, Azure Pipelines pull request, Jenkins change request, Buildkite branch or commit message, or commit text entering an agent prompt;
+- untrusted GitHub issue, Bitbucket pull request, GitLab merge request, Travis pull request, Drone pull request, TeamCity branch, Harness codebase or trigger context, Tekton params, Argo workflow parameters, CodeBuild webhook context, Cloud Build trigger substitutions, CircleCI branch, Azure Pipelines pull request, Jenkins change request, Buildkite branch or commit message, or commit text entering an agent prompt;
 - model output flowing into shell commands;
 - AI jobs with write permissions;
-- Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs that execute model output or expose CI tokens, secrets, credentials, contexts, service connections, deployments, OIDC tokens, or variable groups;
+- Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs that execute model output or expose CI tokens, secrets, credentials, contexts, service connections, deployments, OIDC tokens, Kubernetes secret refs, or variable groups;
 - n8n webhook or email triggers flowing through AI nodes into HTTP, code, or command nodes;
 - broad MCP filesystem, shell, browser, or GitHub tools;
 - low-code automation flows that chain AI steps into side effects;
@@ -49,7 +49,7 @@ Agentic Workflow Guard is useful when automation touches external input, credent
 | Scenario | What it protects |
 | --- | --- |
 | AI-powered GitHub Actions | Prevents issue, PR, comment, or discussion text from steering an agent into privileged workflow actions. |
-| Agent jobs in Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite | Catches pull request text, merge request text, branch names, commit messages, CI tokens, Travis secure env, Drone secrets, TeamCity secure parameters, Harness secrets, CodeBuild Secrets Manager or Parameter Store env, Cloud Build Secret Manager env, CircleCI contexts, Azure service connections, Jenkins credentials, Bitbucket deployments/OIDC tokens, Buildkite env secrets, and variable groups reaching agent prompts or shell sinks. |
+| Agent jobs in Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite | Catches pull request text, merge request text, branch names, workflow parameters, commit messages, CI tokens, Travis secure env, Drone secrets, TeamCity secure parameters, Harness secrets, Tekton/Argo Kubernetes secret refs, CodeBuild Secrets Manager or Parameter Store env, Cloud Build Secret Manager env, CircleCI contexts, Azure service connections, Jenkins credentials, Bitbucket deployments/OIDC tokens, Buildkite env secrets, and variable groups reaching agent prompts or shell sinks. |
 | n8n operations workflows | Detects Webhook or email triggers flowing through AI nodes into HTTP, Code, Execute Command, or credential-bearing nodes. |
 | MCP tool configs | Flags broad filesystem, shell, browser, GitHub, Docker, Kubernetes, or cloud tools before agents can call them. |
 | Low-code AI automation | Finds Activepieces, Dify, Flowise, Langflow, Zapier, Make, Pipedream, and Node-RED flows where AI output is chained into API calls, tools, requests, or code execution. |
@@ -195,7 +195,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `fix [path] --format json` | Emits structured fix recipes with confidence, automatic/manual mode, patch availability, approval snippets, next steps, and changed file counts. |
 | `fix [path] --output awg-fix.json` | Writes the selected fix plan, JSON recipe report, or patch preview to a file for PR bots and agent loops. |
 | `fix [path] --patch` | Emits a reviewable diff for low-risk permission downgrades, MCP filesystem read-only scoping, and CI dry-run defaults without editing files. |
-| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades, MCP filesystem root narrowing/read-only settings, and GitHub/Bitbucket/GitLab/Travis/Drone/TeamCity/Harness/CodeBuild/Cloud Build/CircleCI/Azure/Jenkins/Buildkite dry-run markers, then leaves remaining findings for review. |
+| `fix [path] --apply` | Applies low-risk GitHub Actions permission downgrades, MCP filesystem root narrowing/read-only settings, and GitHub/Bitbucket/GitLab/Travis/Drone/TeamCity/Harness/Tekton/Argo/CodeBuild/Cloud Build/CircleCI/Azure/Jenkins/Buildkite dry-run markers, then leaves remaining findings for review. |
 | `explain <rule-id>` | Shows risk and remediation for a rule. |
 | `rules --format markdown|json` | Local rule marketplace/catalog. |
 | `rules list` | Lists installable rule packs. |
@@ -203,7 +203,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | `rules search <query>` | Searches rules by platform, risk, or remediation text. |
 | `rules install core [path]` | Installs v1 core rule pack metadata and a lock file into `.awg/rules/`. |
 | `rules install github-actions-hardening [path]` | Installs a focused GitHub Actions community rule pack. |
-| `rules install ci-pipeline-hardening [path]` | Installs a focused Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite community rule pack. |
+| `rules install ci-pipeline-hardening [path]` | Installs a focused Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite community rule pack. |
 | `rules install low-code-automation [path]` | Installs a focused low-code and browser automation community rule pack. |
 | `rules install mcp-tool-governance [path]` | Installs a focused MCP tool governance community rule pack. |
 | `rules verify <file>` | Verifies rule pack schema metadata and checksum before use. |
@@ -385,7 +385,7 @@ The goal is to become the safety skill for mainstream automation platforms.
 | v0.18 | Benchmark corpus distribution | Static corpus JSON, corpus CLI output, Pages, MCP, and agent install distribution |
 | v0.19 | Benchmark schemas and scoring | `benchmark --format json`, pass-rate scoring, corpus/report schemas, Pages and MCP schema distribution |
 | v0.20 | Marketplace and install readiness | Action self-smoke workflow, Marketplace metadata polish, package smoke script, demo playbook |
-| v1.0 prep | Buildkite, Bitbucket Pipelines, Travis CI, Drone CI, TeamCity, Harness CI/CD, AWS CodeBuild, Google Cloud Build, and CI rule-pack expansion | Buildkite, Bitbucket, Travis, Drone, TeamCity, Harness, CodeBuild, and Cloud Build scanners, dry-run fixes, safe/vulnerable fixtures, benchmark corpus, and `ci-pipeline-hardening` rule pack |
+| v1.0 prep | Buildkite, Bitbucket Pipelines, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, and CI rule-pack expansion | Buildkite, Bitbucket, Travis, Drone, TeamCity, Harness, Tekton, Argo, CodeBuild, and Cloud Build scanners, dry-run fixes, safe/vulnerable fixtures, benchmark corpus, and `ci-pipeline-hardening` rule pack |
 | v1.0 | CI-grade scanner for agentic automation | Stable schema, SemVer rules, release-tagged GitHub Action, npm package, and GitHub Marketplace release |
 
 See [ROADMAP.md](ROADMAP.md) for the full path to mainstream platform coverage, [docs/v1-readiness.md](docs/v1-readiness.md) for the remaining 1.0 release gates, and [docs/use-cases-and-growth.md](docs/use-cases-and-growth.md) for the high-star growth strategy.

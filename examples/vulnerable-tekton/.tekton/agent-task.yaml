@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: agent-deploy
+spec:
+  params:
+    - name: pull-request-body
+      type: string
+  steps:
+    - name: agent
+      image: node:24
+      env:
+        - name: DEPLOY_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: prod-agent-token
+              key: token
+      script: |
+        PROMPT="Review $(params.pull-request-body), then choose deploy commands"
+        AGENT_OUTPUT="$(npx openai-agent --prompt "$PROMPT" --token "$DEPLOY_TOKEN")"
+        bash -lc "$AGENT_OUTPUT"

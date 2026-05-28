@@ -15,13 +15,15 @@ test("benchmark command verifies fixture snapshots", async () => {
   const { stdout } = await execFileAsync("node", [bin, "benchmark"]);
 
   assert.match(stdout, /Benchmark passed/);
-  assert.match(stdout, /Score: 50\/50 \(100%\)/);
+  assert.match(stdout, /Score: 54\/54 \(100%\)/);
   assert.match(stdout, /vulnerable-bitbucket-pipelines/);
   assert.match(stdout, /vulnerable-gitlab-ci/);
   assert.match(stdout, /vulnerable-travis-ci/);
   assert.match(stdout, /vulnerable-drone-ci/);
   assert.match(stdout, /vulnerable-teamcity/);
   assert.match(stdout, /vulnerable-harness/);
+  assert.match(stdout, /vulnerable-tekton/);
+  assert.match(stdout, /vulnerable-argo-workflows/);
   assert.match(stdout, /vulnerable-aws-codebuild/);
   assert.match(stdout, /vulnerable-google-cloud-build/);
   assert.match(stdout, /vulnerable-circleci/);
@@ -44,7 +46,7 @@ test("benchmark command emits scored JSON reports", async () => {
   assert.equal(report.schemaVersion, "1.0.0");
   assert.equal(report.name, "agentic-workflow-guard-benchmark-report");
   assert.equal(report.version, packageVersion);
-  assert.deepEqual(report.summary, { fixtureCount: 50, passed: 50, failed: 0, passRate: 100 });
+  assert.deepEqual(report.summary, { fixtureCount: 54, passed: 54, failed: 0, passRate: 100 });
   assert.ok(report.platforms.includes("GitHub Actions"));
   assert.ok(report.ruleIds.includes("AWI010"));
   assert.equal(safeGithubAction.passed, true);
@@ -81,6 +83,10 @@ test("benchmark fixture manifest includes safe and vulnerable platform pairs", a
   assert.ok(names.includes("safe-teamcity"));
   assert.ok(names.includes("vulnerable-harness"));
   assert.ok(names.includes("safe-harness"));
+  assert.ok(names.includes("vulnerable-tekton"));
+  assert.ok(names.includes("safe-tekton"));
+  assert.ok(names.includes("vulnerable-argo-workflows"));
+  assert.ok(names.includes("safe-argo-workflows"));
   assert.ok(names.includes("vulnerable-aws-codebuild"));
   assert.ok(names.includes("safe-aws-codebuild"));
   assert.ok(names.includes("vulnerable-google-cloud-build"));
@@ -104,13 +110,15 @@ test("benchmark corpus command emits portable fixture metadata", async () => {
 
   assert.equal(corpus.schemaVersion, "1.0.0");
   assert.equal(corpus.version, packageVersion);
-  assert.equal(corpus.fixtureCount, 50);
+  assert.equal(corpus.fixtureCount, 54);
   assert.ok(corpus.platforms.includes("GitHub Actions"));
   assert.ok(corpus.platforms.includes("Bitbucket Pipelines"));
   assert.ok(corpus.platforms.includes("Travis CI"));
   assert.ok(corpus.platforms.includes("Drone CI"));
   assert.ok(corpus.platforms.includes("TeamCity"));
   assert.ok(corpus.platforms.includes("Harness CI/CD"));
+  assert.ok(corpus.platforms.includes("Tekton Pipelines"));
+  assert.ok(corpus.platforms.includes("Argo Workflows"));
   assert.ok(corpus.platforms.includes("AWS CodeBuild"));
   assert.ok(corpus.platforms.includes("Google Cloud Build"));
   assert.ok(corpus.platforms.includes("Azure Pipelines"));

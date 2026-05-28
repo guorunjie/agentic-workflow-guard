@@ -72,6 +72,26 @@
       "expectedRules": []
     },
     {
+      "name": "vulnerable-tekton",
+      "path": "examples/vulnerable-tekton",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-tekton",
+      "path": "examples/safe-tekton",
+      "expectedRules": []
+    },
+    {
+      "name": "vulnerable-argo-workflows",
+      "path": "examples/vulnerable-argo-workflows",
+      "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
+    },
+    {
+      "name": "safe-argo-workflows",
+      "path": "examples/safe-argo-workflows",
+      "expectedRules": []
+    },
+    {
       "name": "vulnerable-aws-codebuild",
       "path": "examples/vulnerable-aws-codebuild",
       "expectedRules": ["AWI001", "AWI002", "AWI007", "AWI008"]
