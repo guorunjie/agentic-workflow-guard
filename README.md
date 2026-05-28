@@ -4,10 +4,11 @@ Find dangerous AI automation workflows before agents get write access.
 
 Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
 
-Five-command demo:
+Six-command demo:
 
 ```bash
 npx agentic-workflow-guard init .
+npx agentic-workflow-guard doctor .
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format markdown
 npx agentic-workflow-guard scan examples/unsafe-ai-pr-bot --format sarif --output awg.sarif
 npx agentic-workflow-guard fix examples/unsafe-ai-pr-bot --patch
@@ -65,6 +66,7 @@ Initialize a repository with `.awg.yml` and a GitHub Actions workflow:
 
 ```bash
 node ./bin/agentic-workflow-guard.js init .
+node ./bin/agentic-workflow-guard.js doctor .
 ```
 
 Run against the unsafe AI PR bot demo:
@@ -169,6 +171,7 @@ Initialize config and CI scaffolding:
 node ./bin/agentic-workflow-guard.js init . --profile balanced
 node ./bin/agentic-workflow-guard.js init . --ci none
 node ./bin/agentic-workflow-guard.js init . --force
+node ./bin/agentic-workflow-guard.js doctor .
 ```
 
 Export a Skillpack Forge manifest:
@@ -196,6 +199,7 @@ node ./bin/agentic-workflow-guard.js agents install mcp-resources .
 | --- | --- |
 | `init [path] --ci github-actions|none` | Scaffolds `.awg.yml` and, by default, `.github/workflows/agentic-workflow-guard.yml` for Code Scanning adoption. |
 | `init [path] --profile advisory|balanced|strict --force` | Chooses rollout strictness and overwrites existing scaffolded files when explicitly requested. |
+| `doctor [path] --format markdown|json` | Verifies `.awg` config, config schema annotation, GitHub Action setup, optional rule-pack lock file, and optional baseline file. |
 | `scan [path] --format markdown` | Human-readable report for local review, issues, and PRs. |
 | `scan [path] --format json` | Machine-readable findings. |
 | `scan [path] --format sarif` | GitHub Code Scanning compatible output. |
@@ -293,6 +297,12 @@ node ./bin/agentic-workflow-guard.js schema config
 ```
 
 The public schema URL is `https://guorunjie.github.io/agentic-workflow-guard/schemas/config.schema.json`.
+
+After editing config or workflow setup, run:
+
+```bash
+node ./bin/agentic-workflow-guard.js doctor .
+```
 
 For reviewed exceptions, use inline suppressions with a reason:
 

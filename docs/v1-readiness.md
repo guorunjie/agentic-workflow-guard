@@ -21,6 +21,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 | Stable benchmark schemas | `schema benchmark-corpus`, `schema benchmark-report`, `benchmark corpus --format json`, and `benchmark --format json` stay in sync. |
 | Stable rule IDs | Existing `AWI###` IDs, severity levels, and default profile behavior are frozen for SemVer compatibility. |
 | GitHub Marketplace | `agentic-workflow-guard init .` scaffolds the release-tagged `uses: guorunjie/agentic-workflow-guard@v1.0.0` workflow, runs, and uploads SARIF. |
+| Setup doctor | `agentic-workflow-guard doctor .` validates repository config, schema annotation, Action setup, optional rule-pack lock file, and optional baseline file. |
 | npm release | `npm whoami` or `NPM_TOKEN`, `npm pack --dry-run`, `npm run smoke:package`, `npm publish --dry-run`, `npm run release:status` before publishing, and `npm run release:verify` after publishing. |
 | Documentation site | GitHub Pages publishes schema aliases, Marketplace page, benchmark corpus, and demo entry points. |
 | CI release gates | The remote `test` workflow runs `release-gates` with static metadata drift checks, `release check`, package smoke, and `npm pack --dry-run`. |
@@ -43,6 +44,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 ```bash
 npm test
 node ./bin/agentic-workflow-guard.js init /tmp/awg-init-smoke --force
+node ./bin/agentic-workflow-guard.js doctor /tmp/awg-init-smoke
 node ./bin/agentic-workflow-guard.js schema config
 npm run release:prepare -- --version 1.0.1 --dry-run
 npm run smoke:package

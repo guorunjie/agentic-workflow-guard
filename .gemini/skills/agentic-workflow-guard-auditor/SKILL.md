@@ -10,6 +10,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 
 ## Workflow
 For a new repository, run `agentic-workflow-guard init . --profile balanced` first to scaffold `.awg.yml` and a release-tagged GitHub Code Scanning workflow.
+Run `agentic-workflow-guard doctor .` after setup or config edits to verify the repository config, schema annotation, Action workflow, rule-pack lock, and baseline.
 
 1. Run `agentic-workflow-guard scan . --format markdown` for local review.
 2. Run `agentic-workflow-guard scan . --format sarif` when the result should feed GitHub Code Scanning.
@@ -54,6 +55,7 @@ For a new repository, run `agentic-workflow-guard init . --profile balanced` fir
 
 ## Commands
 - `agentic-workflow-guard init .`
+- `agentic-workflow-guard doctor .`
 - `agentic-workflow-guard scan . --format markdown`
 - `agentic-workflow-guard scan . --format json`
 - `agentic-workflow-guard scan . --format sarif`

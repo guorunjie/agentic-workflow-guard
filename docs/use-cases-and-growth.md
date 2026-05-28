@@ -19,7 +19,7 @@ Agentic Workflow Guard detects:
 - `pull_request_target` combined with agent or script execution;
 - secrets or environment values exposed to agent-visible context.
 
-Teams can start with `agentic-workflow-guard init .` to scaffold `.awg.yml` and a release-tagged GitHub Actions Code Scanning workflow before tuning policies.
+Teams can start with `agentic-workflow-guard init .` to scaffold `.awg.yml` and a release-tagged GitHub Actions Code Scanning workflow, then run `agentic-workflow-guard doctor .` to verify the setup before tuning policies.
 
 ### 2. n8n and Operations Automation
 
@@ -79,7 +79,7 @@ Highest-impact improvements:
    Grow the current `rules list/registry/search/install` into external rule packs with a stable schema, lock files, signed metadata, checksums, and community contributions.
 
 6. **Make adoption incremental**
-   Use `init`, `baseline create`, and `scan --baseline` so existing repositories can scaffold CI quickly and adopt the scanner without failing CI on known legacy findings.
+   Use `init`, `doctor`, `baseline create`, and `scan --baseline` so existing repositories can scaffold CI quickly, verify setup, and adopt the scanner without failing CI on known legacy findings.
 
 7. **Publish as a complete skill**
    Maintain generated AGENTS.md, Claude Skill, Codex Skill, Gemini context/skill files, Cursor rule, Copilot instructions, OpenClaw/Hermes SKILL.md bundles, and eventually MCP resources.
@@ -89,7 +89,7 @@ Highest-impact improvements:
 
 ## Growth Space Assessment
 
-There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, one-command project initialization, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, stable config/report/fix/rule/benchmark schemas, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
+There is still meaningful room for iteration. The project is no longer just a CLI idea; it has a working scanner, one-command project initialization, setup doctor diagnostics, SARIF output, a GitHub Action, trusted rule metadata, benchmark snapshots, structured fix recipes, fix previews, stable config/report/fix/rule/benchmark schemas, portable agent skill files, an MCP-style resource pack, policy profiles, audited suppression comments, suppression reports, and release-readiness docs. The next growth curve is turning that foundation into a trusted security layer for every place where agents can trigger side effects.
 
 Priority directions:
 

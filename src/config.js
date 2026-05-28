@@ -14,6 +14,9 @@ const defaultConfig = {
   rules: {},
   severityThreshold: policyProfiles.balanced.severityThreshold
 };
+const severityThresholds = new Set(["low", "medium", "high", "critical"]);
+const stableRuleIds = new Set(["AWI001", "AWI002", "AWI003", "AWI004", "AWI005", "AWI006", "AWI007", "AWI008", "AWI009", "AWI010"]);
+const validRuleToggles = new Set(["on", "off", "disabled", true, false]);
 
 function parseScalar(value) {
   const trimmed = value.trim().replace(/^["']|["']$/g, "");
@@ -22,11 +25,12 @@ function parseScalar(value) {
   return trimmed;
 }
 
-function parseSimpleYaml(text) {
+export function parseSimpleYaml(text) {
   const config = {};
   let currentKey = null;
 
   for (const rawLine of text.split(/\r?\n/)) {
+    if (rawLine.trimStart().startsWith("#")) continue;
     const line = rawLine.replace(/\s+#.*$/, "");
     if (!line.trim()) continue;
 
@@ -59,6 +63,29 @@ function parseSimpleYaml(text) {
   }
 
   return config;
+}
+
+export function validateConfigSurface(config = {}) {
+  const issues = [];
+  if (config.profile !== undefined && !policyProfiles[config.profile]) {
+    issues.push(`Unknown profile: ${config.profile}`);
+  }
+  if (config.severityThreshold !== undefined && !severityThresholds.has(config.severityThreshold)) {
+    issues.push(`Unknown severityThreshold: ${config.severityThreshold}`);
+  }
+  if (config.ignore !== undefined && (!Array.isArray(config.ignore) || config.ignore.some((item) => typeof item !== "string" || !item))) {
+    issues.push("ignore must be an array of non-empty strings");
+  }
+  if (config.rules !== undefined && (!config.rules || typeof config.rules !== "object" || Array.isArray(config.rules))) {
+    issues.push("rules must be an object keyed by AWI rule ID");
+  }
+  if (config.rules && typeof config.rules === "object" && !Array.isArray(config.rules)) {
+    for (const [ruleId, value] of Object.entries(config.rules)) {
+      if (!stableRuleIds.has(ruleId)) issues.push(`Unknown rule ID: ${ruleId}`);
+      if (!validRuleToggles.has(value)) issues.push(`Invalid toggle for ${ruleId}: ${String(value)}`);
+    }
+  }
+  return issues;
 }
 
 function normalizeConfig(config = {}) {

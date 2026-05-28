@@ -58,6 +58,7 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.equal(pkg.scripts["release:sync"], "node ./scripts/sync-static.js");
   assert.equal(pkg.scripts["release:sync:check"], "node ./scripts/sync-static.js --check");
   assert.equal(pkg.scripts["scan:strict"], "node ./bin/agentic-workflow-guard.js scan . --profile strict");
+  assert.equal(pkg.scripts.doctor, "node ./bin/agentic-workflow-guard.js doctor .");
   assert.ok(pkg.files.includes("mcp"));
   assert.ok(pkg.files.includes("schemas"));
   assert.ok(pkg.files.includes("docs-site"));
@@ -76,6 +77,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
   assert.match(readme, /agentic-workflow-guard\.js init \./);
+  assert.match(readme, /agentic-workflow-guard\.js doctor \./);
   assert.match(readme, /actions\/upload-artifact@v4/);
   assert.match(readme, /Bitbucket Pipelines/);
   assert.match(readme, /GitLab CI/);

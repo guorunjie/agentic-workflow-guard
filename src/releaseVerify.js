@@ -117,6 +117,19 @@ function buildChecks({ version, packageName, repository, allowDraft }) {
         }
         return "Published CLI emits the stable config schema.";
       }
+    },
+    {
+      id: "npx-doctor",
+      title: "npx doctor smoke",
+      command: "npx",
+      args: ["--yes", `${packageName}@${version}`, "doctor", ".", "--format", "json"],
+      validate({ stdout }) {
+        const report = parseJsonOutput(stdout, "doctor");
+        if (report.name !== "agentic-workflow-guard-doctor") {
+          throw new Error("Published CLI did not emit the doctor report.");
+        }
+        return "Published CLI emits the setup doctor report.";
+      }
     }
   ];
 }

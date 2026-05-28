@@ -1,7 +1,7 @@
 {
   "name": "agentic-workflow-guard",
   "version": "1.0.0",
-  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers one-command CI setup, marketplace action smoke tests, low-code, MCP, browser agents, SARIF, config and benchmark schemas, safe fixes, and portable skills.",
+  "description": "Semgrep-style scanner for AI automation workflows before agents get write access; covers one-command CI setup, setup doctor, marketplace action smoke tests, low-code, MCP, browser agents, SARIF, schemas, safe fixes, and portable skills.",
   "type": "module",
   "repository": {
     "type": "git",
@@ -18,6 +18,7 @@
     "test": "node --test",
     "scan": "node ./bin/agentic-workflow-guard.js scan .",
     "scan:strict": "node ./bin/agentic-workflow-guard.js scan . --profile strict",
+    "doctor": "node ./bin/agentic-workflow-guard.js doctor .",
     "benchmark": "node ./bin/agentic-workflow-guard.js benchmark",
     "benchmark:report": "node ./bin/agentic-workflow-guard.js benchmark --format json",
     "benchmark:corpus": "node ./bin/agentic-workflow-guard.js benchmark corpus --format json",

@@ -14,11 +14,11 @@ test("release verify dry-run plans public release checks without network calls",
   assert.equal(plan.packageName, "agentic-workflow-guard");
   assert.equal(plan.version, "1.0.0");
   assert.equal(plan.tag, "v1.0.0");
-  assert.equal(plan.summary.total, 6);
-  assert.equal(plan.summary.planned, 6);
+  assert.equal(plan.summary.total, 7);
+  assert.equal(plan.summary.planned, 7);
   assert.deepEqual(
     plan.checks.map((check) => check.id),
-    ["git-tag", "github-release", "npm-package", "npx-help", "npx-schema", "npx-config-schema"]
+    ["git-tag", "github-release", "npm-package", "npx-help", "npx-schema", "npx-config-schema", "npx-doctor"]
   );
   assert.match(plan.checks.find((check) => check.id === "npm-package").command, /npm view agentic-workflow-guard@1\.0\.0 version --json/);
   assert.match(plan.checks.find((check) => check.id === "npx-help").command, /npx --yes agentic-workflow-guard@1\.0\.0 --help/);
@@ -30,7 +30,7 @@ test("release verify renders markdown and JSON", async () => {
   assert.match(renderReleaseVerify(plan), /Release verify dry run/);
   const parsed = JSON.parse(renderReleaseVerify(plan, "json"));
   assert.equal(parsed.allowDraft, true);
-  assert.equal(parsed.summary.planned, 6);
+  assert.equal(parsed.summary.planned, 7);
 });
 
 test("release verify executes checks with an injectable runner", async () => {
@@ -57,12 +57,13 @@ test("release verify executes checks with an injectable runner", async () => {
       if (commandText.includes("--help")) return { stdout: "Agentic Workflow Guard\nrelease check\n", stderr: "" };
       if (commandText.includes("schema report")) return { stdout: JSON.stringify({ title: "Agentic Workflow Guard Report" }), stderr: "" };
       if (commandText.includes("schema config")) return { stdout: JSON.stringify({ title: "Agentic Workflow Guard Config" }), stderr: "" };
+      if (commandText.includes("doctor")) return { stdout: JSON.stringify({ name: "agentic-workflow-guard-doctor" }), stderr: "" };
       throw new Error(`unexpected command: ${commandText}`);
     }
   });
 
-  assert.equal(calls.length, 6);
-  assert.equal(result.summary.passed, 6);
+  assert.equal(calls.length, 7);
+  assert.equal(result.summary.passed, 7);
   assert.equal(result.summary.failed, 0);
   assert.ok(result.checks.every((check) => check.status === "pass"));
 });
@@ -86,6 +87,7 @@ test("release verify fails draft releases unless explicitly allowed", async () =
     if (commandText.startsWith("npm view")) return { stdout: JSON.stringify("1.0.0"), stderr: "" };
     if (commandText.includes("--help")) return { stdout: "Agentic Workflow Guard\nrelease check\n", stderr: "" };
     if (commandText.includes("schema config")) return { stdout: JSON.stringify({ title: "Agentic Workflow Guard Config" }), stderr: "" };
+    if (commandText.includes("doctor")) return { stdout: JSON.stringify({ name: "agentic-workflow-guard-doctor" }), stderr: "" };
     return { stdout: JSON.stringify({ title: "Agentic Workflow Guard Report" }), stderr: "" };
   };
 
@@ -103,5 +105,5 @@ test("release verify CLI supports dry-run JSON output", async () => {
 
   assert.equal(parsed.name, "agentic-workflow-guard-release-verify");
   assert.equal(parsed.mode, "dry-run");
-  assert.equal(parsed.summary.planned, 6);
+  assert.equal(parsed.summary.planned, 7);
 });

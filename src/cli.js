@@ -4,6 +4,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { suppressBaseline, writeBaseline } from "./baseline.js";
 import { buildBenchmarkReport, loadBenchmarkCorpus, renderBenchmarkReport, renderBenchmarkCorpus, runBenchmark } from "./benchmark.js";
 import { loadConfig, withPolicyProfile } from "./config.js";
+import { buildDoctorReport, renderDoctorReport } from "./doctor.js";
 import { explainRule } from "./explain.js";
 import { renderFixPlan } from "./fix.js";
 import { initProject, renderInitSummary } from "./initProject.js";
@@ -45,6 +46,7 @@ Usage:
   agentic-workflow-guard init [path] [--ci github-actions|none] [--profile advisory|balanced|strict] [--force]
   agentic-workflow-guard scan [path] [--format json|markdown|sarif] [--output report] [--profile advisory|balanced|strict] [--baseline .awg-baseline.json]
   agentic-workflow-guard baseline create [path] [--output .awg-baseline.json]
+  agentic-workflow-guard doctor [path] [--format markdown|json]
   agentic-workflow-guard fix [path] [--dry-run|--apply|--patch] [--format markdown|json] [--output report]
   agentic-workflow-guard explain <rule-id>
   agentic-workflow-guard rules [list|registry|search <query>|install <pack> [path]|verify <file>] [--format markdown|json]
@@ -127,6 +129,14 @@ export async function run(argv = process.argv.slice(2), output = process.stdout,
     const outputPath = await writeBaseline(root, await scanProject(root), argValue(args, "--output", ".awg-baseline.json"));
     output.write(`Wrote baseline to ${outputPath}\n`);
     return 0;
+  }
+
+  if (command === "doctor") {
+    const root = path.resolve(firstPositional(args));
+    const format = argValue(args, "--format", "markdown");
+    const report = await buildDoctorReport(root);
+    output.write(renderDoctorReport(report, format));
+    return report.summary.fail ? 1 : 0;
   }
 
   if (command === "fix") {

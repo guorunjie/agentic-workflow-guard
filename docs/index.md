@@ -37,6 +37,7 @@ Agentic Workflow Guard is a deterministic security scanner and portable skill pa
 
 ```bash
 npm test
+node ./bin/agentic-workflow-guard.js doctor .
 node ./bin/agentic-workflow-guard.js benchmark
 node ./bin/agentic-workflow-guard.js benchmark --format json
 node ./bin/agentic-workflow-guard.js benchmark corpus --format json
