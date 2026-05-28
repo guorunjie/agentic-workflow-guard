@@ -64,6 +64,7 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.ok(pkg.files.includes("schemas"));
   assert.ok(pkg.files.includes("docs-site"));
   assert.ok(pkg.files.includes("scripts"));
+  assert.ok(pkg.files.includes("ROADMAP.md"));
   assert.ok(pkg.files.includes("CONTRIBUTING.md"));
   assert.ok(pkg.files.includes("SECURITY.md"));
   assert.ok(pkg.files.includes("CODE_OF_CONDUCT.md"));
@@ -138,6 +139,16 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /CONTRIBUTING\.md/);
   assert.match(readme, /SECURITY\.md/);
   assert.match(readme, /CODE_OF_CONDUCT\.md/);
+  assert.match(readme, /ROADMAP\.md/);
+});
+
+test("documentation index links the roadmap", async () => {
+  const docsIndex = await readFile("docs/index.md", "utf8");
+  const roadmap = await readFile("ROADMAP.md", "utf8");
+
+  assert.match(docsIndex, /\.\.\/ROADMAP\.md/);
+  assert.match(roadmap, /Stable Automation Safety Layer/);
+  assert.match(roadmap, /Claude, Codex, Gemini, OpenClaw, Hermes, Cursor, Copilot/);
 });
 
 test("repository includes contribution, security, and collaboration templates", async () => {
