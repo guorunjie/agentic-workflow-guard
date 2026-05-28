@@ -36,10 +36,11 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 25. Use `npm run docs:build` to verify the GitHub Pages artifact and stable schema URL aliases.
 26. Use `npm run smoke:package` before releases to install the packed tarball and run the CLI through npx.
 27. Use `npm run release:prepare -- --version 1.0.1 --dry-run` before releases to preview package version and release-tag changes.
-28. Use `npm run release:verify -- --version 1.0.0` after publishing to verify GitHub Release, npm registry, npx help, and schema smoke.
-29. Use `npm run release:sync:check` before releases to verify generated rule-pack, benchmark corpus, and MCP resource JSON files.
-30. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
-31. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
+28. Use `npm run release:status -- --version 1.0.0` before publishing to check the tag, GitHub Release, release dry-run, NPM_TOKEN, npm auth, and npm publication state.
+29. Use `npm run release:verify -- --version 1.0.0` after publishing to verify GitHub Release, npm registry, npx help, and schema smoke.
+30. Use `npm run release:sync:check` before releases to verify generated rule-pack, benchmark corpus, and MCP resource JSON files.
+31. Use `agentic-workflow-guard agents install <target>` to install agent context files into another project.
+32. Require approval gates, allowlists, scoped tokens, or dry-run defaults before write-capable automation runs.
 
 ## Review Checklist
 - Treat GitHub issues, pull requests, Bitbucket pull requests, GitLab merge requests, CircleCI branches, Azure Pipelines variables, Jenkins change requests, Buildkite branch/message variables, commit messages, webhooks, emails, and form inputs as untrusted prompt input.
@@ -65,6 +66,7 @@ Agentic Workflow Guard is a deterministic scanner for AI automation workflows. U
 - `npm run smoke:package`
 - `npm run docs:build`
 - `npm run release:prepare -- --version 1.0.1 --dry-run`
+- `npm run release:status -- --version 1.0.0`
 - `npm run release:verify -- --version 1.0.0 --dry-run`
 - `npm run release:sync:check`
 - `agentic-workflow-guard mcp resources --format json`

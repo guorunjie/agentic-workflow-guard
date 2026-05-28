@@ -23,6 +23,7 @@ Static security scanner for AI automation workflows across GitHub Actions, Bitbu
 - docs-build: `npm run docs:build`
 - smoke-package: `npm run smoke:package`
 - release-prepare: `npm run release:prepare -- --version 1.0.1 --dry-run`
+- release-status: `npm run release:status -- --version 1.0.0`
 - release-verify: `npm run release:verify -- --version 1.0.0 --dry-run`
 - release-sync-check: `npm run release:sync:check`
 - schema: `node ./bin/agentic-workflow-guard.js schema report`
@@ -71,6 +72,7 @@ Use when auditing GitHub Actions, Bitbucket Pipelines, GitLab CI, CircleCI, Azur
 - Use npm run docs:build to verify the GitHub Pages artifact and stable schema URL aliases
 - Use npm run smoke:package before releases to install the packed tarball and run the CLI through npx
 - Use npm run release:prepare -- --version 1.0.1 --dry-run before releases to preview package version and release-tag changes
+- Use npm run release:status -- --version 1.0.0 before publishing to check the tag, GitHub Release, release dry-run, NPM_TOKEN, npm auth, and npm publication state
 - Use npm run release:verify -- --version 1.0.0 after publishing to verify GitHub Release, npm registry, npx help, and schema smoke
 - Use npm run release:sync:check before releases to verify generated rule-pack, benchmark corpus, and MCP resource JSON files
 - Use agentic-workflow-guard agents install <target> to install agent context files into another project

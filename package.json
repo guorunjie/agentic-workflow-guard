@@ -31,6 +31,7 @@
     "smoke:package": "node ./scripts/smoke-package.js",
     "release:check": "node ./bin/agentic-workflow-guard.js release check",
     "release:prepare": "node ./scripts/prepare-release.js",
+    "release:status": "node ./scripts/release-status.js",
     "release:verify": "node ./scripts/verify-release.js",
     "release:sync": "node ./scripts/sync-static.js",
     "release:sync:check": "node ./scripts/sync-static.js --check",

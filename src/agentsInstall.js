@@ -53,6 +53,7 @@ export function agentInstallTargets() {
 async function copyFileToProject(relative, root) {
   const source = path.join(packageRoot, relative);
   const target = path.join(root, relative);
+  if (path.resolve(source) === path.resolve(target)) return relative;
   await mkdir(path.dirname(target), { recursive: true });
   await cp(source, target);
   return relative;

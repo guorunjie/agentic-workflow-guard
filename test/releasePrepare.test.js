@@ -51,6 +51,7 @@ test("release prepare dry-run previews version and release tag changes without w
     assert.equal(pkg.version, "0.20.0");
     assert.match(readme, /v0\.20\.0/);
     assert.ok(result.followUpCommands.includes("npm run release:sync"));
+    assert.ok(result.followUpCommands.includes("npm run release:status -- --version 1.0.0-rc.1 --dry-run"));
     assert.ok(result.followUpCommands.includes("npm pack --dry-run"));
   });
 });

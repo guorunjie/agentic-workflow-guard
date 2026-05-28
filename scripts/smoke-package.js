@@ -19,6 +19,7 @@ async function run(command, args, options = {}) {
 try {
   const packed = await run("npm", ["pack", "--json"]);
   const [pack] = JSON.parse(packed.stdout);
+  const packageVersion = pack.version;
   tarball = path.join(root, pack.filename);
 
   await run("npm", ["init", "-y"], { cwd: workspace });
@@ -28,7 +29,8 @@ try {
   await run("npx", ["agentic-workflow-guard", "scan", "node_modules/agentic-workflow-guard/examples/safe-github-action", "--format", "json"], { cwd: workspace });
   await run("npx", ["agentic-workflow-guard", "benchmark", "node_modules/agentic-workflow-guard", "--format", "json"], { cwd: workspace });
   await run("npx", ["agentic-workflow-guard", "release", "check", "node_modules/agentic-workflow-guard", "--format", "json"], { cwd: workspace });
-  await run("npm", ["run", "release:prepare", "--", "--version", "1.0.0-rc.1", "--dry-run", "--format", "json"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
+  await run("npm", ["run", "release:prepare", "--", "--version", `${packageVersion}-rc.1`, "--dry-run", "--format", "json"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
+  await run("npm", ["run", "release:status", "--", "--version", packageVersion, "--dry-run", "--format", "json"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
   await run("npm", ["run", "release:sync:check"], { cwd: path.join(workspace, "node_modules", "agentic-workflow-guard") });
 
   console.log(`Package smoke passed in ${workspace}`);

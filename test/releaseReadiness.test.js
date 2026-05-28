@@ -42,6 +42,7 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   assert.equal(pkg.scripts["smoke:package"], "node ./scripts/smoke-package.js");
   assert.equal(pkg.scripts["release:check"], "node ./bin/agentic-workflow-guard.js release check");
   assert.equal(pkg.scripts["release:prepare"], "node ./scripts/prepare-release.js");
+  assert.equal(pkg.scripts["release:status"], "node ./scripts/release-status.js");
   assert.equal(pkg.scripts["release:verify"], "node ./scripts/verify-release.js");
   assert.equal(pkg.scripts["release:sync"], "node ./scripts/sync-static.js");
   assert.equal(pkg.scripts["release:sync:check"], "node ./scripts/sync-static.js --check");
@@ -94,6 +95,7 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   assert.match(readme, /v1-readiness\.md/);
   assert.match(readme, /release check \[path\] --target 1\.0\.0/);
   assert.match(readme, /npm run release:prepare -- --version 1\.0\.1 --dry-run/);
+  assert.match(readme, /npm run release:status -- --version 1\.0\.0/);
   assert.match(readme, /npm run release:verify -- --version 1\.0\.0 --dry-run/);
   assert.match(readme, /npm run release:sync:check/);
   assert.match(readme, /npm run release:check/);
@@ -159,6 +161,13 @@ test("release workflow publishes npm packages from release tags", async () => {
   assert.match(workflow, /npm publish --provenance --access public/);
   assert.match(workflow, /npm publish --dry-run --provenance --access public/);
   assert.match(workflow, /bin\/agentic-workflow-guard\.js/);
+});
+
+test("package smoke covers release status dry-run", async () => {
+  const smoke = await readFile("scripts/smoke-package.js", "utf8");
+
+  assert.match(smoke, /release:status/);
+  assert.match(smoke, /packageVersion/);
 });
 
 test("Pages workflow publishes generated docs and stable schema URLs", async () => {
@@ -227,6 +236,7 @@ test("repository ships examples for new workflow platform scanners", async () =>
     ".github/workflows/release.yml",
     "scripts/build-pages.js",
     "scripts/prepare-release.js",
+    "scripts/release-status.js",
     "scripts/verify-release.js",
     "scripts/smoke-package.js",
     "scripts/sync-static.js",

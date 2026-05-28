@@ -73,6 +73,7 @@ async function collectReleasePrepare(root, targetVersion) {
     "node ./bin/agentic-workflow-guard.js skillpack > skillpack.yaml",
     "node ../skillpack-forge/bin/skillpack-forge.js compile .",
     `npm run release:check -- --target ${targetVersion}`,
+    `npm run release:status -- --version ${targetVersion} --dry-run`,
     "npm test",
     "npm run smoke:package",
     "npm run docs:build",

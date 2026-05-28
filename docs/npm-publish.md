@@ -26,6 +26,7 @@ npm run docs:build
 npm run smoke:package
 npm run release:sync:check
 npm run release:check -- --target 1.0.0 --require-npm-auth
+npm run release:status -- --version 1.0.0
 npm run release:verify -- --version 1.0.0 --dry-run
 npm pack --dry-run
 ```
@@ -41,8 +42,9 @@ gh secret set NPM_TOKEN --repo guorunjie/agentic-workflow-guard
 ```
 
 2. Run the `release` workflow manually with `tag=v1.0.0` and `dry_run=true`.
-3. Publish the draft GitHub Release for `v1.0.0`.
-4. The `release` workflow will check out the tag, verify the package version, run tests, run release gates with npm auth, build the package, require `NPM_TOKEN` for real publishing, and publish with provenance.
+3. Run `npm run release:status -- --version 1.0.0`; the final prepublish status should show `Ready to publish: yes`.
+4. Publish the draft GitHub Release for `v1.0.0`.
+5. The `release` workflow will check out the tag, verify the package version, run tests, run release gates with npm auth, build the package, require `NPM_TOKEN` for real publishing, and publish with provenance.
 
 The workflow uses `npm publish --provenance --access public` for the real release and `npm publish --dry-run --provenance --access public` for manual dry runs.
 

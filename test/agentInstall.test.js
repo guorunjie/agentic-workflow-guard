@@ -79,3 +79,10 @@ test("agents install mcp-resources writes the MCP resource manifest and playbook
   assert.match(demos, /Demo Playbook/);
   assert.match(v1Readiness, /v1\.0 Readiness/);
 });
+
+test("agents install all is a no-op when run against the package root", async () => {
+  const { stdout } = await execFileAsync("node", [bin, "agents", "install", "all", process.cwd()]);
+
+  assert.match(stdout, /Installed all/);
+  assert.match(stdout, /AGENTS\.md/);
+});
