@@ -148,6 +148,8 @@ test("release workflow publishes npm packages from release tags", async () => {
   assert.match(workflow, /id-token: write/);
   assert.match(workflow, /registry-url: https:\/\/registry\.npmjs\.org/);
   assert.match(workflow, /NODE_AUTH_TOKEN: \$\{\{ secrets\.NPM_TOKEN \}\}/);
+  assert.match(workflow, /Require NPM_TOKEN for real publish/);
+  assert.match(workflow, /NPM_TOKEN repository secret is required for publishing to npm/);
   assert.match(workflow, /npm run release:check -- --target "\$VERSION" --require-npm-auth/);
   assert.match(workflow, /npm publish --provenance --access public/);
   assert.match(workflow, /npm publish --dry-run --provenance --access public/);

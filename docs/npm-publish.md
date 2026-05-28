@@ -34,9 +34,14 @@ npm pack --dry-run
 The preferred v1 path is `.github/workflows/release.yml`.
 
 1. Add an npm automation token as the repository secret `NPM_TOKEN`.
+
+```bash
+gh secret set NPM_TOKEN --repo guorunjie/agentic-workflow-guard
+```
+
 2. Run the `release` workflow manually with `tag=v1.0.0` and `dry_run=true`.
 3. Publish the draft GitHub Release for `v1.0.0`.
-4. The `release` workflow will check out the tag, verify the package version, run tests, run release gates with npm auth, build the package, and publish with provenance.
+4. The `release` workflow will check out the tag, verify the package version, run tests, run release gates with npm auth, build the package, require `NPM_TOKEN` for real publishing, and publish with provenance.
 
 The workflow uses `npm publish --provenance --access public` for the real release and `npm publish --dry-run --provenance --access public` for manual dry runs.
 

@@ -59,6 +59,17 @@ jobs:
       - run: npm run smoke:package
       - run: npm pack --dry-run
 
+      - name: Require NPM_TOKEN for real publish
+        if: ${{ steps.release.outputs.dry_run != 'true' }}
+        shell: bash
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "NPM_TOKEN repository secret is required for publishing to npm." >&2
+            exit 1
+          fi
+
       - name: Run release gate
         shell: bash
         env:

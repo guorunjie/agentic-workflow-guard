@@ -36,7 +36,7 @@ With npm access resolved, this is now a same-day final release task. A longer 1-
 ## Recommended v1.0 Cut Plan
 
 1. Confirm the repository is clean and remote `main` has green `test` and `pages` workflows.
-2. Add `NPM_TOKEN` as a repository secret or resolve local npm authentication and run `npm publish --dry-run`.
+2. Add `NPM_TOKEN` as a repository secret with `gh secret set NPM_TOKEN --repo guorunjie/agentic-workflow-guard`, or resolve local npm authentication and run `npm publish --dry-run`.
 3. Run the full local gate:
 
 ```bash
