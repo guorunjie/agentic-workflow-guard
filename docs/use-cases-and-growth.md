@@ -115,7 +115,7 @@ The strongest star-growth path is to show one scary, easy-to-understand demo per
 
 ## Star Growth Playbook
 
-- README headline: "Semgrep-style scanner for AI automation workflows."
+- README headline: "Static analysis for AI automation workflows."
 - First demo: `init .`, one vulnerable GitHub Action producing SARIF, upload-sarif integration, and a `fix --apply` permission patch.
 - Distribution: GitHub Action, npm package, Skillpack Forge, public benchmark corpus, AGENTS.md, Claude/Codex/Gemini/OpenClaw/Hermes skills, Cursor rules, Copilot instructions.
 - Submit to lists: awesome-copilot, awesome-mcp-servers after MCP resources land, awesome-claude-skills after skill examples mature.
@@ -129,5 +129,5 @@ The strongest star-growth path is to show one scary, easy-to-understand demo per
 Use this GitHub description:
 
 ```text
-Find dangerous AI automation workflows before agents get write access; covers CI, low-code, MCP, browser agents, SARIF, community rule packs, a benchmark corpus, and portable skills.
+Static analysis for AI automation workflows. Find prompt-injection paths, overpowered tools, and write-capable agent jobs before they run.
 ```

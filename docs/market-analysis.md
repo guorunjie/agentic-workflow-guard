@@ -28,6 +28,24 @@ High-star automation projects share five traits:
 4. **They are agent-ready**: LLMs can call tools, follow instructions, or operate workflows.
 5. **They create new risk surfaces**: prompt injection, overpowered tokens, shell execution, credential-bearing nodes, and broad MCP tools.
 
+## Description Pattern
+
+High-star repository descriptions are short, outcome-led, and easy to repeat:
+
+- n8n: workflow automation platform, native AI capabilities, 400+ integrations.
+- Dify: production-ready platform for agentic workflow development.
+- browser-use: make websites accessible for AI agents.
+- Semgrep: lightweight static analysis that finds bug variants with code-like patterns.
+- TruffleHog: find, verify, and analyze leaked credentials.
+
+Agentic Workflow Guard should use the same structure: name the category first, then the concrete thing it finds.
+
+Recommended description:
+
+```text
+Static analysis for AI automation workflows. Find prompt-injection paths, overpowered tools, and write-capable agent jobs before they run.
+```
+
 ## Opportunity
 
 The crowded side is building more automation. The under-served side is guarding automation before it runs.

@@ -6,13 +6,17 @@ test("package metadata reflects the v1.0 release-ready package", async () => {
   const pkg = JSON.parse(await readFile("package.json", "utf8"));
 
   assert.equal(pkg.version, "1.0.0");
-  assert.match(pkg.description, /Semgrep-style scanner/i);
-  assert.match(pkg.description, /marketplace action smoke tests/i);
-  assert.match(pkg.description, /portable skills/i);
+  assert.match(pkg.description, /Semgrep-style static analysis/i);
+  assert.match(pkg.description, /AI automation workflows/i);
+  assert.match(pkg.description, /write-capable agent jobs/i);
   assert.equal(pkg.repository?.url, "git+https://github.com/guorunjie/agentic-workflow-guard.git");
   assert.equal(pkg.homepage, "https://github.com/guorunjie/agentic-workflow-guard#readme");
   assert.equal(pkg.bugs?.url, "https://github.com/guorunjie/agentic-workflow-guard/issues");
   assert.equal(pkg.bin?.["agentic-workflow-guard"], "bin/agentic-workflow-guard.js");
+  assert.ok(pkg.keywords.includes("static-analysis"));
+  assert.ok(pkg.keywords.includes("sast"));
+  assert.ok(pkg.keywords.includes("workflow-security"));
+  assert.ok(pkg.keywords.includes("ci-security"));
   assert.ok(pkg.keywords.includes("bitbucket-pipelines"));
   assert.ok(pkg.keywords.includes("gitlab-ci"));
   assert.ok(pkg.keywords.includes("travis-ci"));
@@ -78,6 +82,8 @@ test("README documents marketplace SARIF upload, output files, schemas, structur
   const readme = await readFile("README.md", "utf8");
 
   assert.match(readme, /github\/codeql-action\/upload-sarif/);
+  assert.match(readme, /Static analysis for AI automation workflows/);
+  assert.match(readme, /write-capable agent jobs before they run/);
   assert.match(readme, /agentic-workflow-guard\.js init \./);
   assert.match(readme, /agentic-workflow-guard\.js doctor \./);
   assert.match(readme, /actions\/upload-artifact@v4/);

@@ -1,8 +1,8 @@
 # Agentic Workflow Guard
 
-Find dangerous AI automation workflows before agents get write access.
+Static analysis for AI automation workflows. Find prompt-injection paths, overpowered tools, and write-capable agent jobs before they run.
 
-Semgrep-style scanning for AI automation workflows: find prompt-injection paths, overpowered tools, unsafe GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs, risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects, and MCP permission leaks before your AI automation runs.
+Agentic Workflow Guard is a Semgrep-style scanner for agentic workflows: unsafe GitHub Actions, Bitbucket Pipelines, GitLab CI, Travis CI, Drone CI, TeamCity, Harness CI/CD, Tekton Pipelines, Argo Workflows, AWS CodeBuild, Google Cloud Build, CircleCI, Azure Pipelines, Jenkins, and Buildkite agent jobs; risky n8n, Dify, Flowise, Langflow, and low-code workflow side effects; browser automation traces; and MCP permission leaks.
 
 Six-command demo:
 
