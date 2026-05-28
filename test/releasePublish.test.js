@@ -77,6 +77,25 @@ test("release publish skips npm publish when the version already exists", async 
   assert.equal(calls.length, 2);
 });
 
+test("release publish dry-run skips npm publish when the version already exists", async () => {
+  const calls = [];
+  const result = await publishRelease(process.cwd(), {
+    version: "1.0.0",
+    dryRun: true,
+    runner: async (command, args) => {
+      calls.push([command, args]);
+      const commandText = [command, ...args].join(" ");
+      if (commandText.includes("scripts/release-status.js")) return { stdout: readyStatus({ published: true }), stderr: "" };
+      throw new Error(`unexpected command: ${commandText}`);
+    }
+  });
+
+  assert.equal(result.summary.failed, 0);
+  assert.equal(result.steps.find((item) => item.id === "npm-publish").status, "skip");
+  assert.equal(result.steps.find((item) => item.id === "release-verify").status, "skip");
+  assert.equal(calls.length, 1);
+});
+
 test("release publish returns actionable 2FA remediation", async () => {
   const result = await publishRelease(process.cwd(), {
     version: "1.0.0",

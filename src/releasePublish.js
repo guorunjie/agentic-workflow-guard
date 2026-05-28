@@ -182,8 +182,8 @@ export async function publishRelease(root = ".", options = {}) {
   if (options.otp) publishArgs.push("--otp", options.otp);
   const publishCommand = stringifyCommand("npm", publishArgs);
 
-  if (alreadyPublished && !options.dryRun) {
-    steps.push(step("npm-publish", "npm publish", publishCommand, "skip", `${packageName}@${version} is already public on npm.`));
+  if (alreadyPublished) {
+    steps.push(step("npm-publish", options.dryRun ? "npm publish dry-run" : "npm publish", publishCommand, "skip", `${packageName}@${version} is already public on npm.`));
   } else {
     try {
       await runner("npm", publishArgs, { cwd: root, timeout });

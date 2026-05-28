@@ -1,5 +1,6 @@
 import { execFile } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -85,6 +86,7 @@ function buildChecks({ version, packageName, repository, allowDraft }) {
       title: "npx CLI help",
       command: "npx",
       args: ["--yes", `${packageName}@${version}`, "--help"],
+      isolatedCwd: true,
       validate({ stdout }) {
         if (!stdout.includes("Agentic Workflow Guard") || !stdout.includes("release check")) {
           throw new Error("npx --help output did not include the expected CLI usage.");
@@ -97,6 +99,7 @@ function buildChecks({ version, packageName, repository, allowDraft }) {
       title: "npx schema smoke",
       command: "npx",
       args: ["--yes", `${packageName}@${version}`, "schema", "report"],
+      isolatedCwd: true,
       validate({ stdout }) {
         const schema = parseJsonOutput(stdout, "schema report");
         if (schema.title !== "Agentic Workflow Guard Report") {
@@ -110,6 +113,7 @@ function buildChecks({ version, packageName, repository, allowDraft }) {
       title: "npx config schema smoke",
       command: "npx",
       args: ["--yes", `${packageName}@${version}`, "schema", "config"],
+      isolatedCwd: true,
       validate({ stdout }) {
         const schema = parseJsonOutput(stdout, "schema config");
         if (schema.title !== "Agentic Workflow Guard Config") {
@@ -123,6 +127,7 @@ function buildChecks({ version, packageName, repository, allowDraft }) {
       title: "npx doctor smoke",
       command: "npx",
       args: ["--yes", `${packageName}@${version}`, "doctor", ".", "--format", "json"],
+      isolatedCwd: true,
       validate({ stdout }) {
         const report = parseJsonOutput(stdout, "doctor");
         if (report.name !== "agentic-workflow-guard-doctor") {
@@ -150,10 +155,11 @@ export async function buildReleaseVerifyPlan(root = ".", options = {}) {
     repository,
     allowDraft: Boolean(options.allowDraft)
   }).map((check) => ({
-    id: check.id,
-    title: check.title,
-    command: stringifyCommand(check.command, check.args),
-    status: "planned"
+      id: check.id,
+      title: check.title,
+      command: stringifyCommand(check.command, check.args),
+      status: "planned",
+      ...(check.isolatedCwd ? { cwd: tmpdir() } : {})
   }));
 
   return {
@@ -197,13 +203,15 @@ export async function verifyRelease(root = ".", options = {}) {
   const checks = [];
 
   for (const check of rawChecks) {
+    const cwd = check.isolatedCwd ? tmpdir() : root;
     const publicCheck = {
       id: check.id,
       title: check.title,
-      command: stringifyCommand(check.command, check.args)
+      command: stringifyCommand(check.command, check.args),
+      ...(check.isolatedCwd ? { cwd } : {})
     };
     try {
-      const result = await runner(check.command, check.args, { cwd: root, timeout: options.timeout });
+      const result = await runner(check.command, check.args, { cwd, timeout: options.timeout });
       checks.push({
         ...publicCheck,
         status: "pass",

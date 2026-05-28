@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { tmpdir } from "node:os";
 import { promisify } from "node:util";
 import { test } from "node:test";
 
@@ -22,6 +23,7 @@ test("release verify dry-run plans public release checks without network calls",
   );
   assert.match(plan.checks.find((check) => check.id === "npm-package").command, /npm view agentic-workflow-guard@1\.0\.0 version --json/);
   assert.match(plan.checks.find((check) => check.id === "npx-help").command, /npx --yes agentic-workflow-guard@1\.0\.0 --help/);
+  assert.equal(plan.checks.find((check) => check.id === "npx-help").cwd, tmpdir());
 });
 
 test("release verify renders markdown and JSON", async () => {
@@ -37,8 +39,8 @@ test("release verify executes checks with an injectable runner", async () => {
   const calls = [];
   const result = await verifyRelease(process.cwd(), {
     version: "1.0.0",
-    runner: async (command, args) => {
-      calls.push([command, args]);
+    runner: async (command, args, options) => {
+      calls.push([command, args, options]);
       const commandText = [command, ...args].join(" ");
       if (commandText.startsWith("git rev-parse")) return { stdout: "13e314bcafe\n", stderr: "" };
       if (commandText.startsWith("gh release view")) {
@@ -63,6 +65,7 @@ test("release verify executes checks with an injectable runner", async () => {
   });
 
   assert.equal(calls.length, 7);
+  assert.equal(calls.find(([, args]) => args.includes("--help"))[2].cwd, tmpdir());
   assert.equal(result.summary.passed, 7);
   assert.equal(result.summary.failed, 0);
   assert.ok(result.checks.every((check) => check.status === "pass"));
